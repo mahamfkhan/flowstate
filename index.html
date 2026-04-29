@@ -271,12 +271,16 @@
   .pill .text { flex: 1; white-space: pre-wrap; padding-top: 1px; }
 
   .pill .x {
-    flex-shrink: 0; background: transparent; border: none; color: var(--text-dim);
+    flex-shrink: 0; border: none; color: var(--text-dim);
     cursor: pointer; font-size: 14px; line-height: 1; width: 18px; height: 18px;
     border-radius: 50%; display: inline-flex; align-items: center; justify-content: center;
     transition: color 0.1s ease, background 0.1s ease; margin-top: 2px;
+    /* prevent iOS from painting a white button background */
+    background: transparent !important;
+    -webkit-appearance: none; appearance: none;
+    -webkit-tap-highlight-color: transparent;
   }
-  .pill .x:hover { color: var(--danger); background: rgba(255,107,107,0.1); }
+  .pill .x:hover { color: var(--danger); background: rgba(255,107,107,0.1) !important; }
 
   /* Tick button */
   .tick-btn {
@@ -424,6 +428,91 @@
   @keyframes pop {
     from { transform: scale(0.93); opacity: 0; }
     to   { transform: scale(1);    opacity: 1; }
+  }
+
+  /* ── Move-to menu ─────────────────────────────── */
+  .move-menu {
+    position: fixed; z-index: 600;
+    background: var(--bg-elev2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 5px;
+    min-width: 200px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+    animation: pop 0.1s ease-out;
+  }
+  .move-menu-label {
+    font-size: 10px; font-weight: 600; text-transform: uppercase;
+    letter-spacing: 0.08em; color: var(--text-dim);
+    padding: 6px 10px 4px; user-select: none;
+  }
+  .move-menu-item {
+    display: flex; align-items: center; gap: 8px;
+    width: 100%; background: transparent; border: none;
+    color: var(--text-dim); font-family: inherit; font-size: 13px;
+    text-align: left; padding: 8px 10px; border-radius: 8px;
+    cursor: pointer; transition: background 0.1s ease, color 0.1s ease;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .move-menu-item:hover,
+  .move-menu-item:active { background: var(--pill-bg-hover); color: var(--text); }
+  .move-menu-dot {
+    width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0;
+  }
+
+  /* ── Mobile responsive ────────────────────────── */
+  @media (max-width: 768px) {
+    .page {
+      padding: 12px 12px 0;
+      gap: 10px;
+      height: 100vh;
+      height: 100dvh;
+    }
+
+    .board {
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    /* Brain dump: compact strip at top */
+    .col.braindump {
+      flex: 0 0 auto;
+      min-height: 0;
+      max-height: 36vh;
+    }
+
+    /* Categories: horizontal snap-scroll */
+    .categories {
+      flex: 1;
+      overflow-x: auto;
+      overflow-y: hidden;
+      flex-wrap: nowrap;
+      -webkit-overflow-scrolling: touch;
+      scroll-snap-type: x mandatory;
+      gap: 10px;
+      min-height: 0;
+      /* hide scrollbar */
+      scrollbar-width: none;
+    }
+    .categories::-webkit-scrollbar { display: none; }
+
+    /* Each scroll card */
+    .col[data-col="mit"],
+    .habits-group,
+    .col[data-col="quickwins"] {
+      flex: 0 0 80vw;
+      min-width: 220px;
+      scroll-snap-align: start;
+    }
+
+    /* Habits group fills height of scroll row */
+    .habits-group { min-height: 0; }
+    .habits-cols  { gap: 8px; }
+
+    /* Dump view: comfortable on phone */
+    .dump-view { padding: 64px 16px 100px; }
+    .dump-input { font-size: 16px; } /* prevent iOS zoom */
+    .col-input  { font-size: 16px; } /* prevent iOS zoom */
   }
 </style>
 </head>
@@ -899,6 +988,91 @@
   }
 
   // ─────────────────────────────────────────────────
+  //  Move-to menu
+  // ─────────────────────────────────────────────────
+  const COL_COLORS = {
+    braindump:    '#8a8a93',
+    mit:          '#e8904a',
+    ongoing:      '#4ac49a',
+    aspirational: '#b46ae8',
+    quickwins:    '#4a9de8',
+  };
+  const COL_LABELS = {
+    braindump:    'Brain Dump',
+    mit:          'Urgent / Important',
+    ongoing:      'Ongoing',
+    aspirational: 'Aspirational',
+    quickwins:    'One-off Activities',
+  };
+
+  function showMoveMenu(anchorEl, colId, index) {
+    document.querySelectorAll('.move-menu').forEach(m => m.remove());
+
+    const text = board[colId][index];
+    if (text === undefined) return;
+
+    const menu = document.createElement('div');
+    menu.className = 'move-menu';
+
+    const lbl = document.createElement('div');
+    lbl.className = 'move-menu-label';
+    lbl.textContent = 'Move to…';
+    menu.appendChild(lbl);
+
+    COLS.filter(c => c !== colId).forEach(destId => {
+      const btn = document.createElement('button');
+      btn.className = 'move-menu-item';
+
+      const dot = document.createElement('span');
+      dot.className = 'move-menu-dot';
+      dot.style.background = COL_COLORS[destId] || '#8a8a93';
+
+      btn.appendChild(dot);
+      btn.appendChild(document.createTextNode(COL_LABELS[destId] || destId));
+
+      btn.addEventListener('click', (ev) => {
+        ev.stopPropagation();
+        // re-read live index in case board changed since menu opened
+        const liveIdx = board[colId].indexOf(text);
+        if (liveIdx === -1) { menu.remove(); return; }
+        board[colId].splice(liveIdx, 1);
+        board[destId].push(text);
+        saveBoard();
+        renderCol(colId);
+        renderCol(destId);
+        // also refresh dump view if it's open
+        if (document.getElementById('dump-view').classList.contains('active')) {
+          renderDumpView();
+        }
+        menu.remove();
+      });
+      menu.appendChild(btn);
+    });
+
+    // Position the menu near the anchor element
+    document.body.appendChild(menu);
+    const rect     = anchorEl.getBoundingClientRect();
+    const mh       = menu.offsetHeight || 200;
+    const mw       = menu.offsetWidth  || 210;
+    let top  = rect.bottom + 6;
+    let left = rect.left;
+    if (top + mh > window.innerHeight - 8)  top  = rect.top - mh - 6;
+    if (left + mw > window.innerWidth  - 8) left = window.innerWidth - mw - 8;
+    top  = Math.max(8, top);
+    left = Math.max(8, left);
+    menu.style.top  = top  + 'px';
+    menu.style.left = left + 'px';
+
+    function closeMenu(ev) {
+      if (!menu.contains(ev.target)) {
+        menu.remove();
+        document.removeEventListener('pointerdown', closeMenu);
+      }
+    }
+    setTimeout(() => document.addEventListener('pointerdown', closeMenu), 0);
+  }
+
+  // ─────────────────────────────────────────────────
   //  Build a pill element
   // ─────────────────────────────────────────────────
   function makePill(text, colId, index) {
@@ -960,6 +1134,12 @@
       renderBin();
     });
     pill.appendChild(x);
+
+    // Tap / click → show move menu (skip if interacting with action buttons)
+    pill.addEventListener('click', (e) => {
+      if (e.target.closest('.x, .tick-btn, .star-btn')) return;
+      showMoveMenu(pill, colId, index);
+    });
 
     pill.addEventListener('dragstart', (e) => {
       drag = { source: 'col', colId, index };
@@ -1188,11 +1368,19 @@
       span.className = 'text'; span.textContent = text;
       const x = document.createElement('button');
       x.className = 'x'; x.setAttribute('aria-label', 'remove'); x.textContent = '×';
-      x.addEventListener('click', () => {
+      x.addEventListener('click', (e) => {
+        e.stopPropagation();
         const [removed] = board.braindump.splice(i, 1);
         board.archive.push({ text: removed, colId: 'braindump', date: todayISO(), source: 'deleted' });
         saveBoard(); renderDumpView(); renderBin();
       });
+
+      // Tap pill body → move to a category
+      pill.addEventListener('click', (e) => {
+        if (e.target.closest('.x')) return;
+        showMoveMenu(pill, 'braindump', i);
+      });
+
       pill.appendChild(span); pill.appendChild(x);
       container.appendChild(pill);
     });
