@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>flowstate</title>
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%231a3a5c'/%3E%3C!-- sky --%3E%3Crect width='32' height='18' fill='%23c8d8e8'/%3E%3C!-- fuji --%3E%3Cpolygon points='16,4 20,13 12,13' fill='%23e8e0d8'/%3E%3Cpolygon points='16,4 17.5,7 14.5,7' fill='white'/%3E%3C!-- ocean base --%3E%3Crect y='14' width='32' height='18' fill='%231a3a5c'/%3E%3C!-- main wave body --%3E%3Cellipse cx='8' cy='16' rx='10' ry='7' fill='%231e4a7a'/%3E%3Cellipse cx='24' cy='18' rx='10' ry='6' fill='%231e4a7a'/%3E%3C!-- wave middle layer --%3E%3Cellipse cx='16' cy='20' rx='12' ry='5' fill='%23245a8a'/%3E%3C!-- wave claw - left big wave --%3E%3Cpath d='M0,13 Q4,6 8,11 Q4,11 2,14 Z' fill='%231e4a7a'/%3E%3Cpath d='M0,12 Q4,5 8,10 Q5,9 3,12 Z' fill='%23245a8a'/%3E%3C!-- white foam tips left --%3E%3Cpath d='M0,12 Q2,8 5,10 Q3,10 1,13 Z' fill='white' opacity='0.9'/%3E%3Cpath d='M4,10 Q6,7 8,9 Q6,9 5,11 Z' fill='white' opacity='0.85'/%3E%3C!-- right claw --%3E%3Cpath d='M22,10 Q26,5 30,9 Q28,9 26,12 Z' fill='%231e4a7a'/%3E%3C!-- white foam tips right --%3E%3Cpath d='M22,10 Q25,6 28,9 Q26,9 24,11 Z' fill='white' opacity='0.9'/%3E%3Cpath d='M26,8 Q28,5 30,7 Q29,8 27,10 Z' fill='white' opacity='0.85'/%3E%3C!-- small claw mid --%3E%3Cpath d='M12,12 Q14,8 17,11 Q15,11 13,13 Z' fill='%231e4a7a'/%3E%3Cpath d='M12,11 Q14,7 17,10 Q15,10 13,12 Z' fill='white' opacity='0.8'/%3E%3C!-- foreground water --%3E%3Cpath d='M0,24 Q8,20 16,24 Q24,28 32,24 L32,32 L0,32 Z' fill='%231a3a5c'/%3E%3Cpath d='M0,26 Q8,22 16,26 Q24,30 32,26 L32,32 L0,32 Z' fill='%23152d47'/%3E%3C/svg%3E" />
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%231a3a5c'/%3E%3Crect width='32' height='18' fill='%23c8d8e8'/%3E%3Cpolygon points='16,4 20,13 12,13' fill='%23e8e0d8'/%3E%3Cpolygon points='16,4 17.5,7 14.5,7' fill='white'/%3E%3Crect y='14' width='32' height='18' fill='%231a3a5c'/%3E%3Cellipse cx='8' cy='16' rx='10' ry='7' fill='%231e4a7a'/%3E%3Cellipse cx='24' cy='18' rx='10' ry='6' fill='%231e4a7a'/%3E%3Cellipse cx='16' cy='20' rx='12' ry='5' fill='%23245a8a'/%3E%3Cpath d='M0,13 Q4,6 8,11 Q4,11 2,14 Z' fill='%231e4a7a'/%3E%3Cpath d='M0,12 Q4,5 8,10 Q5,9 3,12 Z' fill='%23245a8a'/%3E%3Cpath d='M0,12 Q2,8 5,10 Q3,10 1,13 Z' fill='white' opacity='0.9'/%3E%3Cpath d='M4,10 Q6,7 8,9 Q6,9 5,11 Z' fill='white' opacity='0.85'/%3E%3Cpath d='M22,10 Q26,5 30,9 Q28,9 26,12 Z' fill='%231e4a7a'/%3E%3Cpath d='M22,10 Q25,6 28,9 Q26,9 24,11 Z' fill='white' opacity='0.9'/%3E%3Cpath d='M26,8 Q28,5 30,7 Q29,8 27,10 Z' fill='white' opacity='0.85'/%3E%3Cpath d='M12,12 Q14,8 17,11 Q15,11 13,13 Z' fill='%231e4a7a'/%3E%3Cpath d='M12,11 Q14,7 17,10 Q15,10 13,12 Z' fill='white' opacity='0.8'/%3E%3Cpath d='M0,24 Q8,20 16,24 Q24,28 32,24 L32,32 L0,32 Z' fill='%231a3a5c'/%3E%3Cpath d='M0,26 Q8,22 16,26 Q24,30 32,26 L32,32 L0,32 Z' fill='%23152d47'/%3E%3C/svg%3E" />
 <style>
   :root {
     --bg: #0e0e10;
@@ -30,6 +30,74 @@
     -webkit-font-smoothing: antialiased;
     overflow: hidden;
   }
+
+  /* ── Lock overlay ─────────────────────────────── */
+  .lock-overlay {
+    position: fixed; inset: 0; z-index: 1000;
+    background: var(--bg);
+    display: flex; align-items: center; justify-content: center;
+    padding: 20px;
+  }
+
+  .lock-panel {
+    width: 100%; max-width: 400px;
+    padding: 32px 28px;
+    background: var(--bg-elev);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+  }
+
+  .lock-logo { font-size: 20px; font-weight: 700; letter-spacing: -0.03em; margin-bottom: 6px; }
+  .lock-logo span { color: var(--accent); }
+  .lock-sub  { font-size: 13px; color: var(--text-dim); margin-bottom: 24px; line-height: 1.5; }
+
+  .lock-field { margin-bottom: 12px; }
+  .lock-label {
+    display: block; font-size: 11px; font-weight: 600;
+    text-transform: uppercase; letter-spacing: 0.08em;
+    color: var(--text-dim); margin-bottom: 5px;
+  }
+  .lock-input {
+    width: 100%; background: var(--bg);
+    border: 1px solid var(--border); color: var(--text);
+    font-size: 13px; padding: 9px 13px;
+    border-radius: 9px; outline: none; font-family: inherit;
+    transition: border-color 0.15s ease;
+  }
+  .lock-input:focus { border-color: var(--accent); }
+  .lock-input::placeholder { color: var(--text-dim); }
+
+  .lock-input-hint { font-size: 11px; color: var(--text-dim); margin-top: 4px; line-height: 1.5; }
+  .lock-input-hint a { color: var(--accent); text-decoration: none; }
+  .lock-input-hint a:hover { text-decoration: underline; }
+
+  .lock-btn {
+    width: 100%; font-family: inherit; cursor: pointer;
+    border: none; border-radius: 9px;
+    font-size: 13px; font-weight: 600;
+    padding: 10px; margin-top: 8px;
+    background: var(--accent); color: white;
+    transition: opacity 0.15s ease;
+  }
+  .lock-btn:hover:not(:disabled) { opacity: 0.84; }
+  .lock-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+  .lock-err    { font-size: 12px; color: var(--danger); margin-top: 8px; min-height: 16px; }
+  .lock-footer { font-size: 11px; color: var(--text-dim); margin-top: 16px; line-height: 1.5; }
+  .lock-footer a { color: var(--accent); text-decoration: none; cursor: pointer; }
+  .lock-footer a:hover { text-decoration: underline; }
+
+  /* ── Sync dot ─────────────────────────────────── */
+  .sync-dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--border); opacity: 0.5;
+    flex-shrink: 0; transition: background 0.3s ease, opacity 0.3s ease;
+    align-self: center; cursor: default;
+  }
+  .sync-dot.syncing { background: #ffc428; opacity: 1; animation: sync-pulse 1s infinite; }
+  .sync-dot.synced  { background: var(--green); opacity: 1; }
+  .sync-dot.error   { background: var(--danger); opacity: 1; }
+  @keyframes sync-pulse { 0%,100%{opacity:1} 50%{opacity:.35} }
 
   /* ── Page ─────────────────────────────────────── */
   .page {
@@ -134,7 +202,7 @@
   .habits-cols { flex: 1; display: flex; gap: 14px; min-height: 0; }
   .habits-cols .col { flex: 1; }
 
-  /* ── One-off (was quickwins, standalone) ─────── */
+  /* ── One-off ──────────────────────────────────── */
   .col[data-col="quickwins"] { flex: 1; }
 
   /* ── Stock buttons ────────────────────────────── */
@@ -244,211 +312,113 @@
   }
 
   .bin-header {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 9px 14px;
-    cursor: pointer;
-    user-select: none;
+    display: flex; align-items: center; gap: 8px;
+    padding: 9px 14px; cursor: pointer; user-select: none;
   }
   .bin-header:hover { background: var(--bg-elev2); }
 
-  .bin-icon { font-size: 13px; opacity: 0.5; }
-
-  .bin-title {
-    font-size: 11px; font-weight: 600;
-    text-transform: uppercase; letter-spacing: 0.09em;
-    color: var(--text-dim);
-  }
-
+  .bin-icon  { font-size: 13px; opacity: 0.5; }
+  .bin-title { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.09em; color: var(--text-dim); }
   .bin-count {
     font-size: 11px; color: var(--text-dim); opacity: 0.5;
-    background: var(--bg-elev2);
-    padding: 1px 7px; border-radius: 999px;
+    background: var(--bg-elev2); padding: 1px 7px; border-radius: 999px;
     border: 1px solid var(--border);
   }
-
   .bin-chevron {
-    margin-left: auto;
-    font-size: 10px;
-    color: var(--text-dim);
-    opacity: 0.4;
-    transition: transform 0.2s ease;
+    margin-left: auto; font-size: 10px; color: var(--text-dim);
+    opacity: 0.4; transition: transform 0.2s ease;
   }
   .bin-tray.open .bin-chevron { transform: rotate(180deg); }
 
-  /* Bin body — hidden when closed */
   .bin-body {
-    display: none;
-    flex-wrap: wrap;
-    gap: 6px;
-    padding: 2px 12px 12px;
-    max-height: 140px;
-    overflow-y: auto;
+    display: none; flex-wrap: wrap; gap: 6px;
+    padding: 2px 12px 12px; max-height: 140px; overflow-y: auto;
   }
   .bin-tray.open .bin-body { display: flex; }
-
   .bin-body::-webkit-scrollbar { width: 3px; }
   .bin-body::-webkit-scrollbar-track { background: transparent; }
   .bin-body::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
 
   /* Archived item pill */
   .archive-pill {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    background: var(--pill-bg);
-    border: 1px solid var(--border);
-    padding: 5px 6px 5px 8px;
-    border-radius: 8px;
-    font-size: 12px;
-    max-width: 280px;
-    cursor: grab;
-    user-select: none;
-    transition: opacity 0.15s ease;
+    display: inline-flex; align-items: center; gap: 6px;
+    background: var(--pill-bg); border: 1px solid var(--border);
+    padding: 5px 6px 5px 8px; border-radius: 8px; font-size: 12px;
+    max-width: 280px; cursor: grab; user-select: none; transition: opacity 0.15s ease;
   }
   .archive-pill:active { cursor: grabbing; }
   .archive-pill.dragging { opacity: 0.2; }
 
   .archive-tag {
-    font-size: 10px;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-    opacity: 0.75;
-    white-space: nowrap;
-    flex-shrink: 0;
+    font-size: 10px; font-weight: 600; text-transform: uppercase;
+    letter-spacing: 0.06em; opacity: 0.75; white-space: nowrap; flex-shrink: 0;
   }
-
   .archive-text {
-    color: var(--text-dim);
-    flex: 1;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+    color: var(--text-dim); flex: 1;
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
   }
-
   .unarchive-btn {
-    flex-shrink: 0;
-    background: transparent;
-    border: none;
-    color: var(--text-dim);
-    cursor: pointer;
-    font-size: 13px;
-    padding: 1px 3px;
-    border-radius: 4px;
-    transition: color 0.1s ease, background 0.1s ease;
-    line-height: 1;
+    flex-shrink: 0; background: transparent; border: none; color: var(--text-dim);
+    cursor: pointer; font-size: 13px; padding: 1px 3px; border-radius: 4px;
+    transition: color 0.1s ease, background 0.1s ease; line-height: 1;
   }
   .unarchive-btn:hover { color: var(--text); background: var(--bg-elev2); }
+  .bin-empty { font-size: 12px; color: var(--text-dim); opacity: 0.4; padding: 4px 0 8px; user-select: none; }
 
-  .bin-empty {
-    font-size: 12px; color: var(--text-dim); opacity: 0.4;
-    padding: 4px 0 8px; user-select: none;
-  }
-
-  /* ── Maximise button (braindump header) ──────── */
+  /* ── Maximise button ──────────────────────────── */
   .maximise-btn {
-    margin-left: auto;
-    background: transparent;
-    border: none;
-    color: var(--text-dim);
-    cursor: pointer;
-    padding: 2px 4px;
-    border-radius: 5px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    opacity: 0.5;
-    transition: opacity 0.15s ease, background 0.15s ease;
+    margin-left: auto; background: transparent; border: none; color: var(--text-dim);
+    cursor: pointer; padding: 2px 4px; border-radius: 5px;
+    display: flex; align-items: center; justify-content: center;
+    opacity: 0.5; transition: opacity 0.15s ease, background 0.15s ease;
   }
   .maximise-btn:hover { opacity: 1; background: var(--bg-elev2); }
 
-  /* ── Dump view (fullscreen brainstorm mode) ───── */
+  /* ── Dump view ────────────────────────────────── */
   .dump-view {
-    display: none;
-    position: fixed;
-    inset: 0;
-    z-index: 200;
-    background: var(--bg);
-    flex-direction: column;
-    align-items: center;
-    padding: 72px 24px 120px;
-    overflow-y: auto;
+    display: none; position: fixed; inset: 0; z-index: 200;
+    background: var(--bg); flex-direction: column; align-items: center;
+    padding: 72px 24px 120px; overflow-y: auto;
   }
   .dump-view.active { display: flex; }
 
   .dump-back {
-    position: fixed;
-    top: 20px;
-    left: 20px;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    background: var(--bg-elev);
-    border: 1px solid var(--border);
-    color: var(--text-dim);
-    font-family: inherit;
-    font-size: 12px;
-    font-weight: 500;
-    padding: 6px 12px;
-    border-radius: 999px;
-    cursor: pointer;
+    position: fixed; top: 20px; left: 20px;
+    display: flex; align-items: center; gap: 6px;
+    background: var(--bg-elev); border: 1px solid var(--border);
+    color: var(--text-dim); font-family: inherit; font-size: 12px; font-weight: 500;
+    padding: 6px 12px; border-radius: 999px; cursor: pointer;
     transition: color 0.15s ease, border-color 0.15s ease;
   }
   .dump-back:hover { color: var(--text); border-color: var(--text-dim); }
 
-  .dump-header {
-    text-align: center;
-    margin-bottom: 32px;
-  }
-  .dump-header h1 {
-    font-size: 28px; font-weight: 600; letter-spacing: -0.02em;
-    margin: 0 0 8px;
-  }
-  .dump-header p { margin: 0; color: var(--text-dim); font-size: 15px; }
+  .dump-header { text-align: center; margin-bottom: 32px; }
+  .dump-header h1 { font-size: 28px; font-weight: 600; letter-spacing: -0.02em; margin: 0 0 8px; }
+  .dump-header p  { margin: 0; color: var(--text-dim); font-size: 15px; }
 
   .dump-input-wrap { width: 100%; max-width: 600px; margin-bottom: 28px; }
-
   .dump-input {
-    width: 100%;
-    background: var(--bg-elev);
-    border: 1px solid var(--border);
-    color: var(--text);
-    font-size: 16px;
-    padding: 16px 22px;
-    border-radius: 999px;
-    outline: none;
-    font-family: inherit;
-    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+    width: 100%; background: var(--bg-elev); border: 1px solid var(--border);
+    color: var(--text); font-size: 16px; padding: 16px 22px; border-radius: 999px;
+    outline: none; font-family: inherit; transition: border-color 0.15s ease, box-shadow 0.15s ease;
   }
   .dump-input::placeholder { color: var(--text-dim); }
-  .dump-input:focus {
-    border-color: var(--accent);
-    box-shadow: 0 0 0 4px rgba(124,92,255,0.12);
-  }
+  .dump-input:focus { border-color: var(--accent); box-shadow: 0 0 0 4px rgba(124,92,255,0.12); }
 
   .dump-pills {
     width: 100%; max-width: 680px;
-    display: flex; flex-wrap: wrap;
-    gap: 9px; justify-content: center;
+    display: flex; flex-wrap: wrap; gap: 9px; justify-content: center;
   }
-
   .dump-pill {
     display: inline-flex; align-items: center; gap: 8px;
-    background: var(--pill-bg);
-    border: 1px solid var(--border);
-    color: var(--text);
-    padding: 9px 12px 9px 16px;
-    border-radius: 999px;
-    font-size: 14px; line-height: 1.3;
-    word-break: break-word;
-    animation: pop 0.15s ease-out;
-    transition: background 0.1s ease;
+    background: var(--pill-bg); border: 1px solid var(--border); color: var(--text);
+    padding: 9px 12px 9px 16px; border-radius: 999px;
+    font-size: 14px; line-height: 1.3; word-break: break-word;
+    animation: pop 0.15s ease-out; transition: background 0.1s ease;
   }
   .dump-pill:hover { background: var(--pill-bg-hover); }
   .dump-pill .text { white-space: pre-wrap; }
-  .dump-pill .x { margin-top: 0; }
+  .dump-pill .x    { margin-top: 0; }
 
   /* ── Animations ───────────────────────────────── */
   @keyframes pop {
@@ -458,11 +428,70 @@
 </style>
 </head>
 <body>
-<div class="page">
+
+<!-- ── Lock / Setup overlay ─────────────────────── -->
+<div id="lock-overlay" class="lock-overlay">
+
+  <!-- First-time setup -->
+  <div id="setup-panel" class="lock-panel" style="display:none">
+    <div class="lock-logo">flow<span>state</span></div>
+    <div class="lock-sub">First-time setup. Your password and token are stored only on this device — never in the code or the repo.</div>
+
+    <div class="lock-field">
+      <label class="lock-label">Password</label>
+      <input id="s-pw"    class="lock-input" type="password" placeholder="choose a password" autocomplete="new-password" />
+    </div>
+    <div class="lock-field">
+      <label class="lock-label">Confirm password</label>
+      <input id="s-pw2"   class="lock-input" type="password" placeholder="confirm password" autocomplete="new-password" />
+    </div>
+    <div class="lock-field">
+      <label class="lock-label">GitHub username</label>
+      <input id="s-owner" class="lock-input" type="text" placeholder="yourusername" autocomplete="off" spellcheck="false" />
+    </div>
+    <div class="lock-field">
+      <label class="lock-label">Repository name</label>
+      <input id="s-repo"  class="lock-input" type="text" placeholder="flowstate" autocomplete="off" spellcheck="false" />
+    </div>
+    <div class="lock-field">
+      <label class="lock-label">Personal Access Token</label>
+      <input id="s-pat"   class="lock-input" type="password" placeholder="github_pat_…" autocomplete="off" />
+      <div class="lock-input-hint">
+        Needs <strong>Contents → Read &amp; Write</strong> on this repo only.
+        <a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener">Create one ↗</a>
+      </div>
+    </div>
+
+    <button id="setup-btn" class="lock-btn">Set up &amp; unlock</button>
+    <div id="setup-err" class="lock-err"></div>
+  </div>
+
+  <!-- Returning user -->
+  <div id="unlock-panel" class="lock-panel" style="display:none">
+    <div class="lock-logo">flow<span>state</span></div>
+    <div class="lock-sub">Enter your password to unlock.</div>
+
+    <div class="lock-field">
+      <label class="lock-label">Password</label>
+      <input id="u-pw" class="lock-input" type="password" placeholder="your password" autocomplete="current-password" />
+    </div>
+
+    <button id="unlock-btn" class="lock-btn">Unlock</button>
+    <div id="unlock-err" class="lock-err"></div>
+    <div class="lock-footer">
+      <a id="reset-link">Reset &amp; set up again</a> — clears local config (your data on GitHub stays safe)
+    </div>
+  </div>
+
+</div><!-- /lock-overlay -->
+
+<!-- ── Main app ──────────────────────────────────── -->
+<div class="page" id="main-page" style="display:none">
 
   <div class="top-bar">
     <div class="logo">flow<span>state</span></div>
     <div id="star-controls"></div>
+    <div id="sync-dot" class="sync-dot" title="GitHub sync status"></div>
   </div>
 
   <div id="board-root" style="display:contents">
@@ -481,7 +510,7 @@
       </div>
       <div class="col-input-wrap">
         <input id="entry" class="col-input" type="text"
-          placeholder="what's on your mind?" autocomplete="off" autofocus />
+          placeholder="what's on your mind?" autocomplete="off" />
       </div>
       <div class="col-body" id="body-braindump"></div>
     </div>
@@ -564,15 +593,104 @@
     <div id="dump-pills" class="dump-pills"></div>
   </div>
 
-</div>
+</div><!-- /main-page -->
 
 <script>
+  // ─────────────────────────────────────────────────
+  //  Config  (stored per-device in localStorage — never in the repo)
+  // ─────────────────────────────────────────────────
+  const CONFIG_KEY = 'flowstate.config';
+
+  function loadConfig() {
+    try { return JSON.parse(localStorage.getItem(CONFIG_KEY)) || null; } catch { return null; }
+  }
+  function saveConfig(c) { localStorage.setItem(CONFIG_KEY, JSON.stringify(c)); }
+
+  // ─────────────────────────────────────────────────
+  //  Password hashing  (SHA-256 via Web Crypto)
+  // ─────────────────────────────────────────────────
+  async function hashPassword(pw) {
+    const buf = await crypto.subtle.digest(
+      'SHA-256', new TextEncoder().encode('flowstate:' + pw)
+    );
+    return Array.from(new Uint8Array(buf))
+      .map(b => b.toString(16).padStart(2, '0')).join('');
+  }
+
+  // ─────────────────────────────────────────────────
+  //  GitHub Contents API
+  // ─────────────────────────────────────────────────
+  function b64enc(str) { return btoa(unescape(encodeURIComponent(str))); }
+  function b64dec(str) { return decodeURIComponent(escape(atob(str.replace(/\n/g, '')))); }
+
+  async function ghGet(cfg) {
+    const url = `https://api.github.com/repos/${cfg.owner}/${cfg.repo}/contents/data.json`;
+    const r   = await fetch(url, {
+      headers: { Authorization: `Bearer ${cfg.pat}`, Accept: 'application/vnd.github+json' },
+    });
+    if (r.status === 404) return null;        // file not created yet
+    if (!r.ok) throw new Error(`GitHub ${r.status}`);
+    const j = await r.json();
+    return { data: JSON.parse(b64dec(j.content)), sha: j.sha };
+  }
+
+  async function ghPut(cfg, data) {
+    const url  = `https://api.github.com/repos/${cfg.owner}/${cfg.repo}/contents/data.json`;
+    const body = { message: 'flowstate: sync', content: b64enc(JSON.stringify(data)) };
+    if (cfg.fileSha) body.sha = cfg.fileSha;
+    const r = await fetch(url, {
+      method: 'PUT',
+      headers: {
+        Authorization: `Bearer ${cfg.pat}`,
+        Accept: 'application/vnd.github+json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(body),
+    });
+    if (r.status === 409) {
+      // SHA is stale — refetch and retry once
+      const fresh = await ghGet(cfg);
+      if (fresh) { cfg.fileSha = fresh.sha; saveConfig(cfg); }
+      return ghPut(cfg, data);
+    }
+    if (!r.ok) throw new Error(`GitHub ${r.status}`);
+    const j = await r.json();
+    return j.content.sha;
+  }
+
+  // ─────────────────────────────────────────────────
+  //  Sync indicator + debounced push
+  // ─────────────────────────────────────────────────
+  let cfg       = null;
+  let syncTimer = null;
+
+  function setSyncState(state) {
+    const dot = document.getElementById('sync-dot');
+    if (dot) dot.className = 'sync-dot' + (state ? ' ' + state : '');
+  }
+
+  function scheduleSave() {
+    setSyncState('syncing');
+    clearTimeout(syncTimer);
+    syncTimer = setTimeout(async () => {
+      try {
+        const newSha  = await ghPut(cfg, board);
+        cfg.fileSha   = newSha;
+        saveConfig(cfg);
+        setSyncState('synced');
+        setTimeout(() => setSyncState(''), 2500);
+      } catch (e) {
+        console.error('Sync failed:', e);
+        setSyncState('error');
+      }
+    }, 1500);
+  }
+
   // ─────────────────────────────────────────────────
   //  Storage
   // ─────────────────────────────────────────────────
   const OLD_KEY   = 'flowstate.braindump.v1';
   const BOARD_KEY = 'flowstate.board.v1';
-
   const COLS = ['braindump', 'mit', 'ongoing', 'aspirational', 'quickwins'];
 
   const HINTS = {
@@ -583,8 +701,6 @@
     quickwins:    'drag one-off activities here',
   };
 
-  // Column display metadata for archive labels
-  // onetime kept for displaying old archived items from that column
   const COL_META = {
     ongoing:      { label: 'Ongoing',      color: '#4ac49a' },
     aspirational: { label: 'Aspirational', color: '#b46ae8' },
@@ -619,12 +735,10 @@
       if (raw) {
         const parsed = JSON.parse(raw);
         const b = { ...emptyBoard(), ...parsed };
-        // Migrate old 'habits' → ongoing
         if (parsed.habits) {
           b.ongoing = [...(parsed.habits || []), ...(b.ongoing || [])];
           delete b.habits;
         }
-        // Migrate removed 'onetime' column → archive
         if (parsed.onetime && parsed.onetime.length > 0) {
           parsed.onetime.forEach(text => {
             b.archive.push({ text, colId: 'onetime', date: todayISO(), source: 'deleted' });
@@ -639,6 +753,7 @@
 
   function saveBoard() {
     localStorage.setItem(BOARD_KEY, JSON.stringify(board));
+    if (cfg) scheduleSave();
   }
 
   let board = loadBoard();
@@ -666,21 +781,13 @@
       const btn = document.createElement('button');
       btn.className   = 'star-trigger-btn';
       btn.textContent = '★  Star items';
-      btn.addEventListener('click', () => {
-        starMode = true;
-        render();
-        renderStarControls();
-      });
+      btn.addEventListener('click', () => { starMode = true; render(); renderStarControls(); });
       ctrl.appendChild(btn);
     } else {
       const btn = document.createElement('button');
       btn.className   = 'star-done-btn';
       btn.textContent = 'Done';
-      btn.addEventListener('click', () => {
-        starMode = false;
-        render();
-        renderStarControls();
-      });
+      btn.addEventListener('click', () => { starMode = false; render(); renderStarControls(); });
       ctrl.appendChild(btn);
     }
   }
@@ -688,66 +795,45 @@
   // ─────────────────────────────────────────────────
   //  Date helpers
   // ─────────────────────────────────────────────────
-  function todayISO() { return new Date().toISOString().slice(0, 10); }
-
-  function todayLabel() {
-    return new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'short' });
-  }
+  function todayISO()   { return new Date().toISOString().slice(0, 10); }
+  function todayLabel() { return new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'short' }); }
 
   // ─────────────────────────────────────────────────
-  //  Daily archive reset — runs at startup
-  //  Only stock-archived habit items return to columns next day.
-  //  Manually deleted items (source:'deleted') stay in archive forever.
+  //  Daily archive reset
   // ─────────────────────────────────────────────────
   function dailyReset() {
     const today = todayISO();
     if (!board.archive || board.archive.length === 0) return;
-
     const toRestore = board.archive.filter(a => a.source === 'stock' && a.date !== today);
     if (toRestore.length === 0) return;
-
-    toRestore.forEach(a => {
-      if (board[a.colId]) board[a.colId].push(a.text);
-    });
+    toRestore.forEach(a => { if (board[a.colId]) board[a.colId].push(a.text); });
     board.archive = board.archive.filter(a => !(a.source === 'stock' && a.date !== today));
     saveBoard();
   }
 
-  dailyReset();
-
   // ─────────────────────────────────────────────────
-  //  Stock session   state: null | 'active' | 'done'
+  //  Stock  (initialized in unlockAndLoad, after GitHub data is in)
   // ─────────────────────────────────────────────────
-  let stock = initStock();
+  let stock = null;
 
   function initStock() {
     const today = todayISO();
     const s = board.stock;
     if (s && s.date === today) {
-      return {
-        date:    s.date,
-        checked: new Set(s.checked || []),
-        state:   s.state || null,
-        summary: s.summary || null,
-      };
+      return { date: s.date, checked: new Set(s.checked || []), state: s.state || null, summary: s.summary || null };
     }
     return { date: today, checked: new Set(), state: null, summary: null };
   }
 
   function persistStock() {
-    board.stock = {
-      date:    stock.date,
-      checked: [...stock.checked],
-      state:   stock.state,
-      summary: stock.summary,
-    };
+    board.stock = { date: stock.date, checked: [...stock.checked], state: stock.state, summary: stock.summary };
     saveBoard();
   }
 
-  function isHabitCol(colId) { return colId === 'ongoing' || colId === 'aspirational'; }
+  function isHabitCol(colId)     { return colId === 'ongoing' || colId === 'aspirational'; }
   function stockKey(colId, text) { return `${colId}:${text}`; }
-  function habitTotal() { return board.ongoing.length + board.aspirational.length; }
-  function habitDone()  { return stock.checked.size; }
+  function habitTotal()          { return board.ongoing.length + board.aspirational.length; }
+  function habitDone()           { return stock.checked.size; }
 
   // ─────────────────────────────────────────────────
   //  Archive helpers
@@ -755,15 +841,12 @@
   function archiveCheckedItems() {
     const today = todayISO();
     ['ongoing', 'aspirational'].forEach(colId => {
-      const keep = [], archive = [];
+      const keep = [], arch = [];
       board[colId].forEach(text => {
-        const key = stockKey(colId, text);
-        (stock.checked.has(key) ? archive : keep).push(text);
+        (stock.checked.has(stockKey(colId, text)) ? arch : keep).push(text);
       });
       board[colId] = keep;
-      archive.forEach(text => {
-        board.archive.push({ text, colId, date: today, source: 'stock' });
-      });
+      arch.forEach(text => board.archive.push({ text, colId, date: today, source: 'stock' }));
     });
   }
 
@@ -780,10 +863,7 @@
 
   function permanentDelete(idx) {
     const item = board.archive[idx];
-    if (item) {
-      starredSet.delete(starKey(item.colId, item.text));
-      board.starred = [...starredSet];
-    }
+    if (item) { starredSet.delete(starKey(item.colId, item.text)); board.starred = [...starredSet]; }
     board.archive.splice(idx, 1);
     saveBoard();
     renderBin();
@@ -826,12 +906,10 @@
     pill.className = 'pill';
     pill.draggable = true;
 
-    // Habit columns: tick buttons in active mode, grey-out in done mode
     if (isHabitCol(colId) && stock.state !== null) {
       const key       = stockKey(colId, text);
       const isChecked = stock.checked.has(key);
       if (isChecked) pill.classList.add('checked');
-
       if (stock.state === 'active') {
         const tick = document.createElement('button');
         tick.className = 'tick-btn' + (isChecked ? ' ticked' : '');
@@ -848,25 +926,19 @@
       }
     }
 
-    // Starred glow — always applied
     if (isStarred(colId, text)) pill.classList.add('starred');
 
     const span = document.createElement('span');
     span.className = 'text';
     span.textContent = text;
 
-    // Star toggle — only visible in star mode
     if (starMode) {
       const starred = isStarred(colId, text);
       const starBtn = document.createElement('button');
       starBtn.className   = 'star-btn' + (starred ? ' active' : '');
       starBtn.textContent = starred ? '★' : '☆';
       starBtn.setAttribute('aria-label', 'toggle star');
-      starBtn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        toggleStar(colId, text);
-        renderCol(colId);
-      });
+      starBtn.addEventListener('click', (e) => { e.stopPropagation(); toggleStar(colId, text); renderCol(colId); });
       pill.appendChild(span);
       pill.appendChild(starBtn);
     } else {
@@ -881,14 +953,12 @@
       e.stopPropagation();
       const [removed] = board[colId].splice(index, 1);
       board.archive.push({ text: removed, colId, date: todayISO(), source: 'deleted' });
-      // Clean up star entry
       starredSet.delete(starKey(colId, removed));
       board.starred = [...starredSet];
       saveBoard();
       renderCol(colId);
       renderBin();
     });
-
     pill.appendChild(x);
 
     pill.addEventListener('dragstart', (e) => {
@@ -897,11 +967,7 @@
       e.dataTransfer.effectAllowed = 'move';
       e.dataTransfer.setData('text/plain', '');
     });
-    pill.addEventListener('dragend', () => {
-      pill.classList.remove('dragging');
-      clearDropLine();
-      drag = null;
-    });
+    pill.addEventListener('dragend', () => { pill.classList.remove('dragging'); clearDropLine(); drag = null; });
 
     return pill;
   }
@@ -938,32 +1004,21 @@
       const btn = document.createElement('button');
       btn.className = 'take-stock-btn';
       btn.textContent = `Take stock for ${todayLabel()}`;
-      btn.addEventListener('click', () => {
-        stock.state = 'active';
-        persistStock();
-        render();
-        renderStockControls();
-      });
+      btn.addEventListener('click', () => { stock.state = 'active'; persistStock(); render(); renderStockControls(); });
       ctrl.appendChild(btn);
 
     } else if (stock.state === 'active') {
-      const total = habitTotal();
-      const done  = habitDone();
-      const btn = document.createElement('button');
+      const total = habitTotal(), done = habitDone();
+      const btn   = document.createElement('button');
       btn.className = 'done-btn';
       btn.textContent = `Done  ·  ${done} / ${total}`;
       btn.addEventListener('click', () => {
-        // Record summary before archiving changes the counts
         const summary = { done: habitDone(), total: habitTotal() };
         archiveCheckedItems();
         stock.checked = new Set();
         stock.state   = 'done';
         stock.summary = summary;
-        persistStock();
-        render();
-        renderStockControls();
-        renderBin();
-        openBin();
+        persistStock(); render(); renderStockControls(); renderBin(); openBin();
       });
       ctrl.appendChild(btn);
 
@@ -971,7 +1026,7 @@
       const { done = 0, total = 0 } = stock.summary || {};
       const pct = total > 0 ? Math.round((done / total) * 100) : 0;
 
-      const row = document.createElement('div');
+      const row     = document.createElement('div');
       row.className = 'stock-result';
 
       const barWrap = document.createElement('div');
@@ -989,29 +1044,18 @@
       editBtn.className = 'edit-stock-btn';
       editBtn.textContent = 'Edit';
       editBtn.addEventListener('click', () => {
-        // Restore archived today's items back to columns so user can re-tick
         const todayArchive = board.archive.filter(a => a.date === todayISO() && isHabitCol(a.colId));
-        todayArchive.forEach(a => {
-          board[a.colId].push(a.text);
-          stock.checked.add(stockKey(a.colId, a.text));
-        });
+        todayArchive.forEach(a => { board[a.colId].push(a.text); stock.checked.add(stockKey(a.colId, a.text)); });
         board.archive = board.archive.filter(a => !(a.date === todayISO() && isHabitCol(a.colId)));
         stock.state   = 'active';
         stock.summary = null;
-        persistStock();
-        render();
-        renderStockControls();
-        renderBin();
+        persistStock(); render(); renderStockControls(); renderBin();
       });
 
-      row.appendChild(barWrap);
-      row.appendChild(label);
-      row.appendChild(editBtn);
+      row.appendChild(barWrap); row.appendChild(label); row.appendChild(editBtn);
       ctrl.appendChild(row);
 
-      requestAnimationFrame(() => requestAnimationFrame(() => {
-        barFill.style.width = pct + '%';
-      }));
+      requestAnimationFrame(() => requestAnimationFrame(() => { barFill.style.width = pct + '%'; }));
     }
   }
 
@@ -1023,66 +1067,40 @@
     const body = document.getElementById('body-' + colId);
     let enterCount = 0;
 
-    col.addEventListener('dragenter', (e) => {
-      if (!drag) return;
-      e.preventDefault();
-      enterCount++;
-      col.classList.add('drag-over');
-    });
-
+    col.addEventListener('dragenter', (e) => { if (!drag) return; e.preventDefault(); enterCount++; col.classList.add('drag-over'); });
     col.addEventListener('dragleave', () => {
       if (!drag) return;
-      if (--enterCount <= 0) {
-        enterCount = 0;
-        col.classList.remove('drag-over');
-        if (dropTarget?.colId === colId) clearDropLine();
-      }
+      if (--enterCount <= 0) { enterCount = 0; col.classList.remove('drag-over'); if (dropTarget?.colId === colId) clearDropLine(); }
     });
-
     col.addEventListener('dragover', (e) => {
-      if (!drag) return;
-      e.preventDefault();
-      e.dataTransfer.dropEffect = 'move';
+      if (!drag) return; e.preventDefault(); e.dataTransfer.dropEffect = 'move';
       const idx = getInsertIndex(body, e.clientY);
-      if (dropTarget?.colId !== colId || dropTarget?.insertIndex !== idx) {
-        showDropLine(body, idx, colId);
-      }
+      if (dropTarget?.colId !== colId || dropTarget?.insertIndex !== idx) showDropLine(body, idx, colId);
     });
-
     col.addEventListener('drop', (e) => {
-      e.preventDefault();
-      enterCount = 0;
-      col.classList.remove('drag-over');
+      e.preventDefault(); enterCount = 0; col.classList.remove('drag-over');
       if (!drag) { clearDropLine(); return; }
-
       const insertAt = dropTarget?.insertIndex ?? board[colId].length;
       clearDropLine();
 
       if (drag.source === 'archive') {
-        // ── Archive → column ──
         const item = board.archive[drag.idx];
         if (!item) return;
         board.archive.splice(drag.idx, 1);
         stock.checked.delete(stockKey(item.colId, item.text));
         board[colId].splice(insertAt, 0, item.text);
-        persistStock();
-        renderCol(colId);
-        renderBin();
+        persistStock(); renderCol(colId); renderBin();
       } else {
-        // ── Column → column ──
         const { colId: srcId, index: srcIdx } = drag;
         if (srcId === colId) {
           const [item] = board[colId].splice(srcIdx, 1);
           const adj    = insertAt > srcIdx ? insertAt - 1 : insertAt;
           board[colId].splice(adj, 0, item);
-          saveBoard();
-          renderCol(colId);
+          saveBoard(); renderCol(colId);
         } else {
           const [item] = board[srcId].splice(srcIdx, 1);
           board[colId].splice(insertAt, 0, item);
-          saveBoard();
-          renderCol(srcId);
-          renderCol(colId);
+          saveBoard(); renderCol(srcId); renderCol(colId);
         }
       }
     });
@@ -1092,11 +1110,7 @@
   //  Archive bin tray
   // ─────────────────────────────────────────────────
   let binOpen = false;
-
-  function openBin() {
-    binOpen = true;
-    document.getElementById('bin-tray').classList.add('open');
-  }
+  function openBin() { binOpen = true; document.getElementById('bin-tray').classList.add('open'); }
 
   document.getElementById('bin-header').addEventListener('click', () => {
     binOpen = !binOpen;
@@ -1107,7 +1121,6 @@
     const body    = document.getElementById('bin-body');
     const countEl = document.getElementById('bin-count');
     const archive = board.archive || [];
-
     body.innerHTML = '';
 
     if (archive.length === 0) {
@@ -1117,12 +1130,10 @@
       body.appendChild(empty);
       countEl.style.display = 'none';
     } else {
-      countEl.textContent   = archive.length;
+      countEl.textContent = archive.length;
       countEl.style.display = '';
-
       archive.forEach((item, idx) => {
         const meta = COL_META[item.colId] || { label: item.colId, color: '#8a8a93' };
-
         const pill = document.createElement('div');
         pill.className = 'archive-pill';
         pill.draggable = true;
@@ -1133,38 +1144,20 @@
           e.dataTransfer.setData('text/plain', '');
         });
         pill.addEventListener('dragend', () => {
-          clearDropLine();
-          drag = null;
+          clearDropLine(); drag = null;
           document.querySelectorAll('.archive-pill.dragging').forEach(el => el.classList.remove('dragging'));
         });
-
         const tag = document.createElement('span');
-        tag.className   = 'archive-tag';
-        tag.textContent = meta.label;
-        tag.style.color = meta.color;
-
+        tag.className = 'archive-tag'; tag.textContent = meta.label; tag.style.color = meta.color;
         const txt = document.createElement('span');
-        txt.className   = 'archive-text';
-        txt.textContent = item.text;
-        txt.title       = item.text;
-
+        txt.className = 'archive-text'; txt.textContent = item.text; txt.title = item.text;
         const restore = document.createElement('button');
-        restore.className   = 'unarchive-btn';
-        restore.textContent = '↩';
-        restore.title       = `Restore to ${meta.label}`;
+        restore.className = 'unarchive-btn'; restore.textContent = '↩'; restore.title = `Restore to ${meta.label}`;
         restore.addEventListener('click', () => unarchive(idx));
-
         const del = document.createElement('button');
-        del.className   = 'unarchive-btn';
-        del.textContent = '×';
-        del.title       = 'Delete permanently';
-        del.style.opacity = '0.5';
+        del.className = 'unarchive-btn'; del.textContent = '×'; del.title = 'Delete permanently'; del.style.opacity = '0.5';
         del.addEventListener('click', () => permanentDelete(idx));
-
-        pill.appendChild(tag);
-        pill.appendChild(txt);
-        pill.appendChild(restore);
-        pill.appendChild(del);
+        pill.appendChild(tag); pill.appendChild(txt); pill.appendChild(restore); pill.appendChild(del);
         body.appendChild(pill);
       });
     }
@@ -1178,8 +1171,7 @@
     const v = e.target.value.trim();
     if (!v) return;
     board.braindump.push(v);
-    saveBoard();
-    renderCol('braindump');
+    saveBoard(); renderCol('braindump');
     e.target.value = '';
   });
 
@@ -1192,40 +1184,28 @@
     board.braindump.forEach((text, i) => {
       const pill = document.createElement('div');
       pill.className = 'dump-pill';
-
       const span = document.createElement('span');
-      span.className = 'text';
-      span.textContent = text;
-
+      span.className = 'text'; span.textContent = text;
       const x = document.createElement('button');
-      x.className = 'x';
-      x.setAttribute('aria-label', 'remove');
-      x.textContent = '×';
+      x.className = 'x'; x.setAttribute('aria-label', 'remove'); x.textContent = '×';
       x.addEventListener('click', () => {
         const [removed] = board.braindump.splice(i, 1);
         board.archive.push({ text: removed, colId: 'braindump', date: todayISO(), source: 'deleted' });
-        saveBoard();
-        renderDumpView();
-        renderBin();
+        saveBoard(); renderDumpView(); renderBin();
       });
-
-      pill.appendChild(span);
-      pill.appendChild(x);
+      pill.appendChild(span); pill.appendChild(x);
       container.appendChild(pill);
     });
   }
 
   function setView(mode) {
-    const dumpEl  = document.getElementById('dump-view');
-    const rootEl  = document.getElementById('board-root');
+    const dumpEl = document.getElementById('dump-view');
+    const rootEl = document.getElementById('board-root');
     if (mode === 'dump') {
-      dumpEl.classList.add('active');
-      rootEl.style.display = 'none';
-      renderDumpView();
-      document.getElementById('dump-entry').focus();
+      dumpEl.classList.add('active'); rootEl.style.display = 'none';
+      renderDumpView(); document.getElementById('dump-entry').focus();
     } else {
-      dumpEl.classList.remove('active');
-      rootEl.style.display = 'contents';
+      dumpEl.classList.remove('active'); rootEl.style.display = 'contents';
       renderCol('braindump');
     }
   }
@@ -1237,20 +1217,138 @@
     if (e.key !== 'Enter') return;
     const v = e.target.value.trim();
     if (!v) return;
-    board.braindump.push(v);
-    saveBoard();
-    renderDumpView();
-    renderCol('braindump');
+    board.braindump.push(v); saveBoard(); renderDumpView(); renderCol('braindump');
     e.target.value = '';
   });
 
   // ─────────────────────────────────────────────────
-  //  Init
+  //  Unlock and load latest data from GitHub
   // ─────────────────────────────────────────────────
-  render();
-  renderStockControls();
-  renderStarControls();
-  renderBin();
+  async function unlockAndLoad() {
+    document.getElementById('lock-overlay').style.display = 'none';
+    document.getElementById('main-page').style.display    = '';
+
+    setSyncState('syncing');
+    try {
+      const result = await ghGet(cfg);
+      if (result) {
+        cfg.fileSha = result.sha;
+        saveConfig(cfg);
+        board = { ...emptyBoard(), ...result.data };
+        localStorage.setItem(BOARD_KEY, JSON.stringify(board));
+      }
+      setSyncState('synced');
+      setTimeout(() => setSyncState(''), 2500);
+    } catch (e) {
+      console.error('Initial load from GitHub failed:', e);
+      setSyncState('error');
+      // Fall through with localStorage data — nothing is lost
+    }
+
+    // Re-init starred set from the freshly loaded board
+    starredSet = new Set(board.starred || []);
+
+    // Run daily reset and stock init AFTER data is loaded
+    dailyReset();
+    stock = initStock();
+
+    render();
+    renderStockControls();
+    renderStarControls();
+    renderBin();
+
+    document.getElementById('entry').focus();
+  }
+
+  // ─────────────────────────────────────────────────
+  //  Lock UI handlers
+  // ─────────────────────────────────────────────────
+
+  // — Setup (first time) —
+  async function doSetup() {
+    const pw    = document.getElementById('s-pw').value;
+    const pw2   = document.getElementById('s-pw2').value;
+    const owner = document.getElementById('s-owner').value.trim();
+    const repo  = document.getElementById('s-repo').value.trim();
+    const pat   = document.getElementById('s-pat').value.trim();
+    const errEl = document.getElementById('setup-err');
+    const btn   = document.getElementById('setup-btn');
+    errEl.textContent = '';
+
+    if (!pw)             return (errEl.textContent = 'Please choose a password.');
+    if (pw !== pw2)      return (errEl.textContent = 'Passwords do not match.');
+    if (!owner || !repo) return (errEl.textContent = 'GitHub username and repo name are required.');
+    if (!pat)            return (errEl.textContent = 'Personal Access Token is required.');
+
+    btn.disabled = true; btn.textContent = 'Setting up…';
+    try {
+      const hash = await hashPassword(pw);
+      cfg = { owner, repo, pat, passwordHash: hash, fileSha: null };
+      saveConfig(cfg);
+      await unlockAndLoad();
+    } catch (e) {
+      errEl.textContent = 'Error: ' + e.message;
+      btn.disabled = false; btn.textContent = 'Set up & unlock';
+    }
+  }
+
+  document.getElementById('setup-btn').addEventListener('click', doSetup);
+  ['s-pw', 's-pw2', 's-owner', 's-repo', 's-pat'].forEach(id =>
+    document.getElementById(id).addEventListener('keydown', e => { if (e.key === 'Enter') doSetup(); })
+  );
+
+  // — Unlock (returning) —
+  async function doUnlock() {
+    const pw    = document.getElementById('u-pw').value;
+    const errEl = document.getElementById('unlock-err');
+    const btn   = document.getElementById('unlock-btn');
+    errEl.textContent = '';
+
+    if (!pw) return (errEl.textContent = 'Please enter your password.');
+    btn.disabled = true; btn.textContent = 'Unlocking…';
+
+    try {
+      const hash = await hashPassword(pw);
+      if (hash !== cfg.passwordHash) {
+        errEl.textContent = 'Incorrect password.';
+        btn.disabled = false; btn.textContent = 'Unlock';
+        document.getElementById('u-pw').select();
+        return;
+      }
+      await unlockAndLoad();
+    } catch (e) {
+      errEl.textContent = 'Error: ' + e.message;
+      btn.disabled = false; btn.textContent = 'Unlock';
+    }
+  }
+
+  document.getElementById('unlock-btn').addEventListener('click', doUnlock);
+  document.getElementById('u-pw').addEventListener('keydown', e => { if (e.key === 'Enter') doUnlock(); });
+
+  // — Reset —
+  document.getElementById('reset-link').addEventListener('click', (e) => {
+    e.preventDefault();
+    if (confirm('Clear local config and re-run setup?\n\nYour data.json on GitHub will not be touched.')) {
+      localStorage.removeItem(CONFIG_KEY);
+      location.reload();
+    }
+  });
+
+  // ─────────────────────────────────────────────────
+  //  Init — show lock screen
+  // ─────────────────────────────────────────────────
+  (function showLock() {
+    const config = loadConfig();
+    if (!config || !config.passwordHash) {
+      document.getElementById('setup-panel').style.display = '';
+      document.getElementById('s-pw').focus();
+    } else {
+      cfg = config;
+      document.getElementById('unlock-panel').style.display = '';
+      document.getElementById('u-pw').focus();
+    }
+  })();
+
 </script>
 </body>
 </html>
