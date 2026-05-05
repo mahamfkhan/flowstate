@@ -506,6 +506,96 @@
   .pill:hover .edit-btn { opacity: 1; }
   .pill .edit-btn:hover { color: var(--accent); }
 
+  /* ── Day View ────────────────────────────────── */
+  .day-view-btn {
+    font-family: inherit; cursor: pointer; border: none;
+    border-radius: 999px; font-size: 12px; font-weight: 600;
+    padding: 5px 13px; white-space: nowrap;
+    background: rgba(94,106,210,0.12); color: var(--accent);
+    transition: background 0.15s ease;
+  }
+  .day-view-btn:hover { background: rgba(94,106,210,0.22); }
+
+  .day-view {
+    position: fixed; inset: 0; z-index: 400;
+    background: var(--bg); display: none; flex-direction: column;
+    padding: 18px; gap: 14px;
+  }
+  .day-view.open { display: flex; animation: dvIn 0.12s ease-out; }
+  @keyframes dvIn { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:none; } }
+
+  .dv-header {
+    flex-shrink: 0; display: flex; align-items: flex-end;
+    justify-content: space-between;
+  }
+  .dv-day-name { font-size: 20px; font-weight: 700; letter-spacing: -0.03em; }
+  .dv-date-str { font-size: 13px; color: var(--text-dim); margin-top: 2px; }
+  .dv-close-btn {
+    font-family: inherit; cursor: pointer; border: 1px solid var(--border);
+    border-radius: 999px; font-size: 12px; font-weight: 500;
+    padding: 5px 14px; background: transparent; color: var(--text-dim);
+    transition: background 0.15s ease, color 0.15s ease;
+  }
+  .dv-close-btn:hover { background: var(--pill-bg-hover); color: var(--text); }
+
+  .dv-body { flex: 1; display: flex; gap: 20px; min-height: 0; overflow: hidden; }
+
+  .dv-left {
+    width: 210px; flex-shrink: 0; display: flex; flex-direction: column; gap: 8px; overflow: hidden;
+  }
+  .dv-section-label {
+    font-size: 10px; font-weight: 600; text-transform: uppercase;
+    letter-spacing: 0.08em; color: var(--text-dim); flex-shrink: 0;
+  }
+  .dv-items-list {
+    flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 6px; padding-right: 2px;
+  }
+  .dv-item-card {
+    background: var(--pill-bg); border: 1px solid var(--border); border-radius: 8px;
+    padding: 8px 10px; cursor: grab; user-select: none;
+    display: flex; flex-direction: column; gap: 3px; transition: background 0.1s ease;
+  }
+  .dv-item-card:hover { background: var(--pill-bg-hover); }
+  .dv-item-card:active { cursor: grabbing; }
+  .dv-item-card.dragging { opacity: 0.2; }
+  .dv-item-title { font-size: 13px; color: var(--text); }
+  .dv-item-cat { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; }
+
+  .dv-right { flex: 1; overflow-y: auto; }
+  .dv-timeline { display: flex; flex-direction: column; }
+  .dv-hour {
+    display: flex; align-items: flex-start; gap: 12px;
+    border-top: 1px solid var(--border); min-height: 52px; padding: 8px 0;
+  }
+  .dv-hour.current-hour { border-top-color: var(--accent); }
+  .dv-hour-label {
+    flex-shrink: 0; width: 42px; text-align: right;
+    font-size: 11px; color: var(--text-dim); padding-top: 2px; font-variant-numeric: tabular-nums;
+  }
+  .dv-hour.current-hour .dv-hour-label { color: var(--accent); font-weight: 600; }
+  .dv-hour-drop {
+    flex: 1; min-height: 36px; display: flex; flex-wrap: wrap; gap: 6px;
+    align-content: flex-start; border-radius: 6px; padding: 2px 4px;
+    transition: background 0.1s ease;
+  }
+  .dv-hour-drop.drag-over { background: rgba(94,106,210,0.1); }
+  .dv-slot-item {
+    background: var(--pill-bg); border: 1px solid var(--border); border-radius: 6px;
+    padding: 4px 6px 4px 8px; display: flex; align-items: center; gap: 6px;
+    cursor: grab; user-select: none; transition: background 0.1s ease;
+  }
+  .dv-slot-item:hover { background: var(--pill-bg-hover); }
+  .dv-slot-item:active { cursor: grabbing; }
+  .dv-slot-item.dragging { opacity: 0.2; }
+  .dv-slot-texts { display: flex; flex-direction: column; gap: 2px; }
+  .dv-slot-title { font-size: 12px; color: var(--text); }
+  .dv-slot-cat { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; }
+  .dv-slot-x {
+    flex-shrink: 0; background: transparent; border: none; color: var(--text-dim);
+    font-size: 14px; line-height: 1; cursor: pointer; padding: 0 2px; border-radius: 3px;
+  }
+  .dv-slot-x:hover { color: var(--danger); }
+
   /* ── Mobile responsive ────────────────────────── */
   @media (max-width: 768px) {
     .page {
@@ -626,6 +716,7 @@
   <div class="top-bar">
     <div class="logo">flow<span>state</span></div>
     <div id="star-controls"></div>
+    <button id="day-view-btn" class="day-view-btn">⊞ Day view</button>
     <div id="sync-dot" class="sync-dot" title="GitHub sync status"></div>
   </div>
 
@@ -735,6 +826,26 @@
         placeholder="what's on your mind?" autocomplete="off" />
     </div>
     <div id="dump-pills" class="dump-pills"></div>
+  </div>
+
+  <!-- ── Day View overlay ── -->
+  <div id="day-view" class="day-view">
+    <div class="dv-header">
+      <div>
+        <div class="dv-day-name" id="dv-day-name"></div>
+        <div class="dv-date-str" id="dv-date-str"></div>
+      </div>
+      <button class="dv-close-btn" id="dv-close-btn">✕  Close</button>
+    </div>
+    <div class="dv-body">
+      <div class="dv-left">
+        <div class="dv-section-label">Items</div>
+        <div class="dv-items-list" id="dv-items-list"></div>
+      </div>
+      <div class="dv-right">
+        <div class="dv-timeline" id="dv-timeline"></div>
+      </div>
+    </div>
   </div>
 
 </div><!-- /main-page -->
@@ -943,6 +1054,188 @@
   // ─────────────────────────────────────────────────
   function todayISO()   { return new Date().toISOString().slice(0, 10); }
   function todayLabel() { return new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'short' }); }
+
+  // ─────────────────────────────────────────────────
+  //  Day View
+  // ─────────────────────────────────────────────────
+  const DAY_SCHED_KEY = 'flowstate.dayview.v1';
+  const DV_HOURS = Array.from({ length: 18 }, (_, i) => i + 6); // 6am–11pm
+
+  function loadDaySched() {
+    try { return JSON.parse(localStorage.getItem(DAY_SCHED_KEY) || '{}'); } catch { return {}; }
+  }
+  function saveDaySched() {
+    localStorage.setItem(DAY_SCHED_KEY, JSON.stringify(dvSched));
+  }
+
+  let dvSched = loadDaySched();
+  let dvDrag  = null;
+
+  function openDayView() {
+    document.getElementById('day-view').classList.add('open');
+    renderDayView();
+  }
+  function closeDayView() {
+    document.getElementById('day-view').classList.remove('open');
+  }
+
+  function renderDayView() {
+    const now   = new Date();
+    const today = todayISO();
+    document.getElementById('dv-day-name').textContent =
+      now.toLocaleDateString('en-GB', { weekday: 'long' });
+    document.getElementById('dv-date-str').textContent =
+      now.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+    renderDvLeft();
+    renderDvTimeline(today, now.getHours());
+    // scroll current hour into view
+    const cur = document.querySelector('#dv-timeline .current-hour');
+    if (cur) cur.scrollIntoView({ block: 'start' });
+  }
+
+  function renderDvLeft() {
+    const list = document.getElementById('dv-items-list');
+    list.innerHTML = '';
+    let count = 0;
+    COLS.forEach(colId => {
+      (board[colId] || []).forEach(text => {
+        list.appendChild(makeDvCard(text, colId));
+        count++;
+      });
+    });
+    if (count === 0) {
+      const msg = document.createElement('div');
+      msg.style.cssText = 'font-size:12px;color:var(--text-dim);padding:4px 0;';
+      msg.textContent = 'No items yet.';
+      list.appendChild(msg);
+    }
+  }
+
+  function makeDvCard(text, colId) {
+    const card = document.createElement('div');
+    card.className = 'dv-item-card';
+    card.draggable = true;
+
+    const titleEl = document.createElement('div');
+    titleEl.className = 'dv-item-title';
+    titleEl.textContent = text;
+
+    const catEl = document.createElement('div');
+    catEl.className = 'dv-item-cat';
+    catEl.textContent = (COL_META[colId] && COL_META[colId].label) || colId;
+    catEl.style.color  = (COL_META[colId] && COL_META[colId].color) || '#8a8a93';
+
+    card.appendChild(titleEl);
+    card.appendChild(catEl);
+
+    card.addEventListener('dragstart', (e) => {
+      dvDrag = { from: 'list', text, colId };
+      requestAnimationFrame(() => card.classList.add('dragging'));
+      e.dataTransfer.effectAllowed = 'copy';
+      e.dataTransfer.setData('text/plain', '');
+    });
+    card.addEventListener('dragend', () => card.classList.remove('dragging'));
+    return card;
+  }
+
+  function renderDvTimeline(today, currentHour) {
+    const timeline   = document.getElementById('dv-timeline');
+    timeline.innerHTML = '';
+    const todaySched = dvSched[today] || {};
+
+    DV_HOURS.forEach(hour => {
+      const row = document.createElement('div');
+      row.className = 'dv-hour' + (hour === currentHour ? ' current-hour' : '');
+
+      const label = document.createElement('div');
+      label.className = 'dv-hour-label';
+      const h = hour % 12 || 12;
+      label.textContent = h + (hour < 12 ? 'am' : 'pm');
+
+      const drop = document.createElement('div');
+      drop.className = 'dv-hour-drop';
+
+      (todaySched[hour] || []).forEach((entry, idx) => {
+        drop.appendChild(makeDvSlotItem(entry, today, hour, idx));
+      });
+
+      drop.addEventListener('dragover', (e) => {
+        if (!dvDrag) return;
+        e.preventDefault();
+        e.dataTransfer.dropEffect = 'copy';
+        drop.classList.add('drag-over');
+      });
+      drop.addEventListener('dragleave', () => drop.classList.remove('drag-over'));
+      drop.addEventListener('drop', (e) => {
+        e.preventDefault();
+        drop.classList.remove('drag-over');
+        if (!dvDrag) return;
+        const { text, colId } = dvDrag;
+        if (dvDrag.from === 'slot') {
+          const src = dvSched[dvDrag.date];
+          if (src && src[dvDrag.hour]) src[dvDrag.hour].splice(dvDrag.slotIdx, 1);
+        }
+        if (!dvSched[today]) dvSched[today] = {};
+        if (!dvSched[today][hour]) dvSched[today][hour] = [];
+        dvSched[today][hour].push({ text, colId });
+        saveDaySched();
+        dvDrag = null;
+        renderDvTimeline(today, new Date().getHours());
+      });
+
+      row.appendChild(label);
+      row.appendChild(drop);
+      timeline.appendChild(row);
+    });
+  }
+
+  function makeDvSlotItem(entry, today, hour, slotIdx) {
+    const { text, colId } = entry;
+    const item = document.createElement('div');
+    item.className = 'dv-slot-item';
+    item.draggable = true;
+
+    const texts = document.createElement('div');
+    texts.className = 'dv-slot-texts';
+
+    const titleEl = document.createElement('div');
+    titleEl.className = 'dv-slot-title';
+    titleEl.textContent = text;
+
+    const catEl = document.createElement('div');
+    catEl.className = 'dv-slot-cat';
+    catEl.textContent = (COL_META[colId] && COL_META[colId].label) || colId;
+    catEl.style.color  = (COL_META[colId] && COL_META[colId].color) || '#8a8a93';
+
+    texts.appendChild(titleEl);
+    texts.appendChild(catEl);
+
+    const xBtn = document.createElement('button');
+    xBtn.className = 'dv-slot-x';
+    xBtn.textContent = '×';
+    xBtn.setAttribute('aria-label', 'remove');
+    xBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      dvSched[today][hour].splice(slotIdx, 1);
+      saveDaySched();
+      renderDvTimeline(today, new Date().getHours());
+    });
+
+    item.appendChild(texts);
+    item.appendChild(xBtn);
+
+    item.addEventListener('dragstart', (e) => {
+      dvDrag = { from: 'slot', date: today, hour, slotIdx, text, colId };
+      requestAnimationFrame(() => item.classList.add('dragging'));
+      e.dataTransfer.effectAllowed = 'move';
+      e.dataTransfer.setData('text/plain', '');
+    });
+    item.addEventListener('dragend', () => item.classList.remove('dragging'));
+    return item;
+  }
+
+  document.getElementById('day-view-btn').addEventListener('click', openDayView);
+  document.getElementById('dv-close-btn').addEventListener('click', closeDayView);
 
   // ─────────────────────────────────────────────────
   //  Daily archive reset
