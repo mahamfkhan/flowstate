@@ -237,6 +237,7 @@
   .col[data-col="ongoing"]      .col-title { color: #4ac49a; }
   .col[data-col="aspirational"] .col-title { color: #b46ae8; }
   .col[data-col="quickwins"]    .col-title { color: #4a9de8; }
+  .col[data-col="pending"]      .col-title { color: #c9a84c; }
 
   /* ── Input ────────────────────────────────────── */
   .col-input-wrap { flex-shrink: 0; padding: 8px 9px; border-bottom: 1px solid var(--border); }
@@ -648,6 +649,15 @@
         <div class="col-body" id="body-quickwins"></div>
       </div>
 
+      <!-- ── Pending ── -->
+      <div class="col" data-col="pending">
+        <div class="col-header">
+          <span class="col-title">Pending</span>
+          <span class="col-count" id="count-pending"></span>
+        </div>
+        <div class="col-body" id="body-pending"></div>
+      </div>
+
     </div>
   </div>
 
@@ -780,7 +790,7 @@
   // ─────────────────────────────────────────────────
   const OLD_KEY   = 'flowstate.braindump.v1';
   const BOARD_KEY = 'flowstate.board.v1';
-  const COLS = ['braindump', 'mit', 'ongoing', 'aspirational', 'quickwins'];
+  const COLS = ['braindump', 'mit', 'ongoing', 'aspirational', 'quickwins', 'pending'];
 
   const HINTS = {
     braindump:    'press enter to add a thought',
@@ -788,6 +798,7 @@
     ongoing:      'drag regular habits here',
     aspirational: 'drag aspirational habits here',
     quickwins:    'drag one-off activities here',
+    pending:      'drag tasks waiting on something here',
   };
 
   const COL_META = {
@@ -797,12 +808,13 @@
     quickwins:    { label: 'One-off',      color: '#4a9de8' },
     onetime:      { label: 'One-time',     color: '#e84a7a' },
     braindump:    { label: 'Dump',         color: '#8a8a93' },
+    pending:      { label: 'Pending',      color: '#c9a84c' },
   };
 
   function emptyBoard() {
     return {
       braindump: [], mit: [], ongoing: [], aspirational: [],
-      quickwins: [], stock: null, archive: [], starred: [],
+      quickwins: [], pending: [], stock: null, archive: [], starred: [],
     };
   }
 
@@ -996,6 +1008,7 @@
     ongoing:      '#4ac49a',
     aspirational: '#b46ae8',
     quickwins:    '#4a9de8',
+    pending:      '#c9a84c',
   };
   const COL_LABELS = {
     braindump:    'Brain Dump',
@@ -1003,6 +1016,7 @@
     ongoing:      'Ongoing',
     aspirational: 'Aspirational',
     quickwins:    'One-off Activities',
+    pending:      'Pending',
   };
 
   function showMoveMenu(anchorEl, colId, index) {
