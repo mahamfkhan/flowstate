@@ -1093,12 +1093,22 @@
     if (cur) cur.scrollIntoView({ block: 'start' });
   }
 
+  function dvScheduledKeys(today) {
+    const keys = new Set();
+    Object.values(dvSched[today] || {}).forEach(arr =>
+      arr.forEach(({ text, colId }) => keys.add(colId + ':' + text))
+    );
+    return keys;
+  }
+
   function renderDvLeft() {
-    const list = document.getElementById('dv-items-list');
-    list.innerHTML = '';
+    const list      = document.getElementById('dv-items-list');
+    const scheduled = dvScheduledKeys(todayISO());
+    list.innerHTML  = '';
     let count = 0;
     COLS.forEach(colId => {
       (board[colId] || []).forEach(text => {
+        if (scheduled.has(colId + ':' + text)) return;
         list.appendChild(makeDvCard(text, colId));
         count++;
       });
@@ -1106,7 +1116,7 @@
     if (count === 0) {
       const msg = document.createElement('div');
       msg.style.cssText = 'font-size:12px;color:var(--text-dim);padding:4px 0;';
-      msg.textContent = 'No items yet.';
+      msg.textContent = scheduled.size > 0 ? 'All items scheduled.' : 'No items yet.';
       list.appendChild(msg);
     }
   }
@@ -1181,6 +1191,7 @@
         saveDaySched();
         dvDrag = null;
         renderDvTimeline(today, new Date().getHours());
+        renderDvLeft();
       });
 
       row.appendChild(label);
@@ -1219,6 +1230,7 @@
       dvSched[today][hour].splice(slotIdx, 1);
       saveDaySched();
       renderDvTimeline(today, new Date().getHours());
+      renderDvLeft();
     });
 
     item.appendChild(texts);
