@@ -1144,7 +1144,7 @@
       e.dataTransfer.effectAllowed = 'copy';
       e.dataTransfer.setData('text/plain', '');
     });
-    card.addEventListener('dragend', () => card.classList.remove('dragging'));
+    card.addEventListener('dragend', () => { card.classList.remove('dragging'); dvDrag = null; });
     return card;
   }
 
@@ -1172,10 +1172,12 @@
       drop.addEventListener('dragover', (e) => {
         if (!dvDrag) return;
         e.preventDefault();
-        e.dataTransfer.dropEffect = 'copy';
+        e.dataTransfer.dropEffect = 'move';
         drop.classList.add('drag-over');
       });
-      drop.addEventListener('dragleave', () => drop.classList.remove('drag-over'));
+      drop.addEventListener('dragleave', (e) => {
+        if (!drop.contains(e.relatedTarget)) drop.classList.remove('drag-over');
+      });
       drop.addEventListener('drop', (e) => {
         e.preventDefault();
         drop.classList.remove('drag-over');
@@ -1242,7 +1244,8 @@
       e.dataTransfer.effectAllowed = 'move';
       e.dataTransfer.setData('text/plain', '');
     });
-    item.addEventListener('dragend', () => item.classList.remove('dragging'));
+    item.addEventListener('dragend', () => { item.classList.remove('dragging'); dvDrag = null; });
+    item.addEventListener('dragover', (e) => { if (dvDrag) e.preventDefault(); });
     return item;
   }
 
