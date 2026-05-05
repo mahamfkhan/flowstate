@@ -970,7 +970,7 @@
   function emptyBoard() {
     return {
       braindump: [], mit: [], ongoing: [], aspirational: [],
-      quickwins: [], pending: [], stock: null, archive: [], starred: [],
+      quickwins: [], pending: [], stock: null, archive: [], starred: [], daySchedule: {},
     };
   }
 
@@ -1058,18 +1058,14 @@
   // ─────────────────────────────────────────────────
   //  Day View
   // ─────────────────────────────────────────────────
-  const DAY_SCHED_KEY = 'flowstate.dayview.v1';
   const DV_HOURS = Array.from({ length: 18 }, (_, i) => i + 6); // 6am–11pm
 
-  function loadDaySched() {
-    try { return JSON.parse(localStorage.getItem(DAY_SCHED_KEY) || '{}'); } catch { return {}; }
-  }
-  function saveDaySched() {
-    localStorage.setItem(DAY_SCHED_KEY, JSON.stringify(dvSched));
-  }
+  // Day schedule lives inside board so it syncs to GitHub automatically
+  function saveDaySched() { saveBoard(); }
 
-  let dvSched = loadDaySched();
-  let dvDrag  = null;
+  let dvDrag    = null;
+  let dvGhost   = null;
+  let dvTouchEl = null;
 
   function openDayView() {
     document.getElementById('day-view').classList.add('open');
@@ -1095,10 +1091,84 @@
 
   function dvScheduledKeys(today) {
     const keys = new Set();
-    Object.values(dvSched[today] || {}).forEach(arr =>
+    Object.values((board.daySchedule || {})[today] || {}).forEach(arr =>
       arr.forEach(({ text, colId }) => keys.add(colId + ':' + text))
     );
     return keys;
+  }
+
+  // Shared drop logic used by both mouse-drop and touch-end
+  function dvDoDropInHour(hour) {
+    const today = todayISO();
+    const { text, colId } = dvDrag;
+    if (!board.daySchedule) board.daySchedule = {};
+    if (dvDrag.from === 'slot') {
+      const src = board.daySchedule[dvDrag.date];
+      if (src && src[dvDrag.hour]) src[dvDrag.hour].splice(dvDrag.slotIdx, 1);
+    }
+    if (!board.daySchedule[today]) board.daySchedule[today] = {};
+    if (!board.daySchedule[today][hour]) board.daySchedule[today][hour] = [];
+    board.daySchedule[today][hour].push({ text, colId });
+    saveDaySched();
+    renderDvTimeline(today, new Date().getHours());
+    renderDvLeft();
+  }
+
+  // Touch drag — attaches move/end to document only during active drag so the
+  // element itself keeps only a passive touchstart, which lets Chrome's HTML5
+  // drag API work normally on desktop (non-passive touchmove on the element
+  // itself blocks the drag gesture).
+  function addDvTouch(el, getDragData) {
+    el.addEventListener('touchstart', (e) => {
+      if (e.touches.length !== 1) return;
+      const touch  = e.touches[0];
+      const rect   = el.getBoundingClientRect();
+      const offX   = touch.clientX - rect.left;
+      const offY   = touch.clientY - rect.top;
+
+      dvDrag    = getDragData();
+      dvTouchEl = el;
+      el.style.opacity = '0.3';
+
+      dvGhost = el.cloneNode(true);
+      dvGhost.style.cssText = `position:fixed;z-index:9999;pointer-events:none;` +
+        `width:${rect.width}px;opacity:0.92;border-radius:8px;` +
+        `box-shadow:0 6px 20px rgba(0,0,0,0.45);` +
+        `left:${rect.left}px;top:${rect.top}px;`;
+      document.body.appendChild(dvGhost);
+
+      function onMove(ev) {
+        if (!dvGhost) return;
+        ev.preventDefault();
+        const t = ev.touches[0];
+        dvGhost.style.left = (t.clientX - offX) + 'px';
+        dvGhost.style.top  = (t.clientY - offY) + 'px';
+        dvGhost.style.display = 'none';
+        const under = document.elementFromPoint(t.clientX, t.clientY);
+        dvGhost.style.display = '';
+        document.querySelectorAll('.dv-hour-drop.drag-over').forEach(d => d.classList.remove('drag-over'));
+        const zone = under && under.closest('.dv-hour-drop');
+        if (zone) zone.classList.add('drag-over');
+      }
+
+      function onEnd(ev) {
+        document.removeEventListener('touchmove', onMove);
+        document.removeEventListener('touchend',  onEnd);
+        const t = ev.changedTouches[0];
+        if (dvGhost) dvGhost.style.display = 'none';
+        const under = document.elementFromPoint(t.clientX, t.clientY);
+        if (dvGhost)   { dvGhost.remove(); dvGhost = null; }
+        if (dvTouchEl) { dvTouchEl.style.opacity = ''; dvTouchEl = null; }
+        document.querySelectorAll('.dv-hour-drop.drag-over').forEach(d => d.classList.remove('drag-over'));
+        const zone = under && under.closest('.dv-hour-drop');
+        if (dvDrag && zone && zone.dataset.hour !== undefined)
+          dvDoDropInHour(parseInt(zone.dataset.hour, 10));
+        dvDrag = null;
+      }
+
+      document.addEventListener('touchmove', onMove, { passive: false });
+      document.addEventListener('touchend',  onEnd);
+    }, { passive: true });
   }
 
   function renderDvLeft() {
@@ -1145,13 +1215,14 @@
       e.dataTransfer.setData('text/plain', '');
     });
     card.addEventListener('dragend', () => { card.classList.remove('dragging'); dvDrag = null; });
+    addDvTouch(card, () => ({ from: 'list', text, colId }));
     return card;
   }
 
   function renderDvTimeline(today, currentHour) {
     const timeline   = document.getElementById('dv-timeline');
     timeline.innerHTML = '';
-    const todaySched = dvSched[today] || {};
+    const todaySched = (board.daySchedule || {})[today] || {};
 
     DV_HOURS.forEach(hour => {
       const row = document.createElement('div');
@@ -1164,6 +1235,7 @@
 
       const drop = document.createElement('div');
       drop.className = 'dv-hour-drop';
+      drop.dataset.hour = hour;
 
       (todaySched[hour] || []).forEach((entry, idx) => {
         drop.appendChild(makeDvSlotItem(entry, today, hour, idx));
@@ -1182,18 +1254,8 @@
         e.preventDefault();
         drop.classList.remove('drag-over');
         if (!dvDrag) return;
-        const { text, colId } = dvDrag;
-        if (dvDrag.from === 'slot') {
-          const src = dvSched[dvDrag.date];
-          if (src && src[dvDrag.hour]) src[dvDrag.hour].splice(dvDrag.slotIdx, 1);
-        }
-        if (!dvSched[today]) dvSched[today] = {};
-        if (!dvSched[today][hour]) dvSched[today][hour] = [];
-        dvSched[today][hour].push({ text, colId });
-        saveDaySched();
+        dvDoDropInHour(hour);
         dvDrag = null;
-        renderDvTimeline(today, new Date().getHours());
-        renderDvLeft();
       });
 
       row.appendChild(label);
@@ -1229,7 +1291,8 @@
     xBtn.setAttribute('aria-label', 'remove');
     xBtn.addEventListener('click', (e) => {
       e.stopPropagation();
-      dvSched[today][hour].splice(slotIdx, 1);
+      if (board.daySchedule[today] && board.daySchedule[today][hour])
+        board.daySchedule[today][hour].splice(slotIdx, 1);
       saveDaySched();
       renderDvTimeline(today, new Date().getHours());
       renderDvLeft();
@@ -1246,6 +1309,7 @@
     });
     item.addEventListener('dragend', () => { item.classList.remove('dragging'); dvDrag = null; });
     item.addEventListener('dragover', (e) => { if (dvDrag) e.preventDefault(); });
+    addDvTouch(item, () => ({ from: 'slot', date: today, hour, slotIdx, text, colId }));
     return item;
   }
 
