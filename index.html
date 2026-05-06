@@ -1241,11 +1241,11 @@
         drop.appendChild(makeDvSlotItem(entry, today, hour, idx));
       });
 
+      drop.addEventListener('dragenter', (e) => { e.preventDefault(); });
       drop.addEventListener('dragover', (e) => {
-        if (!dvDrag) return;
         e.preventDefault();
         e.dataTransfer.dropEffect = 'move';
-        drop.classList.add('drag-over');
+        if (dvDrag) drop.classList.add('drag-over');
       });
       drop.addEventListener('dragleave', (e) => {
         if (!drop.contains(e.relatedTarget)) drop.classList.remove('drag-over');
