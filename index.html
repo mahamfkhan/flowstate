@@ -87,6 +87,14 @@
   .lock-footer a { color: var(--accent); text-decoration: none; cursor: pointer; }
   .lock-footer a:hover { text-decoration: underline; }
 
+  .lock-check {
+    display: flex; align-items: center; gap: 8px; margin-top: 10px;
+  }
+  .lock-check input[type="checkbox"] {
+    accent-color: var(--accent); width: 14px; height: 14px; cursor: pointer; flex-shrink: 0;
+  }
+  .lock-check label { font-size: 12px; color: var(--text-dim); cursor: pointer; user-select: none; }
+
   /* ── Sync dot ─────────────────────────────────── */
   .sync-dot {
     width: 6px; height: 6px; border-radius: 50%;
@@ -701,6 +709,11 @@
       <input id="u-pw" class="lock-input" type="password" placeholder="your password" autocomplete="current-password" />
     </div>
 
+    <div class="lock-check">
+      <input type="checkbox" id="u-stay" />
+      <label for="u-stay">Stay signed in on this device</label>
+    </div>
+
     <button id="unlock-btn" class="lock-btn">Unlock</button>
     <div id="unlock-err" class="lock-err"></div>
     <div class="lock-footer">
@@ -854,7 +867,8 @@
   // ─────────────────────────────────────────────────
   //  Config  (stored per-device in localStorage — never in the repo)
   // ─────────────────────────────────────────────────
-  const CONFIG_KEY = 'flowstate.config';
+  const CONFIG_KEY  = 'flowstate.config';
+  const SESSION_KEY = 'flowstate.session'; // stores pw hash when "stay signed in" is ticked
 
   function loadConfig() {
     try { return JSON.parse(localStorage.getItem(CONFIG_KEY)) || null; } catch { return null; }
@@ -2022,6 +2036,10 @@
         document.getElementById('u-pw').select();
         return;
       }
+      if (document.getElementById('u-stay').checked)
+        localStorage.setItem(SESSION_KEY, cfg.passwordHash);
+      else
+        localStorage.removeItem(SESSION_KEY);
       await unlockAndLoad();
     } catch (e) {
       errEl.textContent = 'Error: ' + e.message;
@@ -2037,6 +2055,7 @@
     e.preventDefault();
     if (confirm('Clear local config and re-run setup?\n\nYour data.json on GitHub will not be touched.')) {
       localStorage.removeItem(CONFIG_KEY);
+      localStorage.removeItem(SESSION_KEY);
       location.reload();
     }
   });
@@ -2046,11 +2065,27 @@
   // ─────────────────────────────────────────────────
   (function showLock() {
     const config = loadConfig();
+
+    // ── Local file: skip lock entirely ──────────────
+    if (window.location.protocol === 'file:' && config && config.passwordHash) {
+      cfg = config;
+      unlockAndLoad();
+      return;
+    }
+
     if (!config || !config.passwordHash) {
       document.getElementById('setup-panel').style.display = '';
       document.getElementById('s-pw').focus();
     } else {
       cfg = config;
+
+      // ── Stay-signed-in: auto-unlock if session token matches ──
+      if (localStorage.getItem(SESSION_KEY) === cfg.passwordHash) {
+        document.getElementById('u-stay').checked = true;
+        unlockAndLoad();
+        return;
+      }
+
       document.getElementById('unlock-panel').style.display = '';
       document.getElementById('u-pw').focus();
     }
