@@ -1225,7 +1225,7 @@
     card.addEventListener('dragstart', (e) => {
       dvDrag = { from: 'list', text, colId };
       requestAnimationFrame(() => card.classList.add('dragging'));
-      e.dataTransfer.effectAllowed = 'copy';
+      e.dataTransfer.effectAllowed = 'move';
       e.dataTransfer.setData('text/plain', '');
     });
     card.addEventListener('dragend', () => { card.classList.remove('dragging'); dvDrag = null; });
@@ -2066,9 +2066,9 @@
   (function showLock() {
     const config = loadConfig();
 
-    // ── Local file: skip lock entirely ──────────────
-    if (window.location.protocol === 'file:' && config && config.passwordHash) {
-      cfg = config;
+    // ── Local file: always skip lock entirely ───────
+    if (window.location.protocol === 'file:') {
+      cfg = config || {};
       unlockAndLoad();
       return;
     }
