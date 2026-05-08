@@ -538,6 +538,16 @@
   }
   .dv-day-name { font-size: 20px; font-weight: 700; letter-spacing: -0.03em; }
   .dv-date-str { font-size: 13px; color: var(--text-dim); margin-top: 2px; }
+  .dv-dump-wrap { margin-top: 10px; }
+  .dv-dump-input {
+    width: 100%; background: transparent; border: 1px solid var(--border);
+    color: var(--text); font-size: 13px; padding: 7px 12px; border-radius: 999px;
+    outline: none; font-family: inherit; transition: border-color 0.15s ease;
+    box-sizing: border-box;
+  }
+  .dv-dump-input::placeholder { color: var(--text-dim); }
+  .dv-dump-input:focus { border-color: var(--accent); }
+
   .dv-close-btn {
     font-family: inherit; cursor: pointer; border: 1px solid var(--border);
     border-radius: 999px; font-size: 12px; font-weight: 500;
@@ -625,32 +635,27 @@
       max-height: 36vh;
     }
 
-    /* Categories: horizontal snap-scroll */
+    /* Categories: vertical scroll */
     .categories {
       flex: 1;
-      overflow-x: auto;
-      overflow-y: hidden;
-      flex-wrap: nowrap;
+      flex-direction: column;
+      overflow-y: auto;
+      overflow-x: hidden;
       -webkit-overflow-scrolling: touch;
-      scroll-snap-type: x mandatory;
       gap: 10px;
       min-height: 0;
-      /* hide scrollbar */
-      scrollbar-width: none;
     }
-    .categories::-webkit-scrollbar { display: none; }
 
-    /* Each scroll card */
+    /* Each column: natural height, at least tall enough to be useful */
     .col[data-col="mit"],
     .habits-group,
-    .col[data-col="quickwins"] {
-      flex: 0 0 80vw;
-      min-width: 220px;
-      scroll-snap-align: start;
+    .col[data-col="quickwins"],
+    .col[data-col="pending"] {
+      flex: 0 0 auto;
+      min-height: 180px;
     }
 
-    /* Habits group fills height of scroll row */
-    .habits-group { min-height: 0; }
+    .habits-group { min-height: 200px; }
     .habits-cols  { gap: 8px; }
 
     /* Dump view: comfortable on phone */
@@ -847,6 +852,10 @@
       <div>
         <div class="dv-day-name" id="dv-day-name"></div>
         <div class="dv-date-str" id="dv-date-str"></div>
+        <div class="dv-dump-wrap">
+          <input id="dv-dump-input" class="dv-dump-input"
+            type="text" placeholder="dump a thought…" autocomplete="off" />
+        </div>
       </div>
       <button class="dv-close-btn" id="dv-close-btn">✕  Close</button>
     </div>
@@ -1330,6 +1339,16 @@
   document.getElementById('day-view-btn').addEventListener('click', openDayView);
   document.getElementById('dv-close-btn').addEventListener('click', closeDayView);
 
+  document.getElementById('dv-dump-input').addEventListener('keydown', (e) => {
+    if (e.key !== 'Enter') return;
+    const val = e.target.value.trim();
+    if (!val) return;
+    board.braindump.push(val);
+    saveBoard();
+    renderCol('braindump');
+    e.target.value = '';
+  });
+
   // ─────────────────────────────────────────────────
   //  Daily archive reset
   // ─────────────────────────────────────────────────
@@ -1757,9 +1776,9 @@
       editBtn.className = 'edit-stock-btn';
       editBtn.textContent = 'Edit';
       editBtn.addEventListener('click', () => {
-        const todayArchive = board.archive.filter(a => a.date === todayISO() && isHabitCol(a.colId));
+        const todayArchive = board.archive.filter(a => a.date === todayISO() && isHabitCol(a.colId) && a.source === 'stock');
         todayArchive.forEach(a => { board[a.colId].push(a.text); stock.checked.add(stockKey(a.colId, a.text)); });
-        board.archive = board.archive.filter(a => !(a.date === todayISO() && isHabitCol(a.colId)));
+        board.archive = board.archive.filter(a => !(a.date === todayISO() && isHabitCol(a.colId) && a.source === 'stock'));
         stock.state   = 'active';
         stock.summary = null;
         persistStock(); render(); renderStockControls(); renderBin();
