@@ -1096,6 +1096,18 @@
   // Day schedule lives inside board so it syncs to GitHub automatically
   function saveDaySched() { saveBoard(); }
 
+  // Update colId for an item across all daySchedule slots (called after a column move)
+  function dvUpdateColId(text, oldColId, newColId) {
+    if (!board.daySchedule) return;
+    Object.values(board.daySchedule).forEach(daySlots => {
+      Object.values(daySlots).forEach(slotArr => {
+        slotArr.forEach(entry => {
+          if (entry.text === text && entry.colId === oldColId) entry.colId = newColId;
+        });
+      });
+    });
+  }
+
   let dvDrag    = null;
   let dvGhost   = null;
   let dvTouchEl = null;
@@ -1531,6 +1543,7 @@
         if (liveIdx === -1) { menu.remove(); return; }
         board[colId].splice(liveIdx, 1);
         board[destId].push(text);
+        dvUpdateColId(text, colId, destId);
         saveBoard();
         renderCol(colId);
         renderCol(destId);
@@ -1862,6 +1875,7 @@
         } else {
           const [item] = board[srcId].splice(srcIdx, 1);
           board[colId].splice(insertAt, 0, item);
+          dvUpdateColId(item, srcId, colId);
           saveBoard(); renderCol(srcId); renderCol(colId);
         }
       }
