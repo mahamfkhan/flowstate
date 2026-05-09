@@ -572,12 +572,22 @@
     background: var(--pill-bg); border: 1px solid var(--border); border-radius: 8px;
     padding: 8px 10px; cursor: grab; user-select: none;
     display: flex; flex-direction: column; gap: 3px; transition: background 0.1s ease;
+    position: relative;
   }
   .dv-item-card:hover { background: var(--pill-bg-hover); }
   .dv-item-card:active { cursor: grabbing; }
   .dv-item-card.dragging { opacity: 0.2; }
-  .dv-item-title { font-size: 13px; color: var(--text); }
+  .dv-item-title { font-size: 13px; color: var(--text); padding-right: 18px; }
   .dv-item-cat { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; }
+  .dv-item-x {
+    position: absolute; top: 6px; right: 6px;
+    background: none; border: none; cursor: pointer;
+    font-size: 15px; line-height: 1; color: var(--text-dim);
+    padding: 0 2px; opacity: 0; transition: opacity 0.15s ease;
+    pointer-events: none;
+  }
+  .dv-item-card:hover .dv-item-x { opacity: 1; pointer-events: auto; }
+  .dv-item-x:hover { color: var(--text); }
 
   .dv-right { flex: 1; overflow-y: auto; }
   .dv-timeline { display: flex; flex-direction: column; }
@@ -1228,8 +1238,28 @@
     catEl.textContent = (COL_META[colId] && COL_META[colId].label) || colId;
     catEl.style.color  = (COL_META[colId] && COL_META[colId].color) || '#8a8a93';
 
+    const dvX = document.createElement('button');
+    dvX.className = 'dv-item-x';
+    dvX.setAttribute('aria-label', 'remove');
+    dvX.textContent = '×';
+    dvX.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const idx = board[colId] ? board[colId].indexOf(text) : -1;
+      if (idx !== -1) {
+        const [removed] = board[colId].splice(idx, 1);
+        board.archive.push({ text: removed, colId, date: todayISO(), source: 'deleted' });
+        starredSet.delete(starKey(colId, removed));
+        board.starred = [...starredSet];
+        saveBoard();
+        renderCol(colId);
+        renderBin();
+        renderDvLeft();
+      }
+    });
+
     card.appendChild(titleEl);
     card.appendChild(catEl);
+    card.appendChild(dvX);
 
     card.addEventListener('dragstart', (e) => {
       dvDrag = { from: 'list', text, colId };
