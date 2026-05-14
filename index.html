@@ -971,7 +971,7 @@
         console.error('Sync failed:', e);
         setSyncState('error');
       }
-    }, 1500);
+    }, 600);
   }
 
   // ─────────────────────────────────────────────────
@@ -1042,6 +1042,7 @@
   }
 
   function saveBoard() {
+    board._ts = Date.now();                                  // timestamp every save
     localStorage.setItem(BOARD_KEY, JSON.stringify(board));
     if (cfg) scheduleSave();
   }
@@ -2019,8 +2020,16 @@
       if (result) {
         cfg.fileSha = result.sha;
         saveConfig(cfg);
-        board = { ...emptyBoard(), ...result.data };
-        localStorage.setItem(BOARD_KEY, JSON.stringify(board));
+        const localTs  = board._ts        || 0;
+        const remoteTs = result.data._ts  || 0;
+        if (remoteTs >= localTs) {
+          // GitHub is newer (or equal) — use it as source of truth
+          board = { ...emptyBoard(), ...result.data };
+          localStorage.setItem(BOARD_KEY, JSON.stringify(board));
+        } else {
+          // Local is newer — push it up to GitHub right away
+          scheduleSave();
+        }
       }
       setSyncState('synced');
       setTimeout(() => setSyncState(''), 2500);
@@ -2121,6 +2130,21 @@
       localStorage.removeItem(CONFIG_KEY);
       localStorage.removeItem(SESSION_KEY);
       location.reload();
+    }
+  });
+
+  // ─────────────────────────────────────────────────
+  //  Flush pending save when tab goes to background
+  //  (beforeunload is unreliable on mobile Safari;
+  //   visibilitychange fires reliably on all platforms)
+  // ─────────────────────────────────────────────────
+  document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'hidden' && cfg && syncTimer !== null) {
+      clearTimeout(syncTimer);
+      syncTimer = null;
+      ghPut(cfg, board)
+        .then(sha => { cfg.fileSha = sha; saveConfig(cfg); })
+        .catch(e  => console.warn('Background save failed:', e));
     }
   });
 
