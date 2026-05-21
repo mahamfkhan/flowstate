@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>flowstate</title>
+<title>zeropoint</title>
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%231a3a5c'/%3E%3Crect width='32' height='18' fill='%23c8d8e8'/%3E%3Cpolygon points='16,4 20,13 12,13' fill='%23e8e0d8'/%3E%3Cpolygon points='16,4 17.5,7 14.5,7' fill='white'/%3E%3Crect y='14' width='32' height='18' fill='%231a3a5c'/%3E%3Cellipse cx='8' cy='16' rx='10' ry='7' fill='%231e4a7a'/%3E%3Cellipse cx='24' cy='18' rx='10' ry='6' fill='%231e4a7a'/%3E%3Cellipse cx='16' cy='20' rx='12' ry='5' fill='%23245a8a'/%3E%3Cpath d='M0,13 Q4,6 8,11 Q4,11 2,14 Z' fill='%231e4a7a'/%3E%3Cpath d='M0,12 Q4,5 8,10 Q5,9 3,12 Z' fill='%23245a8a'/%3E%3Cpath d='M0,12 Q2,8 5,10 Q3,10 1,13 Z' fill='white' opacity='0.9'/%3E%3Cpath d='M4,10 Q6,7 8,9 Q6,9 5,11 Z' fill='white' opacity='0.85'/%3E%3Cpath d='M22,10 Q26,5 30,9 Q28,9 26,12 Z' fill='%231e4a7a'/%3E%3Cpath d='M22,10 Q25,6 28,9 Q26,9 24,11 Z' fill='white' opacity='0.9'/%3E%3Cpath d='M26,8 Q28,5 30,7 Q29,8 27,10 Z' fill='white' opacity='0.85'/%3E%3Cpath d='M12,12 Q14,8 17,11 Q15,11 13,13 Z' fill='%231e4a7a'/%3E%3Cpath d='M12,11 Q14,7 17,10 Q15,10 13,12 Z' fill='white' opacity='0.8'/%3E%3Cpath d='M0,24 Q8,20 16,24 Q24,28 32,24 L32,32 L0,32 Z' fill='%231a3a5c'/%3E%3Cpath d='M0,26 Q8,22 16,26 Q24,30 32,26 L32,32 L0,32 Z' fill='%23152d47'/%3E%3C/svg%3E" />
 <style>
   :root {
@@ -194,8 +194,8 @@
   .cats-actions { display: flex; align-items: center; gap: 6px; }
 
   /* ── Categories ───────────────────────────────── */
-  .categories { flex: 1; display: flex; gap: 14px; min-height: 0; }
-  .categories .col { flex: 1; }
+  .categories { flex: 1; display: flex; gap: 14px; min-height: 0; overflow-x: auto; }
+  .categories .col { flex: 0 0 210px; }
 
   /* ── Stock buttons ────────────────────────────── */
   .take-stock-btn, .done-btn, .edit-stock-btn {
@@ -287,13 +287,19 @@
 
   /* ── Input ────────────────────────────────────── */
   .col-input-wrap { flex-shrink: 0; padding: 8px 9px; border-bottom: 1px solid var(--border); }
+  .col-input-inner { position: relative; }
   .col-input {
     width: 100%; background: transparent; border: 1px solid var(--border);
-    color: var(--text); font-size: 13px; padding: 7px 12px; border-radius: 999px;
+    color: var(--text); font-size: 13px; padding: 7px 30px 7px 12px; border-radius: 999px;
     outline: none; font-family: inherit; transition: border-color 0.15s ease;
   }
   .col-input::placeholder { color: var(--text-dim); }
   .col-input:focus { border-color: var(--accent); }
+  .col-input-enter {
+    position: absolute; right: 10px; top: 50%; transform: translateY(-50%);
+    color: var(--text-dim); font-size: 13px; pointer-events: none; line-height: 1;
+    opacity: 0.5;
+  }
 
   /* ── Column body ──────────────────────────────── */
   .col-body {
@@ -469,7 +475,15 @@
   }
   .dump-pill:hover { background: var(--pill-bg-hover); }
   .dump-pill .text { white-space: pre-wrap; }
-  .dump-pill .x    { margin-top: 0; }
+  .dump-pill .x {
+    margin-top: 0; border: none; background: transparent !important;
+    -webkit-appearance: none; appearance: none; -webkit-tap-highlight-color: transparent;
+    color: var(--text-dim); cursor: pointer; font-size: 14px; line-height: 1;
+    width: 18px; height: 18px; border-radius: 50%;
+    display: inline-flex; align-items: center; justify-content: center;
+    transition: color 0.1s ease;
+  }
+  .dump-pill .x:hover { color: var(--danger); }
 
   /* ── Animations ───────────────────────────────── */
   @keyframes pop {
@@ -717,7 +731,7 @@
 
   <!-- First-time setup -->
   <div id="setup-panel" class="lock-panel" style="display:none">
-    <div class="lock-logo">flow<span>state</span></div>
+    <div class="lock-logo">zero<span>point</span></div>
     <div class="lock-sub">First-time setup. Your password and token are stored only on this device — never in the code or the repo.</div>
 
     <div class="lock-field">
@@ -751,7 +765,7 @@
 
   <!-- Returning user -->
   <div id="unlock-panel" class="lock-panel" style="display:none">
-    <div class="lock-logo">flow<span>state</span></div>
+    <div class="lock-logo">zero<span>point</span></div>
     <div class="lock-sub">Enter your password to unlock.</div>
 
     <div class="lock-field">
@@ -777,7 +791,7 @@
 <div class="page" id="main-page" style="display:none">
 
   <div class="top-bar">
-    <div class="logo">flow<span>state</span></div>
+    <div class="logo">zero<span>point</span></div>
     <div id="star-controls"></div>
     <button id="day-view-btn" class="day-view-btn">⊞ Day view</button>
     <div id="sync-dot" class="sync-dot" title="GitHub sync status"></div>
@@ -789,7 +803,7 @@
     <!-- ── Brain Dump ── -->
     <div class="col braindump" data-col="braindump">
       <div class="col-header">
-        <span class="col-title">Brain Dump</span>
+        <span class="col-title">Zero Point</span>
         <span class="col-count" id="count-braindump"></span>
         <button class="maximise-btn" id="maximise-btn" title="Focus mode">
           <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
@@ -798,8 +812,11 @@
         </button>
       </div>
       <div class="col-input-wrap">
-        <input id="entry" class="col-input" type="text"
-          placeholder="what's on your mind?" autocomplete="off" />
+        <div class="col-input-inner">
+          <input id="entry" class="col-input" type="text"
+            placeholder="what's on your mind?" autocomplete="off" />
+          <span class="col-input-enter" title="Press Enter to add">↵</span>
+        </div>
       </div>
       <div class="col-body" id="body-braindump"></div>
     </div>
@@ -838,7 +855,7 @@
       back to board
     </button>
     <div class="dump-header">
-      <h1>brain dump</h1>
+      <h1>zero point</h1>
       <p>get it out of your head. one thought at a time.</p>
     </div>
     <div class="dump-input-wrap">
