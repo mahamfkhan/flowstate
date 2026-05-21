@@ -182,36 +182,20 @@
   .col.drag-over { border-color: rgba(124,92,255,0.55); }
   .col.braindump { flex: 0 0 230px; }
 
+  /* ── Right-side area ─────────────────────────── */
+  .board-right {
+    flex: 1; display: flex; flex-direction: column;
+    gap: 9px; min-height: 0;
+  }
+  .cats-toolbar {
+    flex-shrink: 0; display: flex; align-items: center;
+    justify-content: space-between; gap: 8px; padding: 0 2px;
+  }
+  .cats-actions { display: flex; align-items: center; gap: 6px; }
+
   /* ── Categories ───────────────────────────────── */
   .categories { flex: 1; display: flex; gap: 14px; min-height: 0; }
-  .col[data-col="mit"] { flex: 1; }
-
-  /* ── Habits group ─────────────────────────────── */
-  .habits-group {
-    flex: 1.5;
-    display: flex;
-    flex-direction: column;
-    gap: 9px;
-    min-height: 0;
-  }
-  .habits-group-header {
-    flex-shrink: 0;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 8px;
-    padding: 0 2px;
-  }
-  .group-label {
-    font-size: 11px; font-weight: 600;
-    text-transform: uppercase; letter-spacing: 0.09em;
-    color: var(--text-dim);
-  }
-  .habits-cols { flex: 1; display: flex; gap: 14px; min-height: 0; }
-  .habits-cols .col { flex: 1; }
-
-  /* ── One-off ──────────────────────────────────── */
-  .col[data-col="quickwins"] { flex: 1; }
+  .categories .col { flex: 1; }
 
   /* ── Stock buttons ────────────────────────────── */
   .take-stock-btn, .done-btn, .edit-stock-btn {
@@ -241,11 +225,65 @@
   .col-title { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.09em; color: var(--text-dim); }
   .col-count { font-size: 11px; color: var(--text-dim); opacity: 0.45; }
 
-  .col[data-col="mit"]          .col-title { color: #e8904a; }
-  .col[data-col="ongoing"]      .col-title { color: #4ac49a; }
-  .col[data-col="aspirational"] .col-title { color: #b46ae8; }
-  .col[data-col="quickwins"]    .col-title { color: #4a9de8; }
-  .col[data-col="pending"]      .col-title { color: #c9a84c; }
+  /* ── Category edit mode ───────────────────────── */
+  .col-rename-input {
+    flex: 1; min-width: 0; background: transparent; border: none;
+    border-bottom: 1px solid var(--accent); outline: none;
+    color: var(--text); font-family: inherit;
+    font-size: 11px; font-weight: 600; text-transform: uppercase;
+    letter-spacing: 0.09em; padding: 1px 2px;
+  }
+  .col-color-dot {
+    flex-shrink: 0; width: 10px; height: 10px; border-radius: 50%;
+    border: none; cursor: pointer; padding: 0;
+    transition: transform 0.15s ease;
+  }
+  .col-color-dot:hover { transform: scale(1.4); }
+  .col-delete-btn {
+    flex-shrink: 0; background: none; border: none; cursor: pointer;
+    color: var(--text-dim); font-size: 16px; line-height: 1;
+    padding: 0 2px; transition: color 0.15s ease;
+  }
+  .col-delete-btn:hover { color: var(--danger); }
+
+  /* ── Add category button ──────────────────────── */
+  .add-cat-btn {
+    flex-shrink: 0; align-self: flex-start; margin-top: 2px;
+    background: rgba(124,92,255,0.1); border: 1px dashed rgba(124,92,255,0.35);
+    border-radius: 10px; color: var(--accent);
+    font-size: 20px; font-weight: 300; line-height: 1;
+    width: 36px; cursor: pointer; padding: 6px 0;
+    display: flex; align-items: center; justify-content: center;
+    transition: background 0.15s ease, border-color 0.15s ease;
+  }
+  .add-cat-btn:hover { background: rgba(124,92,255,0.2); border-color: rgba(124,92,255,0.6); }
+
+  /* ── New-category form card ───────────────────── */
+  .new-cat-card {
+    flex-shrink: 0; display: flex; flex-direction: column; gap: 8px;
+    background: var(--bg-elev); border: 1px solid var(--accent);
+    border-radius: 14px; padding: 12px 13px; min-width: 140px;
+  }
+  .new-cat-input {
+    background: transparent; border: none; border-bottom: 1px solid var(--border);
+    outline: none; color: var(--text); font-family: inherit;
+    font-size: 12px; font-weight: 600; text-transform: uppercase;
+    letter-spacing: 0.09em; padding: 2px 0; width: 100%;
+  }
+  .new-cat-input:focus { border-bottom-color: var(--accent); }
+  .new-cat-colors { display: flex; gap: 5px; flex-wrap: wrap; }
+  .new-cat-swatch {
+    width: 16px; height: 16px; border-radius: 50%; cursor: pointer; border: 2px solid transparent;
+    transition: transform 0.12s ease, border-color 0.12s ease;
+  }
+  .new-cat-swatch.selected { border-color: white; transform: scale(1.25); }
+  .new-cat-confirm {
+    font-family: inherit; cursor: pointer; border: none;
+    border-radius: 999px; font-size: 11px; font-weight: 600;
+    padding: 4px 10px; background: var(--accent); color: white;
+    align-self: flex-start;
+  }
+  .new-cat-confirm:hover { opacity: 0.85; }
 
   /* ── Input ────────────────────────────────────── */
   .col-input-wrap { flex-shrink: 0; padding: 8px 9px; border-bottom: 1px solid var(--border); }
@@ -645,6 +683,9 @@
       max-height: 36vh;
     }
 
+    /* Board right: fill, no gap between toolbar and cats */
+    .board-right { gap: 6px; }
+
     /* Categories: vertical scroll */
     .categories {
       flex: 1;
@@ -657,16 +698,10 @@
     }
 
     /* Each column: natural height, at least tall enough to be useful */
-    .col[data-col="mit"],
-    .habits-group,
-    .col[data-col="quickwins"],
-    .col[data-col="pending"] {
+    .categories .col {
       flex: 0 0 auto;
       min-height: 180px;
     }
-
-    .habits-group { min-height: 200px; }
-    .habits-cols  { gap: 8px; }
 
     /* Dump view: comfortable on phone */
     .dump-view { padding: 64px 16px 100px; }
@@ -769,60 +804,17 @@
       <div class="col-body" id="body-braindump"></div>
     </div>
 
-    <div class="categories">
-
-      <!-- ── Urgent / Important ── -->
-      <div class="col" data-col="mit">
-        <div class="col-header">
-          <span class="col-title">Urgent / Important</span>
-          <span class="col-count" id="count-mit"></span>
-        </div>
-        <div class="col-body" id="body-mit"></div>
-      </div>
-
-      <!-- ── Habits group ── -->
-      <div class="habits-group">
-        <div class="habits-group-header">
-          <span class="group-label">Habits &amp; Repeats</span>
-          <div id="stock-controls"></div>
-        </div>
-        <div class="habits-cols">
-          <div class="col" data-col="ongoing">
-            <div class="col-header">
-              <span class="col-title">Ongoing</span>
-              <span class="col-count" id="count-ongoing"></span>
-            </div>
-            <div class="col-body" id="body-ongoing"></div>
-          </div>
-          <div class="col" data-col="aspirational">
-            <div class="col-header">
-              <span class="col-title">Aspirational</span>
-              <span class="col-count" id="count-aspirational"></span>
-            </div>
-            <div class="col-body" id="body-aspirational"></div>
-          </div>
+    <!-- ── Right side: toolbar + dynamic categories ── -->
+    <div class="board-right">
+      <div class="cats-toolbar">
+        <div id="stock-controls"></div>
+        <div class="cats-actions">
+          <button id="edit-cats-btn" class="day-view-btn" title="Edit categories">✎</button>
         </div>
       </div>
-
-      <!-- ── One-off Activities ── -->
-      <div class="col" data-col="quickwins">
-        <div class="col-header">
-          <span class="col-title">One-off Activities</span>
-          <span class="col-count" id="count-quickwins"></span>
-        </div>
-        <div class="col-body" id="body-quickwins"></div>
-      </div>
-
-      <!-- ── Pending ── -->
-      <div class="col" data-col="pending">
-        <div class="col-header">
-          <span class="col-title">Pending</span>
-          <span class="col-count" id="count-pending"></span>
-        </div>
-        <div class="col-body" id="body-pending"></div>
-      </div>
-
+      <div class="categories" id="categories-container"></div>
     </div>
+
   </div>
 
   <!-- ── Archive bin tray ── -->
@@ -979,29 +971,48 @@
   // ─────────────────────────────────────────────────
   const OLD_KEY   = 'flowstate.braindump.v1';
   const BOARD_KEY = 'flowstate.board.v1';
-  const COLS = ['braindump', 'mit', 'ongoing', 'aspirational', 'quickwins', 'pending'];
+
+  // Default categories (used for new boards and migration)
+  const DEFAULT_CATEGORIES = [
+    { id: 'mit',          label: 'Urgent / Important',  color: '#e8904a' },
+    { id: 'ongoing',      label: 'Ongoing',              color: '#4ac49a', habit: true },
+    { id: 'aspirational', label: 'Aspirational',         color: '#b46ae8', habit: true },
+    { id: 'quickwins',    label: 'One-off Activities',   color: '#4a9de8' },
+    { id: 'pending',      label: 'Pending',              color: '#c9a84c' },
+  ];
+
+  // Palette for new categories
+  const CAT_COLORS = ['#e8904a','#4ac49a','#b46ae8','#4a9de8','#c9a84c','#e84a7a','#4ae8d4','#a0e84a','#e8c44a','#7c5cff'];
 
   const HINTS = {
-    braindump:    'press enter to add a thought',
-    mit:          'drag urgent & important tasks here',
-    ongoing:      'drag regular habits here',
+    braindump: 'press enter to add a thought',
+  };
+  const DEFAULT_HINTS = {
+    mit: 'drag urgent & important tasks here',
+    ongoing: 'drag regular habits here',
     aspirational: 'drag aspirational habits here',
-    quickwins:    'drag one-off activities here',
-    pending:      'drag tasks waiting on something here',
+    quickwins: 'drag one-off activities here',
+    pending: 'drag tasks waiting on something here',
   };
 
-  const COL_META = {
-    ongoing:      { label: 'Ongoing',      color: '#4ac49a' },
-    aspirational: { label: 'Aspirational', color: '#b46ae8' },
-    mit:          { label: 'Urgent',       color: '#e8904a' },
-    quickwins:    { label: 'One-off',      color: '#4a9de8' },
-    onetime:      { label: 'One-time',     color: '#e84a7a' },
-    braindump:    { label: 'Dump',         color: '#8a8a93' },
-    pending:      { label: 'Pending',      color: '#c9a84c' },
-  };
+  // Dynamic lookup helpers (replace hardcoded COL_META / COL_COLORS / COL_LABELS)
+  function getCatMeta(colId) {
+    if (colId === 'braindump') return { label: 'Dump', color: '#8a8a93' };
+    const cat = (board.categories || []).find(c => c.id === colId);
+    if (cat) return { label: cat.label, color: cat.color };
+    // Legacy fallback
+    const LEGACY = { onetime: { label: 'One-time', color: '#e84a7a' } };
+    return LEGACY[colId] || { label: colId, color: '#8a8a93' };
+  }
+
+  // All column ids (braindump always first)
+  function getCols() {
+    return ['braindump', ...(board.categories || []).map(c => c.id)];
+  }
 
   function emptyBoard() {
     return {
+      categories: DEFAULT_CATEGORIES.map(c => ({ ...c })),
       braindump: [], mit: [], ongoing: [], aspirational: [],
       quickwins: [], pending: [], stock: null, archive: [], starred: [], daySchedule: {},
     };
@@ -1034,6 +1045,10 @@
             b.archive.push({ text, colId: 'onetime', date: todayISO(), source: 'deleted' });
           });
           delete b.onetime;
+        }
+        // Migrate: if no categories stored, inject defaults
+        if (!b.categories || !Array.isArray(b.categories) || b.categories.length === 0) {
+          b.categories = DEFAULT_CATEGORIES.map(c => ({ ...c }));
         }
         return b;
       }
@@ -1222,7 +1237,7 @@
     const scheduled = dvScheduledKeys(todayISO());
     list.innerHTML  = '';
     let count = 0;
-    COLS.forEach(colId => {
+    getCols().forEach(colId => {
       (board[colId] || []).forEach(text => {
         if (scheduled.has(colId + ':' + text)) return;
         list.appendChild(makeDvCard(text, colId));
@@ -1248,8 +1263,9 @@
 
     const catEl = document.createElement('div');
     catEl.className = 'dv-item-cat';
-    catEl.textContent = (COL_META[colId] && COL_META[colId].label) || colId;
-    catEl.style.color  = (COL_META[colId] && COL_META[colId].color) || '#8a8a93';
+    const _m = getCatMeta(colId);
+    catEl.textContent = _m.label;
+    catEl.style.color  = _m.color;
 
     const dvX = document.createElement('button');
     dvX.className = 'dv-item-x';
@@ -1345,8 +1361,9 @@
 
     const catEl = document.createElement('div');
     catEl.className = 'dv-slot-cat';
-    catEl.textContent = (COL_META[colId] && COL_META[colId].label) || colId;
-    catEl.style.color  = (COL_META[colId] && COL_META[colId].color) || '#8a8a93';
+    const _m = getCatMeta(colId);
+    catEl.textContent = _m.label;
+    catEl.style.color  = _m.color;
 
     texts.appendChild(titleEl);
     texts.appendChild(catEl);
@@ -1381,6 +1398,13 @@
 
   document.getElementById('day-view-btn').addEventListener('click', openDayView);
   document.getElementById('dv-close-btn').addEventListener('click', closeDayView);
+
+  document.getElementById('edit-cats-btn').addEventListener('click', () => {
+    catEditMode = !catEditMode;
+    document.getElementById('edit-cats-btn').textContent = catEditMode ? '✓ Done' : '✎';
+    document.getElementById('edit-cats-btn').title = catEditMode ? 'Done editing' : 'Edit categories';
+    renderCategories();
+  });
 
   document.getElementById('dv-dump-input').addEventListener('keydown', (e) => {
     if (e.key !== 'Enter') return;
@@ -1425,9 +1449,10 @@
     saveBoard();
   }
 
-  function isHabitCol(colId)     { return colId === 'ongoing' || colId === 'aspirational'; }
+  function getHabitCols()        { return (board.categories || []).filter(c => c.habit).map(c => c.id); }
+  function isHabitCol(colId)     { return (board.categories || []).some(c => c.id === colId && c.habit); }
   function stockKey(colId, text) { return `${colId}:${text}`; }
-  function habitTotal()          { return board.ongoing.length + board.aspirational.length; }
+  function habitTotal()          { return getHabitCols().reduce((s, id) => s + (board[id] || []).length, 0); }
   function habitDone()           { return stock.checked.size; }
 
   // ─────────────────────────────────────────────────
@@ -1435,9 +1460,9 @@
   // ─────────────────────────────────────────────────
   function archiveCheckedItems() {
     const today = todayISO();
-    ['ongoing', 'aspirational'].forEach(colId => {
+    getHabitCols().forEach(colId => {
       const keep = [], arch = [];
-      board[colId].forEach(text => {
+      (board[colId] || []).forEach(text => {
         (stock.checked.has(stockKey(colId, text)) ? arch : keep).push(text);
       });
       board[colId] = keep;
@@ -1450,6 +1475,7 @@
     if (!item) return;
     board.archive.splice(idx, 1);
     stock.checked.delete(stockKey(item.colId, item.text));
+    if (!board[item.colId]) board[item.colId] = [];
     board[item.colId].push(item.text);
     persistStock();
     renderCol(item.colId);
@@ -1496,23 +1522,6 @@
   // ─────────────────────────────────────────────────
   //  Move-to menu
   // ─────────────────────────────────────────────────
-  const COL_COLORS = {
-    braindump:    '#8a8a93',
-    mit:          '#e8904a',
-    ongoing:      '#4ac49a',
-    aspirational: '#b46ae8',
-    quickwins:    '#4a9de8',
-    pending:      '#c9a84c',
-  };
-  const COL_LABELS = {
-    braindump:    'Brain Dump',
-    mit:          'Urgent / Important',
-    ongoing:      'Ongoing',
-    aspirational: 'Aspirational',
-    quickwins:    'One-off Activities',
-    pending:      'Pending',
-  };
-
   function showMoveMenu(anchorEl, colId, index) {
     document.querySelectorAll('.move-menu').forEach(m => m.remove());
 
@@ -1527,16 +1536,17 @@
     lbl.textContent = 'Move to…';
     menu.appendChild(lbl);
 
-    COLS.filter(c => c !== colId).forEach(destId => {
+    getCols().filter(c => c !== colId).forEach(destId => {
       const btn = document.createElement('button');
       btn.className = 'move-menu-item';
 
+      const meta = getCatMeta(destId);
       const dot = document.createElement('span');
       dot.className = 'move-menu-dot';
-      dot.style.background = COL_COLORS[destId] || '#8a8a93';
+      dot.style.background = meta.color;
 
       btn.appendChild(dot);
-      btn.appendChild(document.createTextNode(COL_LABELS[destId] || destId));
+      btn.appendChild(document.createTextNode(meta.label));
 
       btn.addEventListener('click', (ev) => {
         ev.stopPropagation();
@@ -1760,7 +1770,7 @@
     if (items.length === 0) {
       const hint = document.createElement('div');
       hint.className = 'empty-hint';
-      hint.textContent = HINTS[colId] || 'drag here';
+      hint.textContent = HINTS[colId] || DEFAULT_HINTS[colId] || 'drag here';
       body.appendChild(hint);
     } else {
       items.forEach((text, i) => body.appendChild(makePill(text, colId, i)));
@@ -1768,7 +1778,169 @@
     if (countEl) countEl.textContent = items.length || '';
   }
 
-  function render() { COLS.forEach(renderCol); }
+  // ─────────────────────────────────────────────────
+  //  Category management
+  // ─────────────────────────────────────────────────
+  let catEditMode = false;
+
+  function deleteCategory(catId) {
+    const items = board[catId] || [];
+    const today = todayISO();
+    items.forEach(text => {
+      board.archive.push({ text, colId: catId, date: today, source: 'deleted' });
+      starredSet.delete(starKey(catId, text));
+    });
+    board.starred = [...starredSet];
+    board[catId] = [];
+    board.categories = board.categories.filter(c => c.id !== catId);
+    saveBoard();
+    renderCategories();
+    renderBin();
+  }
+
+  function addCategory(label, color) {
+    const id = 'cat_' + Date.now();
+    board.categories.push({ id, label: label || 'New', color });
+    board[id] = [];
+    saveBoard();
+    renderCategories();
+  }
+
+  function nextCatColor() {
+    const usedColors = new Set((board.categories || []).map(c => c.color));
+    return CAT_COLORS.find(c => !usedColors.has(c)) || CAT_COLORS[board.categories.length % CAT_COLORS.length];
+  }
+
+  function showAddCatForm(container) {
+    // Remove any existing form
+    container.querySelectorAll('.new-cat-card').forEach(el => el.remove());
+    container.querySelectorAll('.add-cat-btn').forEach(el => el.remove());
+
+    let chosenColor = nextCatColor();
+
+    const card = document.createElement('div');
+    card.className = 'new-cat-card';
+
+    const inp = document.createElement('input');
+    inp.className = 'new-cat-input';
+    inp.placeholder = 'Category name';
+    inp.autocomplete = 'off';
+    card.appendChild(inp);
+
+    const colorsEl = document.createElement('div');
+    colorsEl.className = 'new-cat-colors';
+    CAT_COLORS.forEach(c => {
+      const sw = document.createElement('button');
+      sw.className = 'new-cat-swatch' + (c === chosenColor ? ' selected' : '');
+      sw.style.background = c;
+      sw.title = c;
+      sw.addEventListener('click', () => {
+        chosenColor = c;
+        colorsEl.querySelectorAll('.new-cat-swatch').forEach(s => s.classList.toggle('selected', s.style.background === c || s.style.background === chosenColor));
+      });
+      colorsEl.appendChild(sw);
+    });
+    card.appendChild(colorsEl);
+
+    const confirm = document.createElement('button');
+    confirm.className = 'new-cat-confirm';
+    confirm.textContent = 'Add';
+    const doAdd = () => {
+      const label = inp.value.trim();
+      if (!label) { inp.focus(); return; }
+      addCategory(label, chosenColor);
+    };
+    confirm.addEventListener('click', doAdd);
+    inp.addEventListener('keydown', (e) => { if (e.key === 'Enter') doAdd(); if (e.key === 'Escape') renderCategories(); });
+    card.appendChild(confirm);
+
+    container.appendChild(card);
+    inp.focus();
+  }
+
+  function renderCategories() {
+    const container = document.getElementById('categories-container');
+    container.innerHTML = '';
+
+    (board.categories || []).forEach(cat => {
+      const col = document.createElement('div');
+      col.className = 'col';
+      col.dataset.col = cat.id;
+
+      const header = document.createElement('div');
+      header.className = 'col-header';
+
+      if (catEditMode) {
+        const dot = document.createElement('button');
+        dot.className = 'col-color-dot';
+        dot.style.background = cat.color;
+        dot.title = 'Cycle color';
+        dot.addEventListener('click', () => {
+          const idx = CAT_COLORS.indexOf(cat.color);
+          cat.color = CAT_COLORS[(idx + 1) % CAT_COLORS.length];
+          dot.style.background = cat.color;
+          saveBoard();
+          // refresh day view labels too
+          if (document.getElementById('day-view').classList.contains('open')) renderDvLeft();
+        });
+        header.appendChild(dot);
+
+        const inp = document.createElement('input');
+        inp.className = 'col-rename-input';
+        inp.value = cat.label;
+        inp.spellcheck = false;
+        inp.addEventListener('change', () => {
+          const v = inp.value.trim();
+          if (v) { cat.label = v; saveBoard(); }
+        });
+        inp.addEventListener('keydown', (e) => { if (e.key === 'Enter') inp.blur(); });
+        header.appendChild(inp);
+
+        const del = document.createElement('button');
+        del.className = 'col-delete-btn';
+        del.title = 'Delete category';
+        del.textContent = '×';
+        del.addEventListener('click', () => deleteCategory(cat.id));
+        header.appendChild(del);
+      } else {
+        const title = document.createElement('span');
+        title.className = 'col-title';
+        title.textContent = cat.label;
+        title.style.color = cat.color;
+        header.appendChild(title);
+
+        const count = document.createElement('span');
+        count.className = 'col-count';
+        count.id = 'count-' + cat.id;
+        header.appendChild(count);
+      }
+
+      col.appendChild(header);
+
+      const body = document.createElement('div');
+      body.className = 'col-body';
+      body.id = 'body-' + cat.id;
+      col.appendChild(body);
+
+      container.appendChild(col);
+      setupColDragDrop(cat.id, col, body);
+      renderCol(cat.id);
+    });
+
+    if (catEditMode) {
+      const addBtn = document.createElement('button');
+      addBtn.className = 'add-cat-btn';
+      addBtn.title = 'Add category';
+      addBtn.textContent = '+';
+      addBtn.addEventListener('click', () => showAddCatForm(container));
+      container.appendChild(addBtn);
+    }
+  }
+
+  function render() {
+    renderCategories();
+    renderCol('braindump');
+  }
 
   // ─────────────────────────────────────────────────
   //  Stock controls
@@ -1837,13 +2009,10 @@
   }
 
   // ─────────────────────────────────────────────────
-  //  Drag & drop
+  //  Drag & drop (per-column, called by renderCategories)
   // ─────────────────────────────────────────────────
-  COLS.forEach(colId => {
-    const col  = document.querySelector(`.col[data-col="${colId}"]`);
-    const body = document.getElementById('body-' + colId);
+  function setupColDragDrop(colId, col, body) {
     let enterCount = 0;
-
     col.addEventListener('dragenter', (e) => { if (!drag) return; e.preventDefault(); enterCount++; col.classList.add('drag-over'); });
     col.addEventListener('dragleave', () => {
       if (!drag) return;
@@ -1857,7 +2026,7 @@
     col.addEventListener('drop', (e) => {
       e.preventDefault(); enterCount = 0; col.classList.remove('drag-over');
       if (!drag) { clearDropLine(); return; }
-      const insertAt = dropTarget?.insertIndex ?? board[colId].length;
+      const insertAt = dropTarget?.insertIndex ?? (board[colId] || []).length;
       clearDropLine();
 
       if (drag.source === 'archive') {
@@ -1865,6 +2034,7 @@
         if (!item) return;
         board.archive.splice(drag.idx, 1);
         stock.checked.delete(stockKey(item.colId, item.text));
+        if (!board[colId]) board[colId] = [];
         board[colId].splice(insertAt, 0, item.text);
         persistStock(); renderCol(colId); renderBin();
       } else {
@@ -1876,13 +2046,19 @@
           saveBoard(); renderCol(colId);
         } else {
           const [item] = board[srcId].splice(srcIdx, 1);
+          if (!board[colId]) board[colId] = [];
           board[colId].splice(insertAt, 0, item);
           dvUpdateColId(item, srcId, colId);
           saveBoard(); renderCol(srcId); renderCol(colId);
         }
       }
     });
-  });
+  }
+
+  // Also set up drag-drop for the static braindump column
+  setupColDragDrop('braindump',
+    document.querySelector('.col[data-col="braindump"]'),
+    document.getElementById('body-braindump'));
 
   // ─────────────────────────────────────────────────
   //  Archive bin tray
@@ -1911,7 +2087,7 @@
       countEl.textContent = archive.length;
       countEl.style.display = '';
       archive.forEach((item, idx) => {
-        const meta = COL_META[item.colId] || { label: item.colId, color: '#8a8a93' };
+        const meta = getCatMeta(item.colId);
         const pill = document.createElement('div');
         pill.className = 'archive-pill';
         pill.draggable = true;
