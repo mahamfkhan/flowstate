@@ -185,7 +185,7 @@
   /* ── Right-side area ─────────────────────────── */
   .board-right {
     flex: 1; display: flex; flex-direction: column;
-    gap: 9px; min-height: 0;
+    gap: 9px; min-height: 0; min-width: 0;
   }
   .cats-toolbar {
     flex-shrink: 0; display: flex; align-items: center;
@@ -194,7 +194,10 @@
   .cats-actions { display: flex; align-items: center; gap: 6px; }
 
   /* ── Categories ───────────────────────────────── */
-  .categories { flex: 1; display: flex; gap: 14px; min-height: 0; overflow-x: auto; }
+  .categories { flex: 1; display: flex; gap: 14px; min-height: 0; overflow-x: auto; padding-bottom: 6px; }
+  .categories::-webkit-scrollbar { height: 3px; }
+  .categories::-webkit-scrollbar-track { background: transparent; }
+  .categories::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
   .categories .col { flex: 0 0 210px; }
 
   /* ── Stock buttons ────────────────────────────── */
