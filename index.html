@@ -5,19 +5,22 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>zeropoint</title>
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%231a3a5c'/%3E%3Crect width='32' height='18' fill='%23c8d8e8'/%3E%3Cpolygon points='16,4 20,13 12,13' fill='%23e8e0d8'/%3E%3Cpolygon points='16,4 17.5,7 14.5,7' fill='white'/%3E%3Crect y='14' width='32' height='18' fill='%231a3a5c'/%3E%3Cellipse cx='8' cy='16' rx='10' ry='7' fill='%231e4a7a'/%3E%3Cellipse cx='24' cy='18' rx='10' ry='6' fill='%231e4a7a'/%3E%3Cellipse cx='16' cy='20' rx='12' ry='5' fill='%23245a8a'/%3E%3Cpath d='M0,13 Q4,6 8,11 Q4,11 2,14 Z' fill='%231e4a7a'/%3E%3Cpath d='M0,12 Q4,5 8,10 Q5,9 3,12 Z' fill='%23245a8a'/%3E%3Cpath d='M0,12 Q2,8 5,10 Q3,10 1,13 Z' fill='white' opacity='0.9'/%3E%3Cpath d='M4,10 Q6,7 8,9 Q6,9 5,11 Z' fill='white' opacity='0.85'/%3E%3Cpath d='M22,10 Q26,5 30,9 Q28,9 26,12 Z' fill='%231e4a7a'/%3E%3Cpath d='M22,10 Q25,6 28,9 Q26,9 24,11 Z' fill='white' opacity='0.9'/%3E%3Cpath d='M26,8 Q28,5 30,7 Q29,8 27,10 Z' fill='white' opacity='0.85'/%3E%3Cpath d='M12,12 Q14,8 17,11 Q15,11 13,13 Z' fill='%231e4a7a'/%3E%3Cpath d='M12,11 Q14,7 17,10 Q15,10 13,12 Z' fill='white' opacity='0.8'/%3E%3Cpath d='M0,24 Q8,20 16,24 Q24,28 32,24 L32,32 L0,32 Z' fill='%231a3a5c'/%3E%3Cpath d='M0,26 Q8,22 16,26 Q24,30 32,26 L32,32 L0,32 Z' fill='%23152d47'/%3E%3C/svg%3E" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #0e0e10;
-    --bg-elev: #18181b;
-    --bg-elev2: #1e1e23;
-    --border: #2a2a30;
-    --text: #ececf1;
-    --text-dim: #8a8a93;
-    --accent: #7c5cff;
-    --pill-bg: #1f1f24;
-    --pill-bg-hover: #26262d;
-    --danger: #ff6b6b;
-    --green: #4ac49a;
+    --bg: #242b21;
+    --bg-elev: #2d3527;
+    --bg-elev2: #343f2d;
+    --border: #454f3d;
+    --text: #e8dfc7;
+    --text-dim: #a8a488;
+    --accent: #e08a52;
+    --pill-bg: #2b3325;
+    --pill-bg-hover: #343e2d;
+    --danger: #d97a68;
+    --green: #8fae7f;
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -26,7 +29,8 @@
     height: 100%;
     background: var(--bg);
     color: var(--text);
-    font-family: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", Roboto, sans-serif;
+    font-family: 'Poppins', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-weight: 300;
     -webkit-font-smoothing: antialiased;
     overflow: hidden;
   }
@@ -102,7 +106,7 @@
     flex-shrink: 0; transition: background 0.3s ease, opacity 0.3s ease;
     align-self: center; cursor: default;
   }
-  .sync-dot.syncing { background: #ffc428; opacity: 1; animation: sync-pulse 1s infinite; }
+  .sync-dot.syncing { background: #d9a441; opacity: 1; animation: sync-pulse 1s infinite; }
   .sync-dot.synced  { background: var(--green); opacity: 1; }
   .sync-dot.error   { background: var(--danger); opacity: 1; }
   @keyframes sync-pulse { 0%,100%{opacity:1} 50%{opacity:.35} }
@@ -126,16 +130,16 @@
     font-family: inherit; cursor: pointer; border: none;
     border-radius: 999px; font-size: 12px; font-weight: 600;
     padding: 5px 13px; white-space: nowrap;
-    background: rgba(255,196,40,0.1); color: #ffc428;
+    background: rgba(217,164,65,0.14); color: #d9a441;
     transition: background 0.15s ease;
   }
-  .star-trigger-btn:hover { background: rgba(255,196,40,0.2); }
+  .star-trigger-btn:hover { background: rgba(217,164,65,0.24); }
 
   .star-done-btn {
     font-family: inherit; cursor: pointer; border: none;
     border-radius: 999px; font-size: 12px; font-weight: 600;
     padding: 5px 13px; white-space: nowrap;
-    background: #ffc428; color: #0a0a0c;
+    background: #d9a441; color: #1c2118;
     transition: opacity 0.15s ease;
   }
   .star-done-btn:hover { opacity: 0.82; }
@@ -150,16 +154,16 @@
     transition: color 0.12s ease;
     margin-top: 1px;
   }
-  .star-btn:hover  { color: #ffc428; }
-  .star-btn.active { color: #ffc428; }
+  .star-btn:hover  { color: #d9a441; }
+  .star-btn.active { color: #d9a441; }
 
   /* Starred glow on pills */
   .pill.starred {
-    border-color: rgba(255,196,40,0.38);
-    box-shadow: 0 0 0 1px rgba(255,196,40,0.08), 0 0 12px rgba(255,196,40,0.16);
-    background: rgba(255,196,40,0.03);
+    border-color: rgba(217,164,65,0.38);
+    box-shadow: 0 0 0 1px rgba(217,164,65,0.1), 0 0 12px rgba(217,164,65,0.14);
+    background: rgba(217,164,65,0.06);
   }
-  .pill.starred:hover { background: rgba(255,196,40,0.06); }
+  .pill.starred:hover { background: rgba(217,164,65,0.12); }
 
   /* ── Board ────────────────────────────────────── */
   .board {
@@ -179,7 +183,7 @@
     overflow: hidden;
     transition: border-color 0.15s ease;
   }
-  .col.drag-over { border-color: rgba(124,92,255,0.55); }
+  .col.drag-over { border-color: rgba(224,138,82,0.55); }
   .col.braindump { flex: 0 0 230px; }
 
   /* ── Right-side area ─────────────────────────── */
@@ -207,12 +211,12 @@
     padding: 5px 11px; transition: background 0.15s ease, opacity 0.15s ease;
     white-space: nowrap;
   }
-  .take-stock-btn { background: rgba(124,92,255,0.14); color: var(--accent); }
-  .take-stock-btn:hover { background: rgba(124,92,255,0.26); }
-  .done-btn { background: var(--green); color: #0a0a0c; }
+  .take-stock-btn { background: rgba(224,138,82,0.16); color: var(--accent); }
+  .take-stock-btn:hover { background: rgba(224,138,82,0.28); }
+  .done-btn { background: var(--green); color: #1c2118; }
   .done-btn:hover { opacity: 0.82; }
-  .edit-stock-btn { background: rgba(74,196,154,0.14); color: var(--green); }
-  .edit-stock-btn:hover { background: rgba(74,196,154,0.26); }
+  .edit-stock-btn { background: rgba(143,174,127,0.16); color: var(--green); }
+  .edit-stock-btn:hover { background: rgba(143,174,127,0.28); }
 
   /* Progress summary */
   .stock-result { display: flex; align-items: center; gap: 9px; }
@@ -252,14 +256,14 @@
   /* ── Add category button ──────────────────────── */
   .add-cat-btn {
     flex-shrink: 0; align-self: flex-start; margin-top: 2px;
-    background: rgba(124,92,255,0.1); border: 1px dashed rgba(124,92,255,0.35);
+    background: rgba(224,138,82,0.12); border: 1px dashed rgba(224,138,82,0.4);
     border-radius: 10px; color: var(--accent);
     font-size: 20px; font-weight: 300; line-height: 1;
     width: 36px; cursor: pointer; padding: 6px 0;
     display: flex; align-items: center; justify-content: center;
     transition: background 0.15s ease, border-color 0.15s ease;
   }
-  .add-cat-btn:hover { background: rgba(124,92,255,0.2); border-color: rgba(124,92,255,0.6); }
+  .add-cat-btn:hover { background: rgba(224,138,82,0.22); border-color: rgba(224,138,82,0.65); }
 
   /* ── New-category form card ───────────────────── */
   .new-cat-card {
@@ -279,7 +283,7 @@
     width: 16px; height: 16px; border-radius: 50%; cursor: pointer; border: 2px solid transparent;
     transition: transform 0.12s ease, border-color 0.12s ease;
   }
-  .new-cat-swatch.selected { border-color: white; transform: scale(1.25); }
+  .new-cat-swatch.selected { border-color: var(--text); transform: scale(1.25); }
   .new-cat-confirm {
     font-family: inherit; cursor: pointer; border: none;
     border-radius: 999px; font-size: 11px; font-weight: 600;
@@ -336,7 +340,7 @@
     -webkit-appearance: none; appearance: none;
     -webkit-tap-highlight-color: transparent;
   }
-  .pill .x:hover { color: var(--danger); background: rgba(255,107,107,0.1) !important; }
+  .pill .x:hover { color: var(--danger); background: rgba(217,122,104,0.16) !important; }
 
   /* Tick button */
   .tick-btn {
@@ -347,7 +351,7 @@
     transition: all 0.15s ease; margin-top: 3px; padding: 0; line-height: 1;
   }
   .tick-btn:hover { border-color: var(--green); }
-  .tick-btn.ticked { background: var(--green); border-color: var(--green); color: #0a0a0c; }
+  .tick-btn.ticked { background: var(--green); border-color: var(--green); color: #1c2118; }
 
   /* ── Drop line ────────────────────────────────── */
   .drop-line {
@@ -463,7 +467,7 @@
     outline: none; font-family: inherit; transition: border-color 0.15s ease, box-shadow 0.15s ease;
   }
   .dump-input::placeholder { color: var(--text-dim); }
-  .dump-input:focus { border-color: var(--accent); box-shadow: 0 0 0 4px rgba(124,92,255,0.12); }
+  .dump-input:focus { border-color: var(--accent); box-shadow: 0 0 0 4px rgba(224,138,82,0.18); }
 
   .dump-pills {
     width: 100%; max-width: 680px;
@@ -559,6 +563,8 @@
     background: var(--accent); border-color: var(--accent); color: #fff;
   }
   .edit-popup-btn.primary:hover { opacity: 0.88; }
+  .edit-popup-btn.danger { color: var(--danger); border-color: var(--danger); margin-right: auto; }
+  .edit-popup-btn.danger:hover { background: rgba(217,122,104,0.16); }
   .pill .edit-btn {
     flex-shrink: 0; margin-left: 2px; margin-top: 0;
     background: transparent; border: none; color: var(--text-dim);
@@ -574,10 +580,10 @@
     font-family: inherit; cursor: pointer; border: none;
     border-radius: 999px; font-size: 12px; font-weight: 600;
     padding: 5px 13px; white-space: nowrap;
-    background: rgba(94,106,210,0.12); color: var(--accent);
+    background: rgba(123,160,181,0.16); color: #7ba0b5;
     transition: background 0.15s ease;
   }
-  .day-view-btn:hover { background: rgba(94,106,210,0.22); }
+  .day-view-btn:hover { background: rgba(123,160,181,0.26); }
 
   .day-view {
     position: fixed; inset: 0; z-index: 400;
@@ -661,7 +667,7 @@
     align-content: flex-start; border-radius: 6px; padding: 2px 4px;
     transition: background 0.1s ease;
   }
-  .dv-hour-drop.drag-over { background: rgba(94,106,210,0.1); }
+  .dv-hour-drop.drag-over { background: rgba(123,160,181,0.14); }
   .dv-slot-item {
     background: var(--pill-bg); border: 1px solid var(--border); border-radius: 6px;
     padding: 4px 6px 4px 8px; display: flex; align-items: center; gap: 6px;
@@ -678,6 +684,242 @@
     font-size: 14px; line-height: 1; cursor: pointer; padding: 0 2px; border-radius: 3px;
   }
   .dv-slot-x:hover { color: var(--danger); }
+
+  /* ── Sticky Notes ──────────────────────────────── */
+  .sticky-view-btn {
+    font-family: inherit; cursor: pointer; border: none;
+    border-radius: 999px; font-size: 12px; font-weight: 600;
+    padding: 5px 13px; white-space: nowrap;
+    background: rgba(217,164,65,0.14); color: #d9a441;
+    transition: background 0.15s ease;
+  }
+  .sticky-view-btn:hover { background: rgba(217,164,65,0.24); }
+
+  .sticky-view {
+    position: fixed; inset: 0; z-index: 400;
+    background: #2f4a45; display: none; flex-direction: column;
+    padding: 24px; gap: 20px;
+  }
+  .sticky-view.open { display: flex; animation: dvIn 0.12s ease-out; }
+
+  .sticky-header {
+    flex-shrink: 0; display: flex; align-items: center; justify-content: space-between;
+  }
+  .sticky-title { font-size: 20px; font-weight: 700; letter-spacing: -0.03em; color: #f4ead9; }
+  .sticky-sub   { font-size: 13px; color: #a9c0b6; margin-top: 2px; }
+
+  .sticky-close-btn {
+    font-family: inherit; cursor: pointer; border: 1px solid rgba(244,234,217,0.16);
+    border-radius: 999px; font-size: 12px; font-weight: 500;
+    padding: 5px 14px; background: transparent; color: #a9c0b6;
+    transition: background 0.15s ease, color 0.15s ease;
+  }
+  .sticky-close-btn:hover { background: rgba(244,234,217,0.1); color: #f4ead9; }
+
+  .sticky-board {
+    flex: 1; overflow-y: auto; display: flex; flex-wrap: wrap;
+    align-content: flex-start; gap: 18px; padding-bottom: 20px;
+  }
+
+  .sticky-note { width: 190px; height: 190px; perspective: 1000px; flex-shrink: 0; }
+  .sticky-note-inner {
+    position: relative; width: 100%; height: 100%;
+    transition: transform 0.5s cubic-bezier(0.4,0.2,0.2,1);
+    transform-style: preserve-3d; cursor: pointer;
+  }
+  .sticky-note.flipped .sticky-note-inner { transform: rotateY(180deg); }
+
+  .sticky-note-face {
+    position: absolute; inset: 0; border-radius: 10px;
+    background: #e8c468; color: var(--text);
+    padding: 14px 14px 12px; backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    box-shadow: 0 10px 26px rgba(0,0,0,0.4);
+    display: flex; flex-direction: column;
+    font-size: 13.5px; line-height: 1.45; word-break: break-word;
+    overflow: hidden;
+  }
+  .sticky-note-face.back { transform: rotateY(180deg); }
+  .sticky-note-text { flex: 1; overflow-y: auto; white-space: pre-wrap; padding-top: 2px; }
+  .sticky-note-text::-webkit-scrollbar { width: 3px; }
+  .sticky-note-text::-webkit-scrollbar-thumb { background: rgba(58,43,34,0.3); border-radius: 2px; }
+  .sticky-note-empty { opacity: 0.45; font-style: italic; }
+
+  .sticky-note-top { display: flex; align-items: flex-start; justify-content: flex-end; gap: 4px; flex-shrink: 0; }
+  .sticky-note-pencil, .sticky-note-delete {
+    background: rgba(58,43,34,0.12); border: none; cursor: pointer;
+    border-radius: 50%; width: 22px; height: 22px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px; color: var(--text); opacity: 0.55;
+    transition: opacity 0.12s ease, background 0.12s ease;
+  }
+  .sticky-note-pencil:hover, .sticky-note-delete:hover { opacity: 1; background: rgba(58,43,34,0.2); }
+
+  .sticky-add-btn {
+    width: 190px; height: 190px; flex-shrink: 0;
+    background: rgba(232,196,104,0.08); border: 1.5px dashed rgba(232,196,104,0.4);
+    border-radius: 10px; color: #e8c468;
+    font-size: 30px; font-weight: 300; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: background 0.15s ease, border-color 0.15s ease;
+  }
+  .sticky-add-btn:hover { background: rgba(232,196,104,0.14); border-color: rgba(232,196,104,0.65); }
+
+  /* ── Sticky note edit form ─────────────────────── */
+  .sticky-form-overlay {
+    position: fixed; inset: 0; z-index: 700;
+    background: rgba(18,28,25,0.55);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .sticky-form-card {
+    width: 100%; max-width: 380px; margin: 20px;
+    background: #24403c; border: 1px solid rgba(244,234,217,0.12);
+    border-radius: 14px; padding: 20px;
+    display: flex; flex-direction: column; gap: 12px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+    animation: pop 0.12s ease-out;
+  }
+  .sticky-form-title { font-size: 14px; font-weight: 700; color: #f4ead9; }
+  .sticky-form-label {
+    font-size: 10px; font-weight: 600; text-transform: uppercase;
+    letter-spacing: 0.08em; color: #a9c0b6; margin-bottom: 5px;
+  }
+  .sticky-form-field textarea {
+    width: 100%; background: #1c332f; border: 1px solid rgba(244,234,217,0.14);
+    color: #f4ead9; font-size: 13px; padding: 9px 11px; border-radius: 9px;
+    outline: none; font-family: inherit; resize: vertical; min-height: 64px;
+    box-sizing: border-box; transition: border-color 0.15s ease;
+  }
+  .sticky-form-field textarea:focus { border-color: #e8c468; }
+  .sticky-form-actions { display: flex; gap: 8px; justify-content: flex-end; margin-top: 4px; }
+  .sticky-form-btn {
+    background: transparent; border: 1px solid rgba(244,234,217,0.16); color: #a9c0b6;
+    font-family: inherit; font-size: 12px; padding: 6px 14px; border-radius: 8px;
+    cursor: pointer; transition: background 0.1s ease, color 0.1s ease;
+  }
+  .sticky-form-btn:hover { background: rgba(244,234,217,0.1); color: #f4ead9; }
+  .sticky-form-btn.primary { background: #e8c468; border-color: #e8c468; color: var(--text); font-weight: 600; }
+  .sticky-form-btn.primary:hover { opacity: 0.88; }
+
+  /* ── Calendar / Done log ───────────────────────── */
+  .cal-view-btn {
+    font-family: inherit; cursor: pointer; border: none;
+    border-radius: 999px; font-size: 12px; font-weight: 600;
+    padding: 5px 13px; white-space: nowrap;
+    background: rgba(143,174,127,0.16); color: var(--green);
+    transition: background 0.15s ease;
+  }
+  .cal-view-btn:hover { background: rgba(143,174,127,0.26); }
+
+  .cal-view {
+    position: fixed; inset: 0; z-index: 400;
+    background: var(--bg); display: none; flex-direction: column;
+    padding: 24px; gap: 16px;
+  }
+  .cal-view.open { display: flex; animation: dvIn 0.12s ease-out; }
+
+  .cal-header { flex-shrink: 0; display: flex; align-items: center; justify-content: space-between; }
+  .cal-title { font-size: 20px; font-weight: 700; letter-spacing: -0.03em; }
+  .cal-sub   { font-size: 13px; color: var(--text-dim); margin-top: 2px; }
+
+  .cal-close-btn {
+    font-family: inherit; cursor: pointer; border: 1px solid var(--border);
+    border-radius: 999px; font-size: 12px; font-weight: 500;
+    padding: 5px 14px; background: transparent; color: var(--text-dim);
+    transition: background 0.15s ease, color 0.15s ease;
+  }
+  .cal-close-btn:hover { background: var(--pill-bg-hover); color: var(--text); }
+
+  .cal-body { flex: 1; display: flex; gap: 24px; min-height: 0; overflow: hidden; }
+
+  .cal-list {
+    flex: 1; overflow-y: auto; display: flex; flex-direction: column;
+    padding-right: 4px; max-width: 720px;
+  }
+  .cal-list::-webkit-scrollbar { width: 3px; }
+  .cal-list::-webkit-scrollbar-track { background: transparent; }
+  .cal-list::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+  .cal-day-row { display: flex; align-items: center; gap: 16px; padding: 10px 4px; border-bottom: 1px solid var(--border); border-radius: 8px; transition: background 0.1s ease; }
+  .cal-day-row.drag-over { background: rgba(224,138,82,0.1); }
+  .cal-day-date { width: 150px; flex-shrink: 0; font-size: 13px; color: var(--text-dim); }
+  .cal-day-row.today .cal-day-date { color: var(--accent); font-weight: 700; }
+  .cal-day-dots { flex: 1; display: flex; flex-wrap: wrap; gap: 7px; align-items: center; }
+
+  .cal-dot {
+    width: 14px; height: 14px; border-radius: 50%; cursor: pointer; flex-shrink: 0;
+    box-shadow: 0 0 0 1px rgba(232,223,199,0.12);
+    transition: transform 0.12s ease;
+  }
+  .cal-dot:hover { transform: scale(1.35); }
+  .cal-dot.dragging { opacity: 0.25; }
+
+  .cal-add-dot-btn {
+    width: 18px; height: 18px; border-radius: 50%; flex-shrink: 0;
+    border: 1.5px dashed var(--border); background: transparent; color: var(--text-dim);
+    font-size: 13px; line-height: 1; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: border-color 0.12s ease, color 0.12s ease;
+  }
+  .cal-add-dot-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+  .cal-legend {
+    width: 220px; flex-shrink: 0; display: flex; flex-direction: column;
+    gap: 8px; overflow-y: auto; padding: 2px 4px 20px 2px;
+  }
+  .cal-legend-title {
+    font-size: 10px; font-weight: 600; text-transform: uppercase;
+    letter-spacing: 0.08em; color: var(--text-dim); margin-bottom: 2px;
+  }
+  .cal-legend-item {
+    display: flex; align-items: center; gap: 8px;
+    padding: 6px 8px; border-radius: 9px;
+    background: var(--bg-elev); border: 1px solid var(--border);
+  }
+  .cal-legend-dot {
+    width: 12px; height: 12px; border-radius: 50%; flex-shrink: 0;
+    border: none; cursor: pointer; padding: 0; transition: transform 0.15s ease;
+  }
+  .cal-legend-dot:hover { transform: scale(1.3); }
+  .cal-legend-label {
+    flex: 1; min-width: 0; background: transparent; border: none;
+    color: var(--text); font-family: inherit; font-size: 12px; outline: none; padding: 2px 0;
+  }
+  .cal-legend-del {
+    flex-shrink: 0; background: none; border: none; color: var(--text-dim);
+    cursor: pointer; font-size: 14px; line-height: 1; padding: 0 2px;
+    opacity: 0; transition: opacity 0.12s ease, color 0.12s ease;
+  }
+  .cal-legend-item:hover .cal-legend-del { opacity: 1; }
+  .cal-legend-del:hover { color: var(--danger); }
+  .cal-legend-add {
+    font-family: inherit; cursor: pointer;
+    background: rgba(224,138,82,0.12); border: 1px dashed rgba(224,138,82,0.4);
+    border-radius: 9px; color: var(--accent); font-size: 12px; font-weight: 600;
+    padding: 8px; transition: background 0.15s ease, border-color 0.15s ease;
+  }
+  .cal-legend-add:hover { background: rgba(224,138,82,0.22); border-color: rgba(224,138,82,0.65); }
+
+  .cal-cat-picker { display: flex; flex-wrap: wrap; gap: 6px; }
+  .cal-cat-chip {
+    display: flex; align-items: center; gap: 6px;
+    background: var(--pill-bg); border: 1px solid var(--border); color: var(--text-dim);
+    font-family: inherit; font-size: 11px; padding: 4px 10px 4px 7px; border-radius: 999px;
+    cursor: pointer; transition: border-color 0.12s ease, color 0.12s ease;
+  }
+  .cal-cat-chip .dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+  .cal-cat-chip.selected { border-color: var(--text); color: var(--text); }
+  .cal-cat-chip:hover { color: var(--text); }
+  .cal-cat-empty-hint { font-size: 11px; color: var(--text-dim); opacity: 0.7; }
+
+  .cal-tooltip {
+    position: fixed; z-index: 800;
+    background: var(--bg-elev2); border: 1px solid var(--border); color: var(--text);
+    font-size: 12px; padding: 5px 9px; border-radius: 7px;
+    pointer-events: none; white-space: nowrap;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+    opacity: 0; transition: opacity 0.1s ease;
+  }
 
   /* ── Mobile responsive ────────────────────────── */
   @media (max-width: 768px) {
@@ -797,6 +1039,8 @@
     <div class="logo">zero<span>point</span></div>
     <div id="star-controls"></div>
     <button id="day-view-btn" class="day-view-btn">⊞ Day view</button>
+    <button id="sticky-view-btn" class="sticky-view-btn">🗒 Sticky notes</button>
+    <button id="cal-view-btn" class="cal-view-btn">📅 Calendar</button>
     <div id="sync-dot" class="sync-dot" title="GitHub sync status"></div>
   </div>
 
@@ -889,6 +1133,33 @@
       <div class="dv-right">
         <div class="dv-timeline" id="dv-timeline"></div>
       </div>
+    </div>
+  </div>
+
+  <!-- ── Sticky Notes overlay ── -->
+  <div id="sticky-view" class="sticky-view">
+    <div class="sticky-header">
+      <div>
+        <div class="sticky-title">Sticky notes</div>
+        <div class="sticky-sub">click a note to flip it · ✎ to edit</div>
+      </div>
+      <button class="sticky-close-btn" id="sticky-close-btn">✕  Close</button>
+    </div>
+    <div class="sticky-board" id="sticky-board"></div>
+  </div>
+
+  <!-- ── Calendar / Done log overlay ── -->
+  <div id="cal-view" class="cal-view">
+    <div class="cal-header">
+      <div>
+        <div class="cal-title">Calendar</div>
+        <div class="cal-sub">tap + to log something you did · hover a dot for details</div>
+      </div>
+      <button class="cal-close-btn" id="cal-close-btn">✕  Close</button>
+    </div>
+    <div class="cal-body">
+      <div class="cal-list" id="cal-list"></div>
+      <div class="cal-legend" id="cal-legend"></div>
     </div>
   </div>
 
@@ -994,15 +1265,22 @@
 
   // Default categories (used for new boards and migration)
   const DEFAULT_CATEGORIES = [
-    { id: 'mit',          label: 'Urgent / Important',  color: '#e8904a' },
-    { id: 'ongoing',      label: 'Ongoing',              color: '#4ac49a', habit: true },
-    { id: 'aspirational', label: 'Aspirational',         color: '#b46ae8', habit: true },
-    { id: 'quickwins',    label: 'One-off Activities',   color: '#4a9de8' },
-    { id: 'pending',      label: 'Pending',              color: '#c9a84c' },
+    { id: 'mit',          label: 'Urgent / Important',  color: '#e08a52' },
+    { id: 'ongoing',      label: 'Ongoing',              color: '#8fae7f', habit: true },
+    { id: 'aspirational', label: 'Aspirational',         color: '#b06b7a', habit: true },
+    { id: 'quickwins',    label: 'One-off Activities',   color: '#7ba0b5' },
+    { id: 'pending',      label: 'Pending',              color: '#d9a441' },
   ];
 
   // Palette for new categories
-  const CAT_COLORS = ['#e8904a','#4ac49a','#b46ae8','#4a9de8','#c9a84c','#e84a7a','#4ae8d4','#a0e84a','#e8c44a','#7c5cff'];
+  const CAT_COLORS = ['#e08a52','#c1652f','#d9a441','#e8c468','#8fae7f','#7a9c66','#5a9089','#8aa8c9','#7ba0b5','#b06b7a','#9c6b7e','#e2917a','#d97a68','#9c7259','#a888b0','#b5a668'];
+
+  // Default calendar legend categories
+  const DEFAULT_CAL_LEGEND = [
+    { id: 'cal_work',     label: 'Work',     color: '#7ba0b5' },
+    { id: 'cal_health',   label: 'Health',   color: '#8fae7f' },
+    { id: 'cal_personal', label: 'Personal', color: '#9c6b7e' },
+  ];
 
   const HINTS = {
     braindump: 'press enter to add a thought',
@@ -1017,12 +1295,12 @@
 
   // Dynamic lookup helpers (replace hardcoded COL_META / COL_COLORS / COL_LABELS)
   function getCatMeta(colId) {
-    if (colId === 'braindump') return { label: 'Dump', color: '#8a8a93' };
+    if (colId === 'braindump') return { label: 'Dump', color: '#a8a488' };
     const cat = (board.categories || []).find(c => c.id === colId);
     if (cat) return { label: cat.label, color: cat.color };
     // Legacy fallback
-    const LEGACY = { onetime: { label: 'One-time', color: '#e84a7a' } };
-    return LEGACY[colId] || { label: colId, color: '#8a8a93' };
+    const LEGACY = { onetime: { label: 'One-time', color: '#d97a68' } };
+    return LEGACY[colId] || { label: colId, color: '#a8a488' };
   }
 
   // All column ids (braindump always first)
@@ -1035,6 +1313,8 @@
       categories: DEFAULT_CATEGORIES.map(c => ({ ...c })),
       braindump: [], mit: [], ongoing: [], aspirational: [],
       quickwins: [], pending: [], stock: null, archive: [], starred: [], daySchedule: {},
+      stickyNotes: [], calendarLog: {},
+      calLegend: DEFAULT_CAL_LEGEND.map(c => ({ ...c })),
     };
   }
 
@@ -1435,6 +1715,556 @@
     renderCol('braindump');
     renderDvLeft();
     e.target.value = '';
+  });
+
+  // ─────────────────────────────────────────────────
+  //  Sticky Notes
+  // ─────────────────────────────────────────────────
+  function openStickyView() {
+    document.getElementById('sticky-view').classList.add('open');
+    renderStickyView();
+  }
+  function closeStickyView() {
+    document.getElementById('sticky-view').classList.remove('open');
+  }
+
+  function addStickyNote() {
+    const note = { id: 'note_' + Date.now(), front: '', back: '' };
+    board.stickyNotes.push(note);
+    saveBoard();
+    renderStickyView();
+    showStickyForm(note);
+  }
+
+  function deleteStickyNote(id) {
+    board.stickyNotes = board.stickyNotes.filter(n => n.id !== id);
+    saveBoard();
+    renderStickyView();
+  }
+
+  function showStickyForm(note) {
+    document.querySelectorAll('.sticky-form-overlay').forEach(el => el.remove());
+
+    const overlay = document.createElement('div');
+    overlay.className = 'sticky-form-overlay';
+
+    const card = document.createElement('div');
+    card.className = 'sticky-form-card';
+
+    const title = document.createElement('div');
+    title.className = 'sticky-form-title';
+    title.textContent = 'Edit sticky note';
+    card.appendChild(title);
+
+    const frontField = document.createElement('div');
+    frontField.className = 'sticky-form-field';
+    const frontLbl = document.createElement('div');
+    frontLbl.className = 'sticky-form-label';
+    frontLbl.textContent = 'Main text (front)';
+    const frontInput = document.createElement('textarea');
+    frontInput.value = note.front || '';
+    frontField.appendChild(frontLbl);
+    frontField.appendChild(frontInput);
+    card.appendChild(frontField);
+
+    const backField = document.createElement('div');
+    backField.className = 'sticky-form-field';
+    const backLbl = document.createElement('div');
+    backLbl.className = 'sticky-form-label';
+    backLbl.textContent = 'Overleaf text (back)';
+    const backInput = document.createElement('textarea');
+    backInput.value = note.back || '';
+    backField.appendChild(backLbl);
+    backField.appendChild(backInput);
+    card.appendChild(backField);
+
+    const actions = document.createElement('div');
+    actions.className = 'sticky-form-actions';
+    const cancel = document.createElement('button');
+    cancel.className = 'sticky-form-btn';
+    cancel.textContent = 'Cancel';
+    const save = document.createElement('button');
+    save.className = 'sticky-form-btn primary';
+    save.textContent = 'Save';
+    actions.appendChild(cancel);
+    actions.appendChild(save);
+    card.appendChild(actions);
+
+    overlay.appendChild(card);
+    document.body.appendChild(overlay);
+    frontInput.focus();
+
+    function commit() {
+      const live = board.stickyNotes.find(n => n.id === note.id);
+      if (live) {
+        live.front = frontInput.value.trim();
+        live.back  = backInput.value.trim();
+        saveBoard();
+        renderStickyView();
+      }
+      overlay.remove();
+    }
+
+    save.addEventListener('click', commit);
+    cancel.addEventListener('click', () => overlay.remove());
+    overlay.addEventListener('click', (e) => { if (e.target === overlay) overlay.remove(); });
+    card.addEventListener('keydown', (e) => { if (e.key === 'Escape') overlay.remove(); });
+  }
+
+  function makeStickyNoteFace(note, side) {
+    const face = document.createElement('div');
+    face.className = 'sticky-note-face' + (side === 'back' ? ' back' : '');
+
+    const top = document.createElement('div');
+    top.className = 'sticky-note-top';
+
+    const pencil = document.createElement('button');
+    pencil.className = 'sticky-note-pencil';
+    pencil.textContent = '✎';
+    pencil.title = 'Edit';
+    pencil.addEventListener('click', (e) => { e.stopPropagation(); showStickyForm(note); });
+
+    const del = document.createElement('button');
+    del.className = 'sticky-note-delete';
+    del.textContent = '×';
+    del.title = 'Delete';
+    del.addEventListener('click', (e) => { e.stopPropagation(); deleteStickyNote(note.id); });
+
+    top.appendChild(pencil);
+    top.appendChild(del);
+
+    const value = side === 'back' ? note.back : note.front;
+    const text = document.createElement('div');
+    text.className = 'sticky-note-text' + (value ? '' : ' sticky-note-empty');
+    text.textContent = value || (side === 'back' ? 'nothing on the back yet…' : 'click ✎ to write something…');
+
+    face.appendChild(top);
+    face.appendChild(text);
+    return face;
+  }
+
+  function makeStickyNote(note) {
+    const wrap = document.createElement('div');
+    wrap.className = 'sticky-note';
+
+    const inner = document.createElement('div');
+    inner.className = 'sticky-note-inner';
+    inner.appendChild(makeStickyNoteFace(note, 'front'));
+    inner.appendChild(makeStickyNoteFace(note, 'back'));
+    inner.addEventListener('click', () => wrap.classList.toggle('flipped'));
+
+    wrap.appendChild(inner);
+    return wrap;
+  }
+
+  function renderStickyView() {
+    const boardEl = document.getElementById('sticky-board');
+    boardEl.innerHTML = '';
+    (board.stickyNotes || []).forEach(note => boardEl.appendChild(makeStickyNote(note)));
+
+    const addBtn = document.createElement('button');
+    addBtn.className = 'sticky-add-btn';
+    addBtn.title = 'Add sticky note';
+    addBtn.textContent = '+';
+    addBtn.addEventListener('click', addStickyNote);
+    boardEl.appendChild(addBtn);
+  }
+
+  document.getElementById('sticky-view-btn').addEventListener('click', openStickyView);
+  document.getElementById('sticky-close-btn').addEventListener('click', closeStickyView);
+
+  // ─────────────────────────────────────────────────
+  //  Calendar / Done log
+  // ─────────────────────────────────────────────────
+  const CAL_PAGE_SIZE = 30;
+  let calRenderedCount = 0;
+  let calDrag = null;
+  let lastCalCatId = null;
+
+  function isoOffsetDays(offset) {
+    const d = new Date();
+    d.setDate(d.getDate() - offset);
+    return d.toISOString().slice(0, 10);
+  }
+
+  function calDayLabel(offset, iso) {
+    if (offset === 0) return 'Today';
+    if (offset === 1) return 'Yesterday';
+    const d = new Date(iso + 'T00:00:00Z');
+    return d.toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' });
+  }
+
+  function openCalView() {
+    document.getElementById('cal-view').classList.add('open');
+    const list = document.getElementById('cal-list');
+    list.innerHTML = '';
+    calRenderedCount = 0;
+    appendCalDays(CAL_PAGE_SIZE);
+    list.scrollTop = 0;
+    renderCalLegend();
+  }
+  function closeCalView() {
+    document.getElementById('cal-view').classList.remove('open');
+  }
+
+  function appendCalDays(n) {
+    const list = document.getElementById('cal-list');
+    const frag = document.createDocumentFragment();
+    for (let i = 0; i < n; i++) {
+      frag.appendChild(makeCalDayRow(calRenderedCount));
+      calRenderedCount++;
+    }
+    list.appendChild(frag);
+  }
+
+  function makeCalDayRow(offset) {
+    const iso = isoOffsetDays(offset);
+    const row = document.createElement('div');
+    row.className = 'cal-day-row' + (offset === 0 ? ' today' : '');
+
+    const dateEl = document.createElement('div');
+    dateEl.className = 'cal-day-date';
+    dateEl.textContent = calDayLabel(offset, iso);
+    row.appendChild(dateEl);
+
+    const dotsWrap = document.createElement('div');
+    dotsWrap.className = 'cal-day-dots';
+    row.appendChild(dotsWrap);
+    renderCalDots(iso, dotsWrap);
+
+    row.addEventListener('dragover', (e) => {
+      if (!calDrag) return;
+      e.preventDefault();
+      e.dataTransfer.dropEffect = 'move';
+      row.classList.add('drag-over');
+    });
+    row.addEventListener('dragleave', (e) => {
+      if (!row.contains(e.relatedTarget)) row.classList.remove('drag-over');
+    });
+    row.addEventListener('drop', (e) => {
+      e.preventDefault();
+      row.classList.remove('drag-over');
+      if (!calDrag) return;
+      moveCalEntry(calDrag, iso, dotsWrap);
+      calDrag = null;
+    });
+
+    return row;
+  }
+
+  function showCalTooltip(el, text) {
+    let tip = document.getElementById('cal-tooltip');
+    if (!tip) {
+      tip = document.createElement('div');
+      tip.id = 'cal-tooltip';
+      tip.className = 'cal-tooltip';
+      document.body.appendChild(tip);
+    }
+    tip.textContent = text;
+    tip.style.display = 'block';
+    const rect = el.getBoundingClientRect();
+    const tw = tip.offsetWidth, th = tip.offsetHeight;
+    let left = rect.left + rect.width / 2 - tw / 2;
+    let top  = rect.top - th - 8;
+    if (top < 4) top = rect.bottom + 8;
+    left = Math.max(4, Math.min(left, window.innerWidth - tw - 4));
+    tip.style.left = left + 'px';
+    tip.style.top  = top + 'px';
+    requestAnimationFrame(() => { tip.style.opacity = '1'; });
+  }
+  function hideCalTooltip() {
+    const tip = document.getElementById('cal-tooltip');
+    if (tip) tip.style.opacity = '0';
+  }
+
+  function calCatColor(entry) {
+    const cat = (board.calLegend || []).find(c => c.id === entry.catId);
+    return cat ? cat.color : (entry.color || '#a8a488');
+  }
+
+  function sortCalEntries(iso) {
+    const entries = board.calendarLog && board.calendarLog[iso];
+    if (!entries) return;
+    const order = (board.calLegend || []).map(c => c.id);
+    entries.sort((a, b) => {
+      const oa = order.indexOf(a.catId), ob = order.indexOf(b.catId);
+      const ra = oa === -1 ? order.length : oa, rb = ob === -1 ? order.length : ob;
+      return ra !== rb ? ra - rb : a.title.localeCompare(b.title);
+    });
+  }
+
+  function nextCalLegendColor() {
+    const used = new Set((board.calLegend || []).map(c => c.color));
+    return CAT_COLORS.find(c => !used.has(c)) || CAT_COLORS[(board.calLegend || []).length % CAT_COLORS.length];
+  }
+
+  function recolorCalCategory(catId, color) {
+    const cat = (board.calLegend || []).find(c => c.id === catId);
+    if (!cat) return;
+    cat.color = color;
+    Object.values(board.calendarLog || {}).forEach(entries => {
+      entries.forEach(e => { if (e.catId === catId) e.color = color; });
+    });
+    saveBoard();
+    document.querySelectorAll(`.cal-dot[data-cat-id="${catId}"]`).forEach(d => d.style.background = color);
+  }
+
+  function addCalLegendCategory() {
+    if (!board.calLegend) board.calLegend = [];
+    board.calLegend.push({ id: 'calcat_' + Date.now(), label: 'New', color: nextCalLegendColor() });
+    saveBoard();
+    renderCalLegend();
+  }
+
+  function deleteCalLegendCategory(id) {
+    board.calLegend = (board.calLegend || []).filter(c => c.id !== id);
+    saveBoard();
+    renderCalLegend();
+  }
+
+  function renderCalLegend() {
+    const wrap = document.getElementById('cal-legend');
+    wrap.innerHTML = '';
+
+    const title = document.createElement('div');
+    title.className = 'cal-legend-title';
+    title.textContent = 'Categories';
+    wrap.appendChild(title);
+
+    (board.calLegend || []).forEach(cat => {
+      const item = document.createElement('div');
+      item.className = 'cal-legend-item';
+
+      const dot = document.createElement('button');
+      dot.className = 'cal-legend-dot';
+      dot.style.background = cat.color;
+      dot.title = 'Cycle color';
+      dot.addEventListener('click', () => {
+        const idx = CAT_COLORS.indexOf(cat.color);
+        const next = CAT_COLORS[(idx + 1) % CAT_COLORS.length];
+        recolorCalCategory(cat.id, next);
+        dot.style.background = next;
+      });
+      item.appendChild(dot);
+
+      const label = document.createElement('input');
+      label.className = 'cal-legend-label';
+      label.value = cat.label;
+      label.spellcheck = false;
+      label.addEventListener('change', () => {
+        const v = label.value.trim();
+        if (v) { cat.label = v; saveBoard(); }
+      });
+      label.addEventListener('keydown', (e) => { if (e.key === 'Enter') label.blur(); });
+      item.appendChild(label);
+
+      const del = document.createElement('button');
+      del.className = 'cal-legend-del';
+      del.textContent = '×';
+      del.title = 'Delete category';
+      del.addEventListener('click', () => deleteCalLegendCategory(cat.id));
+      item.appendChild(del);
+
+      wrap.appendChild(item);
+    });
+
+    const addBtn = document.createElement('button');
+    addBtn.className = 'cal-legend-add';
+    addBtn.textContent = '+ Add category';
+    addBtn.addEventListener('click', addCalLegendCategory);
+    wrap.appendChild(addBtn);
+  }
+
+  function moveCalEntry(dragInfo, targetIso, targetContainer) {
+    const { fromIso, entry, fromContainer } = dragInfo;
+    if (fromIso === targetIso) return;
+    const src = board.calendarLog[fromIso];
+    if (!src) return;
+    const idx = src.indexOf(entry);
+    if (idx === -1) return;
+    src.splice(idx, 1);
+    if (!board.calendarLog[targetIso]) board.calendarLog[targetIso] = [];
+    board.calendarLog[targetIso].push(entry);
+    saveBoard();
+    renderCalDots(fromIso, fromContainer);
+    renderCalDots(targetIso, targetContainer);
+  }
+
+  function renderCalDots(iso, container) {
+    sortCalEntries(iso);
+    container.innerHTML = '';
+    const entries = (board.calendarLog && board.calendarLog[iso]) || [];
+    entries.forEach(entry => {
+      const dot = document.createElement('span');
+      dot.className = 'cal-dot';
+      dot.style.background = calCatColor(entry);
+      dot.draggable = true;
+      if (entry.catId) dot.dataset.catId = entry.catId;
+      dot.addEventListener('mouseenter', () => showCalTooltip(dot, entry.title));
+      dot.addEventListener('mouseleave', hideCalTooltip);
+      dot.addEventListener('click', (e) => {
+        e.stopPropagation();
+        showCalEntryPopup(dot, iso, container, entry);
+      });
+      dot.addEventListener('dragstart', (e) => {
+        e.stopPropagation();
+        hideCalTooltip();
+        calDrag = { fromIso: iso, entry, fromContainer: container };
+        requestAnimationFrame(() => dot.classList.add('dragging'));
+        e.dataTransfer.effectAllowed = 'move';
+        e.dataTransfer.setData('text/plain', '');
+      });
+      dot.addEventListener('dragend', () => { dot.classList.remove('dragging'); calDrag = null; });
+      container.appendChild(dot);
+    });
+
+    const addBtn = document.createElement('button');
+    addBtn.className = 'cal-add-dot-btn';
+    addBtn.title = 'Add entry';
+    addBtn.textContent = '+';
+    addBtn.addEventListener('click', (e) => { e.stopPropagation(); showCalEntryPopup(addBtn, iso, container); });
+    container.appendChild(addBtn);
+  }
+
+  function showCalEntryPopup(anchorEl, iso, container, existingEntry) {
+    document.querySelectorAll('.edit-popup, .move-menu').forEach(p => p.remove());
+    hideCalTooltip();
+
+    const isEdit = !!existingEntry;
+    const legend = board.calLegend || [];
+    let chosenCatId = isEdit
+      ? (existingEntry.catId || null)
+      : (lastCalCatId || (legend[0] && legend[0].id) || null);
+
+    const popup = document.createElement('div');
+    popup.className = 'edit-popup';
+
+    const lbl = document.createElement('div');
+    lbl.className = 'edit-popup-label';
+    lbl.textContent = isEdit ? 'Edit entry' : 'New entry';
+    popup.appendChild(lbl);
+
+    const colorsEl = document.createElement('div');
+    colorsEl.className = 'cal-cat-picker';
+    if (legend.length === 0) {
+      const hint = document.createElement('div');
+      hint.className = 'cal-cat-empty-hint';
+      hint.textContent = 'Add a category in the legend on the right first.';
+      colorsEl.appendChild(hint);
+    } else {
+      legend.forEach(cat => {
+        const chip = document.createElement('button');
+        chip.type = 'button';
+        chip.className = 'cal-cat-chip' + (cat.id === chosenCatId ? ' selected' : '');
+        const chipDot = document.createElement('span');
+        chipDot.className = 'dot';
+        chipDot.style.background = cat.color;
+        chip.appendChild(chipDot);
+        chip.appendChild(document.createTextNode(cat.label));
+        chip.addEventListener('click', () => {
+          chosenCatId = cat.id;
+          colorsEl.querySelectorAll('.cal-cat-chip').forEach(c => c.classList.remove('selected'));
+          chip.classList.add('selected');
+        });
+        colorsEl.appendChild(chip);
+      });
+    }
+    popup.appendChild(colorsEl);
+
+    const input = document.createElement('input');
+    input.className = 'edit-popup-input';
+    input.type = 'text';
+    input.placeholder = 'What did you do?';
+    if (isEdit) input.value = existingEntry.title;
+    popup.appendChild(input);
+
+    const actions = document.createElement('div');
+    actions.className = 'edit-popup-actions';
+
+    if (isEdit) {
+      const del = document.createElement('button');
+      del.className = 'edit-popup-btn danger';
+      del.textContent = 'Delete';
+      del.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const entries = board.calendarLog[iso] || [];
+        const liveIdx = entries.indexOf(existingEntry);
+        if (liveIdx !== -1) entries.splice(liveIdx, 1);
+        saveBoard();
+        renderCalDots(iso, container);
+        popup.remove();
+      });
+      actions.appendChild(del);
+    }
+
+    const cancel = document.createElement('button');
+    cancel.className = 'edit-popup-btn';
+    cancel.textContent = 'Cancel';
+    const save = document.createElement('button');
+    save.className = 'edit-popup-btn primary';
+    save.textContent = isEdit ? 'Save' : 'Add';
+    actions.appendChild(cancel);
+    actions.appendChild(save);
+    popup.appendChild(actions);
+
+    document.body.appendChild(popup);
+
+    const rect = anchorEl.getBoundingClientRect();
+    const pw = popup.offsetWidth  || 220;
+    const ph = popup.offsetHeight || 130;
+    let top  = rect.bottom + 6;
+    let left = rect.left;
+    if (top  + ph > window.innerHeight - 8) top  = rect.top - ph - 6;
+    if (left + pw > window.innerWidth  - 8) left = window.innerWidth - pw - 8;
+    popup.style.top  = Math.max(8, top)  + 'px';
+    popup.style.left = Math.max(8, left) + 'px';
+
+    input.focus();
+    if (isEdit) input.select();
+
+    function commit() {
+      const val = input.value.trim();
+      if (!val) { input.focus(); return; }
+      const cat = legend.find(c => c.id === chosenCatId);
+      if (isEdit) {
+        existingEntry.title = val;
+        existingEntry.catId = chosenCatId;
+        existingEntry.color = cat ? cat.color : existingEntry.color;
+      } else {
+        if (!board.calendarLog) board.calendarLog = {};
+        if (!board.calendarLog[iso]) board.calendarLog[iso] = [];
+        board.calendarLog[iso].push({
+          id: 'ce_' + Date.now(), title: val,
+          catId: chosenCatId, color: cat ? cat.color : CAT_COLORS[0],
+        });
+      }
+      lastCalCatId = chosenCatId;
+      saveBoard();
+      renderCalDots(iso, container);
+      popup.remove();
+    }
+
+    save.addEventListener('click', (e) => { e.stopPropagation(); commit(); });
+    cancel.addEventListener('click', (e) => { e.stopPropagation(); popup.remove(); });
+    input.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter')  { e.preventDefault(); commit(); }
+      if (e.key === 'Escape') popup.remove();
+    });
+
+    function closePopup(e) {
+      if (!popup.contains(e.target) && e.target !== anchorEl) {
+        popup.remove();
+        document.removeEventListener('pointerdown', closePopup);
+      }
+    }
+    setTimeout(() => document.addEventListener('pointerdown', closePopup), 0);
+  }
+
+  document.getElementById('cal-view-btn').addEventListener('click', openCalView);
+  document.getElementById('cal-close-btn').addEventListener('click', closeCalView);
+  document.getElementById('cal-list').addEventListener('scroll', () => {
+    const el = document.getElementById('cal-list');
+    if (el.scrollTop + el.clientHeight >= el.scrollHeight - 300) appendCalDays(CAL_PAGE_SIZE);
   });
 
   // ─────────────────────────────────────────────────
