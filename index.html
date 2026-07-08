@@ -111,6 +111,14 @@
   .sync-dot.error   { background: var(--danger); opacity: 1; }
   @keyframes sync-pulse { 0%,100%{opacity:1} 50%{opacity:.35} }
 
+  .sync-settings-btn {
+    font-family: inherit; cursor: pointer; border: none; background: transparent;
+    color: var(--text-dim); font-size: 13px; line-height: 1;
+    padding: 3px 4px; border-radius: 5px; flex-shrink: 0;
+    transition: color 0.12s ease, background 0.12s ease;
+  }
+  .sync-settings-btn:hover { color: var(--text); background: var(--pill-bg-hover); }
+
   /* ── Page ─────────────────────────────────────── */
   .page {
     height: 100vh;
@@ -1042,6 +1050,7 @@
     <button id="sticky-view-btn" class="sticky-view-btn">🗒 Sticky notes</button>
     <button id="cal-view-btn" class="cal-view-btn">📅 Calendar</button>
     <div id="sync-dot" class="sync-dot" title="GitHub sync status"></div>
+    <button id="sync-settings-btn" class="sync-settings-btn" title="GitHub sync settings">⚙</button>
   </div>
 
   <div id="board-root" style="display:contents">
@@ -1256,6 +1265,121 @@
       }
     }, 600);
   }
+
+  // ─────────────────────────────────────────────────
+  //  Sync settings popup (update owner/repo/PAT without a full reset)
+  // ─────────────────────────────────────────────────
+  function showSyncSettingsPopup() {
+    document.querySelectorAll('.edit-popup, .move-menu').forEach(p => p.remove());
+
+    const anchorEl = document.getElementById('sync-settings-btn');
+    const popup = document.createElement('div');
+    popup.className = 'edit-popup';
+    popup.style.minWidth = '260px';
+
+    const lbl = document.createElement('div');
+    lbl.className = 'edit-popup-label';
+    lbl.textContent = 'GitHub sync settings';
+    popup.appendChild(lbl);
+
+    const ownerLbl = document.createElement('label');
+    ownerLbl.className = 'lock-label';
+    ownerLbl.textContent = 'GitHub username';
+    popup.appendChild(ownerLbl);
+    const ownerInput = document.createElement('input');
+    ownerInput.className = 'edit-popup-input';
+    ownerInput.type = 'text';
+    ownerInput.value = (cfg && cfg.owner) || '';
+    ownerInput.autocomplete = 'off';
+    ownerInput.spellcheck = false;
+    popup.appendChild(ownerInput);
+
+    const repoLbl = document.createElement('label');
+    repoLbl.className = 'lock-label';
+    repoLbl.textContent = 'Repository name';
+    popup.appendChild(repoLbl);
+    const repoInput = document.createElement('input');
+    repoInput.className = 'edit-popup-input';
+    repoInput.type = 'text';
+    repoInput.value = (cfg && cfg.repo) || '';
+    repoInput.autocomplete = 'off';
+    repoInput.spellcheck = false;
+    popup.appendChild(repoInput);
+
+    const patLbl = document.createElement('label');
+    patLbl.className = 'lock-label';
+    patLbl.textContent = 'Personal Access Token';
+    popup.appendChild(patLbl);
+    const patInput = document.createElement('input');
+    patInput.className = 'edit-popup-input';
+    patInput.type = 'password';
+    patInput.placeholder = 'leave blank to keep current token';
+    patInput.autocomplete = 'off';
+    popup.appendChild(patInput);
+
+    const actions = document.createElement('div');
+    actions.className = 'edit-popup-actions';
+    const cancel = document.createElement('button');
+    cancel.className = 'edit-popup-btn';
+    cancel.textContent = 'Cancel';
+    const save = document.createElement('button');
+    save.className = 'edit-popup-btn primary';
+    save.textContent = 'Save & sync';
+    actions.appendChild(cancel);
+    actions.appendChild(save);
+    popup.appendChild(actions);
+
+    document.body.appendChild(popup);
+
+    const rect = anchorEl.getBoundingClientRect();
+    const pw = popup.offsetWidth  || 260;
+    const ph = popup.offsetHeight || 220;
+    let top  = rect.bottom + 6;
+    let left = rect.right - pw;
+    if (top + ph > window.innerHeight - 8) top = rect.top - ph - 6;
+    if (left < 8) left = 8;
+    popup.style.top  = Math.max(8, top) + 'px';
+    popup.style.left = left + 'px';
+
+    ownerInput.focus();
+
+    function commit() {
+      const owner = ownerInput.value.trim();
+      const repo  = repoInput.value.trim();
+      const pat   = patInput.value.trim();
+      if (!owner) { ownerInput.focus(); return; }
+      if (!repo)  { repoInput.focus(); return; }
+      cfg = cfg || {};
+      cfg.owner = owner;
+      cfg.repo  = repo;
+      if (pat) cfg.pat = pat;
+      saveConfig(cfg);
+      popup.remove();
+      scheduleSave();
+    }
+
+    save.addEventListener('click', (e) => { e.stopPropagation(); commit(); });
+    cancel.addEventListener('click', (e) => { e.stopPropagation(); popup.remove(); });
+    [ownerInput, repoInput, patInput].forEach(inp => {
+      inp.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter')  { e.preventDefault(); commit(); }
+        if (e.key === 'Escape') popup.remove();
+      });
+    });
+
+    function closePopup(e) {
+      if (!popup.contains(e.target) && e.target !== anchorEl) {
+        popup.remove();
+        document.removeEventListener('pointerdown', closePopup);
+      }
+    }
+    setTimeout(() => document.addEventListener('pointerdown', closePopup), 0);
+  }
+
+  document.getElementById('sync-settings-btn').addEventListener('click', (e) => {
+    e.stopPropagation();
+    showSyncSettingsPopup();
+  });
 
   // ─────────────────────────────────────────────────
   //  Storage
