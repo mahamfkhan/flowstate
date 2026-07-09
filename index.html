@@ -129,7 +129,14 @@
   }
 
   /* ── Top bar ──────────────────────────────────── */
-  .top-bar { flex-shrink: 0; display: flex; align-items: center; gap: 12px; }
+  .top-bar {
+    flex-shrink: 0; display: flex; align-items: center; gap: 12px;
+    overflow-x: auto; -webkit-overflow-scrolling: touch;
+  }
+  .top-bar > * { flex-shrink: 0; }
+  .top-bar::-webkit-scrollbar { height: 3px; }
+  .top-bar::-webkit-scrollbar-track { background: transparent; }
+  .top-bar::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
   .logo { font-size: 16px; font-weight: 700; letter-spacing: -0.03em; }
   .logo span { color: var(--accent); }
 
