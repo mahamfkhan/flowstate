@@ -7,7 +7,7 @@
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%231a3a5c'/%3E%3Crect width='32' height='18' fill='%23c8d8e8'/%3E%3Cpolygon points='16,4 20,13 12,13' fill='%23e8e0d8'/%3E%3Cpolygon points='16,4 17.5,7 14.5,7' fill='white'/%3E%3Crect y='14' width='32' height='18' fill='%231a3a5c'/%3E%3Cellipse cx='8' cy='16' rx='10' ry='7' fill='%231e4a7a'/%3E%3Cellipse cx='24' cy='18' rx='10' ry='6' fill='%231e4a7a'/%3E%3Cellipse cx='16' cy='20' rx='12' ry='5' fill='%23245a8a'/%3E%3Cpath d='M0,13 Q4,6 8,11 Q4,11 2,14 Z' fill='%231e4a7a'/%3E%3Cpath d='M0,12 Q4,5 8,10 Q5,9 3,12 Z' fill='%23245a8a'/%3E%3Cpath d='M0,12 Q2,8 5,10 Q3,10 1,13 Z' fill='white' opacity='0.9'/%3E%3Cpath d='M4,10 Q6,7 8,9 Q6,9 5,11 Z' fill='white' opacity='0.85'/%3E%3Cpath d='M22,10 Q26,5 30,9 Q28,9 26,12 Z' fill='%231e4a7a'/%3E%3Cpath d='M22,10 Q25,6 28,9 Q26,9 24,11 Z' fill='white' opacity='0.9'/%3E%3Cpath d='M26,8 Q28,5 30,7 Q29,8 27,10 Z' fill='white' opacity='0.85'/%3E%3Cpath d='M12,12 Q14,8 17,11 Q15,11 13,13 Z' fill='%231e4a7a'/%3E%3Cpath d='M12,11 Q14,7 17,10 Q15,10 13,12 Z' fill='white' opacity='0.8'/%3E%3Cpath d='M0,24 Q8,20 16,24 Q24,28 32,24 L32,32 L0,32 Z' fill='%231a3a5c'/%3E%3Cpath d='M0,26 Q8,22 16,26 Q24,30 32,26 L32,32 L0,32 Z' fill='%23152d47'/%3E%3C/svg%3E" />
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@1,9..144,100..300&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root {
     --bg: #242b21;
@@ -21,6 +21,8 @@
     --pill-bg-hover: #343e2d;
     --danger: #d97a68;
     --green: #8fae7f;
+    --font-serif: 'Fraunces', Georgia, 'Times New Roman', serif;
+    --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -29,7 +31,7 @@
     height: 100%;
     background: var(--bg);
     color: var(--text);
-    font-family: 'Poppins', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-family: var(--font-sans);
     font-weight: 300;
     -webkit-font-smoothing: antialiased;
     overflow: hidden;
@@ -936,6 +938,148 @@
     opacity: 0; transition: opacity 0.1s ease;
   }
 
+  /* ── Triage (formerly the always-on board) ───────── */
+  .triage-view-btn {
+    font-family: inherit; cursor: pointer; border: none;
+    border-radius: 999px; font-size: 12px; font-weight: 600;
+    padding: 5px 13px; white-space: nowrap;
+    background: rgba(176,107,122,0.18); color: #b06b7a;
+    transition: background 0.15s ease;
+  }
+  .triage-view-btn:hover { background: rgba(176,107,122,0.28); }
+
+  .triage-view {
+    position: fixed; inset: 0; z-index: 400;
+    background: var(--bg); display: none; flex-direction: column;
+    padding: 18px 18px 0; gap: 14px;
+  }
+  .triage-view.open { display: flex; animation: dvIn 0.12s ease-out; }
+
+  .triage-header { flex-shrink: 0; display: flex; align-items: center; justify-content: space-between; }
+  .triage-title { font-size: 20px; font-weight: 700; letter-spacing: -0.03em; }
+
+  .triage-close-btn {
+    font-family: inherit; cursor: pointer; border: 1px solid var(--border);
+    border-radius: 999px; font-size: 12px; font-weight: 500;
+    padding: 5px 14px; background: transparent; color: var(--text-dim);
+    transition: background 0.15s ease, color 0.15s ease;
+  }
+  .triage-close-btn:hover { background: var(--pill-bg-hover); color: var(--text); }
+
+  /* ── Home ───────────────────────────────────────── */
+  .home-view-btn {
+    font-family: inherit; cursor: pointer; border: none;
+    border-radius: 999px; font-size: 12px; font-weight: 600;
+    padding: 5px 13px; white-space: nowrap;
+    background: rgba(224,138,82,0.16); color: var(--accent);
+    transition: background 0.15s ease;
+  }
+  .home-view-btn:hover { background: rgba(224,138,82,0.26); }
+
+  .home-header { flex-shrink: 0; }
+  .home-title { font-size: 20px; font-weight: 700; letter-spacing: -0.03em; }
+  .home-sub   { font-size: 13px; color: var(--text-dim); margin-top: 2px; }
+
+  .home-body {
+    flex: 1; min-height: 0; overflow-y: auto; overflow-x: hidden;
+    padding-bottom: 24px;
+  }
+  .home-body::-webkit-scrollbar { width: 3px; }
+  .home-body::-webkit-scrollbar-track { background: transparent; }
+  .home-body::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+  .home-body-inner {
+    display: flex; flex-direction: column; gap: 32px; max-width: 920px;
+  }
+
+  .home-banner {
+    flex-shrink: 0; display: flex; align-items: center; justify-content: space-between; gap: 18px;
+    background: linear-gradient(135deg, rgba(224,138,82,0.18), rgba(217,164,65,0.12));
+    border: 1px solid rgba(224,138,82,0.32);
+    border-radius: 16px; padding: 22px 26px;
+  }
+  .home-banner-title { font-size: 18px; font-weight: 600; }
+  .home-banner-sub { font-size: 12.5px; color: var(--text-dim); margin-top: 5px; }
+  .home-banner-btn {
+    flex-shrink: 0; font-family: inherit; cursor: pointer; border: none;
+    border-radius: 999px; font-size: 13px; font-weight: 700;
+    padding: 10px 20px; white-space: nowrap;
+    background: var(--accent); color: #1c2118;
+    transition: opacity 0.15s ease;
+  }
+  .home-banner-btn:hover { opacity: 0.85; }
+
+  .home-banner.urgent {
+    background: linear-gradient(135deg, rgba(168,69,58,0.2), rgba(217,122,104,0.12));
+    border-color: rgba(168,69,58,0.34);
+  }
+  .home-banner.urgent .home-banner-btn { background: var(--danger); color: #1c2118; }
+
+  .home-banner.focus {
+    background: linear-gradient(135deg, rgba(63,91,104,0.22), rgba(123,160,181,0.13));
+    border-color: rgba(63,91,104,0.36);
+  }
+  .home-banner.focus .home-banner-btn { background: #3f5b68; color: #f4ead9; }
+
+  .home-banner.triage {
+    background: linear-gradient(135deg, rgba(176,107,122,0.2), rgba(122,69,80,0.13));
+    border-color: rgba(176,107,122,0.34);
+  }
+  .home-banner.triage .home-banner-btn { background: #b06b7a; color: #1c2118; }
+
+  .home-section-title {
+    font-size: 11px; font-weight: 600; text-transform: uppercase;
+    letter-spacing: 0.09em; color: var(--text-dim); margin-bottom: 12px;
+  }
+
+  .home-projects { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 12px; }
+  .home-project-tile {
+    background: var(--bg-elev); border: 1px solid var(--border); border-radius: 12px;
+    padding: 15px 16px; display: flex; flex-direction: column; gap: 12px;
+  }
+  .home-project-name { font-size: 14px; font-weight: 600; }
+  .home-project-status {
+    align-self: flex-start; font-family: inherit; cursor: pointer; border: none;
+    border-radius: 999px; font-size: 10.5px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.05em; padding: 4px 11px;
+    transition: opacity 0.12s ease;
+  }
+  .home-project-status:hover { opacity: 0.8; }
+  .home-project-status.active        { background: rgba(143,174,127,0.22); color: var(--green); }
+  .home-project-status.inactive      { background: rgba(168,164,136,0.22); color: var(--text-dim); }
+  .home-project-status.needs_revival { background: rgba(217,164,65,0.22); color: #d9a441; }
+
+  .home-link-tile {
+    display: flex; align-items: center; gap: 13px;
+    background: var(--bg-elev); border: 1px solid var(--border); border-radius: 12px;
+    padding: 15px 17px; text-decoration: none; color: var(--text);
+    transition: background 0.12s ease, border-color 0.12s ease;
+    max-width: 360px;
+  }
+  .home-link-tile:hover { background: var(--pill-bg-hover); border-color: var(--accent); }
+  .home-link-icon { font-size: 22px; flex-shrink: 0; }
+  .home-link-text { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+  .home-link-title { font-size: 14px; font-weight: 600; }
+  .home-link-sub { font-size: 11px; color: var(--text-dim); }
+
+  .home-reps { display: flex; flex-wrap: wrap; gap: 12px; }
+  .home-reps .home-link-tile { flex: 1 1 220px; max-width: 320px; }
+
+  /* ── Typography: serif for headings, sans for everything else ── */
+  .logo, .lock-logo,
+  .dump-header h1,
+  .dv-day-name,
+  .sticky-title,
+  .cal-title,
+  .triage-title,
+  .home-title, .home-banner-title, .home-project-name, .home-link-title {
+    font-family: var(--font-serif);
+    font-optical-sizing: auto;
+    font-style: italic;
+    font-weight: 100;
+    letter-spacing: -0.01em;
+  }
+
   /* ── Mobile responsive ────────────────────────── */
   @media (max-width: 768px) {
     .page {
@@ -1053,61 +1197,146 @@
   <div class="top-bar">
     <div class="logo">zero<span>point</span></div>
     <div id="star-controls"></div>
+    <button id="home-view-btn" class="home-view-btn">🏠 Home</button>
+    <button id="triage-view-btn" class="triage-view-btn">🚦 Triage</button>
     <button id="day-view-btn" class="day-view-btn">⊞ Day view</button>
     <button id="sticky-view-btn" class="sticky-view-btn">🗒 Sticky notes</button>
-    <button id="cal-view-btn" class="cal-view-btn">📅 Calendar</button>
+    <button id="cal-view-btn" class="cal-view-btn">🥂 Toasts</button>
     <div id="sync-dot" class="sync-dot" title="GitHub sync status"></div>
     <button id="sync-settings-btn" class="sync-settings-btn" title="GitHub sync settings">⚙</button>
   </div>
 
   <div id="board-root" style="display:contents">
-  <div class="board">
-
-    <!-- ── Brain Dump ── -->
-    <div class="col braindump" data-col="braindump">
-      <div class="col-header">
-        <span class="col-title">Zero Point</span>
-        <span class="col-count" id="count-braindump"></span>
-        <button class="maximise-btn" id="maximise-btn" title="Focus mode">
-          <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M1 4.5V1h3.5M7.5 1H11v3.5M11 7.5V11H7.5M4.5 11H1V7.5"/>
-          </svg>
-        </button>
+    <div class="home-header">
+      <div class="home-title">Home</div>
+      <div class="home-sub">the landing page for everything I'm building</div>
+    </div>
+    <div class="home-body">
+     <div class="home-body-inner">
+      <div class="home-banner" id="home-banner">
+        <div class="home-banner-text">
+          <div class="home-banner-title">✨ What did I get done today?</div>
+          <div class="home-banner-sub" id="home-banner-sub"></div>
+        </div>
+        <button class="home-banner-btn" id="home-banner-btn">🥂 Add a toast</button>
       </div>
-      <div class="col-input-wrap">
-        <div class="col-input-inner">
-          <input id="entry" class="col-input" type="text"
-            placeholder="what's on your mind?" autocomplete="off" />
-          <span class="col-input-enter" title="Press Enter to add">↵</span>
+
+      <div class="home-banner urgent" id="home-urgent-banner">
+        <div class="home-banner-text">
+          <div class="home-banner-title">🔥 Got urgent stuff piling up?</div>
+          <div class="home-banner-sub" id="home-urgent-sub"></div>
+        </div>
+        <button class="home-banner-btn" id="home-urgent-btn">🔥 Revisit urgent tasks</button>
+      </div>
+
+      <div class="home-banner focus" id="home-focus-banner">
+        <div class="home-banner-text">
+          <div class="home-banner-title">🎯 Need to lock in?</div>
+          <div class="home-banner-sub">clear the noise and just capture what's on my mind</div>
+        </div>
+        <button class="home-banner-btn" id="home-focus-btn">🧘 Enter focus mode</button>
+      </div>
+
+      <div class="home-banner triage" id="home-triage-banner">
+        <div class="home-banner-text">
+          <div class="home-banner-title">🚦 Ready to sort through everything?</div>
+          <div class="home-banner-sub">my full board — categories, braindump, archive</div>
+        </div>
+        <button class="home-banner-btn" id="home-triage-btn">🚦 Open Triage</button>
+      </div>
+
+      <div class="home-section">
+        <div class="home-section-title">Projects</div>
+        <div class="home-projects" id="home-projects"></div>
+      </div>
+
+      <div class="home-section">
+        <div class="home-section-title">Today's Reps</div>
+        <div class="home-reps">
+          <a class="home-link-tile" href="https://www.chess.com" target="_blank" rel="noopener">
+            <span class="home-link-icon">♟️</span>
+            <span class="home-link-text">
+              <span class="home-link-title">Chess.com</span>
+              <span class="home-link-sub">get a game in</span>
+            </span>
+          </a>
+          <div class="home-link-tile">
+            <span class="home-link-icon">🧠</span>
+            <span class="home-link-text">
+              <span class="home-link-title">Practice causal inference</span>
+              <span class="home-link-sub">no link yet — just a nudge</span>
+            </span>
+          </div>
         </div>
       </div>
-      <div class="col-body" id="body-braindump"></div>
-    </div>
 
-    <!-- ── Right side: toolbar + dynamic categories ── -->
-    <div class="board-right">
-      <div class="cats-toolbar">
-        <div id="stock-controls"></div>
-        <div class="cats-actions">
-          <button id="edit-cats-btn" class="day-view-btn" title="Edit categories">✎</button>
-        </div>
+      <div class="home-section">
+        <div class="home-section-title">Links</div>
+        <a class="home-link-tile" href="file:///Users/mfk/git/winners/index.html" target="_blank" rel="noopener">
+          <span class="home-link-icon">🏆</span>
+          <span class="home-link-text">
+            <span class="home-link-title">Winners</span>
+            <span class="home-link-sub">local file — only opens when flowstate itself is run from file://</span>
+          </span>
+        </a>
       </div>
-      <div class="categories" id="categories-container"></div>
+     </div>
     </div>
-
-  </div>
-
-  <!-- ── Archive bin tray ── -->
-  <div class="bin-tray" id="bin-tray">
-    <div class="bin-header" id="bin-header">
-      <span class="bin-icon">▾</span>
-      <span class="bin-title">Archive</span>
-      <span class="bin-count" id="bin-count" style="display:none"></span>
-      <span class="bin-chevron" id="bin-chevron">▲</span>
-    </div>
-    <div class="bin-body" id="bin-body"></div>
-  </div>
   </div><!-- /board-root -->
+
+  <!-- ── Triage overlay (the original always-on board) ── -->
+  <div id="triage-view" class="triage-view">
+    <div class="triage-header">
+      <div class="triage-title">🚦 Triage</div>
+      <button class="triage-close-btn" id="triage-close-btn">✕  Close</button>
+    </div>
+    <div class="board">
+
+      <!-- ── Brain Dump ── -->
+      <div class="col braindump" data-col="braindump">
+        <div class="col-header">
+          <span class="col-title">Zero Point</span>
+          <span class="col-count" id="count-braindump"></span>
+          <button class="maximise-btn" id="maximise-btn" title="Focus mode">
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M1 4.5V1h3.5M7.5 1H11v3.5M11 7.5V11H7.5M4.5 11H1V7.5"/>
+            </svg>
+          </button>
+        </div>
+        <div class="col-input-wrap">
+          <div class="col-input-inner">
+            <input id="entry" class="col-input" type="text"
+              placeholder="what's on your mind?" autocomplete="off" />
+            <span class="col-input-enter" title="Press Enter to add">↵</span>
+          </div>
+        </div>
+        <div class="col-body" id="body-braindump"></div>
+      </div>
+
+      <!-- ── Right side: toolbar + dynamic categories ── -->
+      <div class="board-right">
+        <div class="cats-toolbar">
+          <div id="stock-controls"></div>
+          <div class="cats-actions">
+            <button id="edit-cats-btn" class="day-view-btn" title="Edit categories">✎</button>
+          </div>
+        </div>
+        <div class="categories" id="categories-container"></div>
+      </div>
+
+    </div>
+
+    <!-- ── Archive bin tray ── -->
+    <div class="bin-tray" id="bin-tray">
+      <div class="bin-header" id="bin-header">
+        <span class="bin-icon">▾</span>
+        <span class="bin-title">Archive</span>
+        <span class="bin-count" id="bin-count" style="display:none"></span>
+        <span class="bin-chevron" id="bin-chevron">▲</span>
+      </div>
+      <div class="bin-body" id="bin-body"></div>
+    </div>
+  </div><!-- /triage-view -->
 
   <!-- ── Dump view overlay ── -->
   <div class="dump-view" id="dump-view">
@@ -1115,7 +1344,7 @@
       <svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
         <path d="M4.5 1H1v3.5M7.5 11H11V7.5M11 4.5V1H7.5M1 7.5V11h3.5"/>
       </svg>
-      back to board
+      back to home
     </button>
     <div class="dump-header">
       <h1>zero point</h1>
@@ -1168,8 +1397,8 @@
   <div id="cal-view" class="cal-view">
     <div class="cal-header">
       <div>
-        <div class="cal-title">Calendar</div>
-        <div class="cal-sub">tap + to log something you did · hover a dot for details</div>
+        <div class="cal-title">🥂 Toasts</div>
+        <div class="cal-sub">raise a toast to what you got done · hover a dot for details</div>
       </div>
       <button class="cal-close-btn" id="cal-close-btn">✕  Close</button>
     </div>
@@ -1178,6 +1407,7 @@
       <div class="cal-legend" id="cal-legend"></div>
     </div>
   </div>
+
 
 </div><!-- /main-page -->
 
@@ -1413,6 +1643,16 @@
     { id: 'cal_personal', label: 'Personal', color: '#9c6b7e' },
   ];
 
+  // Default project tiles for the Home view
+  const DEFAULT_PROJECTS = [
+    { id: 'proj_urban',           name: 'Urban Analytics',              status: 'active' },
+    { id: 'proj_nlp',             name: 'Natural Language Processing',  status: 'active' },
+    { id: 'proj_experimentation', name: 'Experimentation',              status: 'active' },
+    { id: 'proj_worldbank',       name: 'World Bank',                   status: 'active' },
+  ];
+  const PROJECT_STATUSES = ['active', 'inactive', 'needs_revival'];
+  const PROJECT_STATUS_LABELS = { active: 'Active', inactive: 'Inactive', needs_revival: 'Needs Revival' };
+
   const HINTS = {
     braindump: 'press enter to add a thought',
   };
@@ -1446,6 +1686,7 @@
       quickwins: [], pending: [], stock: null, archive: [], starred: [], daySchedule: {},
       stickyNotes: [], calendarLog: {},
       calLegend: DEFAULT_CAL_LEGEND.map(c => ({ ...c })),
+      projects: DEFAULT_PROJECTS.map(p => ({ ...p })),
     };
   }
 
@@ -1559,7 +1800,29 @@
   let dvGhost   = null;
   let dvTouchEl = null;
 
+  function closeAllOverlays() {
+    document.getElementById('triage-view').classList.remove('open');
+    document.getElementById('day-view').classList.remove('open');
+    document.getElementById('sticky-view').classList.remove('open');
+    document.getElementById('cal-view').classList.remove('open');
+    setView('board');
+  }
+
+  function openTriageView() {
+    closeAllOverlays();
+    document.getElementById('triage-view').classList.add('open');
+  }
+  function closeTriageView() {
+    document.getElementById('triage-view').classList.remove('open');
+  }
+
+  function goHome() {
+    closeAllOverlays();
+    renderHomeView();
+  }
+
   function openDayView() {
+    closeAllOverlays();
     document.getElementById('day-view').classList.add('open');
     renderDayView();
   }
@@ -1852,6 +2115,7 @@
   //  Sticky Notes
   // ─────────────────────────────────────────────────
   function openStickyView() {
+    closeAllOverlays();
     document.getElementById('sticky-view').classList.add('open');
     renderStickyView();
   }
@@ -2026,6 +2290,7 @@
   }
 
   function openCalView() {
+    closeAllOverlays();
     document.getElementById('cal-view').classList.add('open');
     const list = document.getElementById('cal-list');
     list.innerHTML = '';
@@ -2397,6 +2662,75 @@
     const el = document.getElementById('cal-list');
     if (el.scrollTop + el.clientHeight >= el.scrollHeight - 300) appendCalDays(CAL_PAGE_SIZE);
   });
+
+  // ─────────────────────────────────────────────────
+  //  Home
+  // ─────────────────────────────────────────────────
+  function todayToastCount() {
+    return ((board.calendarLog || {})[todayISO()] || []).length;
+  }
+
+  function renderHomeBanner() {
+    const count = todayToastCount();
+    const sub = document.getElementById('home-banner-sub');
+    sub.textContent = count > 0
+      ? `${count} toast${count === 1 ? '' : 's'} raised today — keep going.`
+      : `Nothing logged yet today — what am I proud of?`;
+  }
+
+  function renderHomeUrgentBanner() {
+    const count = (board.mit || []).length;
+    const sub = document.getElementById('home-urgent-sub');
+    sub.textContent = count > 0
+      ? `${count} urgent task${count === 1 ? '' : 's'} waiting on me.`
+      : `Nothing urgent right now — nice.`;
+  }
+
+  function cycleProjectStatus(id) {
+    const proj = (board.projects || []).find(p => p.id === id);
+    if (!proj) return;
+    const idx = PROJECT_STATUSES.indexOf(proj.status);
+    proj.status = PROJECT_STATUSES[(idx + 1) % PROJECT_STATUSES.length];
+    saveBoard();
+    renderHomeProjects();
+  }
+
+  function renderHomeProjects() {
+    const wrap = document.getElementById('home-projects');
+    wrap.innerHTML = '';
+    (board.projects || []).forEach(proj => {
+      const tile = document.createElement('div');
+      tile.className = 'home-project-tile';
+
+      const name = document.createElement('div');
+      name.className = 'home-project-name';
+      name.textContent = proj.name;
+      tile.appendChild(name);
+
+      const status = document.createElement('button');
+      status.className = 'home-project-status ' + proj.status;
+      status.textContent = PROJECT_STATUS_LABELS[proj.status] || proj.status;
+      status.title = 'Click to change status';
+      status.addEventListener('click', () => cycleProjectStatus(proj.id));
+      tile.appendChild(status);
+
+      wrap.appendChild(tile);
+    });
+  }
+
+  function renderHomeView() {
+    renderHomeBanner();
+    renderHomeUrgentBanner();
+    renderHomeProjects();
+  }
+
+  document.getElementById('home-view-btn').addEventListener('click', goHome);
+  document.getElementById('home-banner-btn').addEventListener('click', openCalView);
+  document.getElementById('home-urgent-btn').addEventListener('click', openTriageView);
+  document.getElementById('home-focus-btn').addEventListener('click', () => setView('dump'));
+  document.getElementById('home-triage-btn').addEventListener('click', openTriageView);
+  document.getElementById('triage-view-btn').addEventListener('click', openTriageView);
+  document.getElementById('triage-close-btn').addEventListener('click', closeTriageView);
 
   // ─────────────────────────────────────────────────
   //  Daily archive reset
@@ -3149,7 +3483,7 @@
       renderDumpView(); document.getElementById('dump-entry').focus();
     } else {
       dumpEl.classList.remove('active'); rootEl.style.display = 'contents';
-      renderCol('braindump');
+      renderHomeView();
     }
   }
 
@@ -3207,8 +3541,7 @@
     renderStockControls();
     renderStarControls();
     renderBin();
-
-    document.getElementById('entry').focus();
+    renderHomeView();
   }
 
   // ─────────────────────────────────────────────────
