@@ -212,6 +212,7 @@
     flex-shrink: 0; display: flex; align-items: center;
     justify-content: space-between; gap: 8px; padding: 0 2px;
   }
+  .cats-toolbar-left { display: flex; align-items: center; gap: 8px; }
   .cats-actions { display: flex; align-items: center; gap: 6px; }
 
   /* ── Categories ───────────────────────────────── */
@@ -1196,7 +1197,6 @@
 
   <div class="top-bar">
     <div class="logo">zero<span>point</span></div>
-    <div id="star-controls"></div>
     <button id="home-view-btn" class="home-view-btn">🏠 Home</button>
     <button id="triage-view-btn" class="triage-view-btn">🚦 Triage</button>
     <button id="day-view-btn" class="day-view-btn">⊞ Day view</button>
@@ -1316,7 +1316,10 @@
       <!-- ── Right side: toolbar + dynamic categories ── -->
       <div class="board-right">
         <div class="cats-toolbar">
-          <div id="stock-controls"></div>
+          <div class="cats-toolbar-left">
+            <div id="stock-controls"></div>
+            <div id="star-controls"></div>
+          </div>
           <div class="cats-actions">
             <button id="edit-cats-btn" class="day-view-btn" title="Edit categories">✎</button>
           </div>
